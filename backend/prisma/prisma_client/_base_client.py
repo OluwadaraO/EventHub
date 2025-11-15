@@ -33,13 +33,15 @@ class UseClientDefault:
     by typing the parameter with this class rather than using None, for example:
 
     ```py
-    def connect(timeout: Union[int, timedelta, UseClientDefault] = UseClientDefault()) -> None: ...
+    def connect(timeout: Union[int, timedelta, UseClientDefault] = UseClientDefault()) -> None:
+        ...
     ```
 
     relays the intention more clearly than:
 
     ```py
-    def connect(timeout: Union[int, timedelta, None] = None) -> None: ...
+    def connect(timeout: Union[int, timedelta, None] = None) -> None:
+        ...
     ```
 
     This solution also allows us to indicate an "unset" state that is uniquely distinct
@@ -82,7 +84,6 @@ class BasePrisma(Generic[_EngineT]):
     _prisma_models: set[str]
     _packaged_schema_path: Path
     _engine_type: EngineType
-    _preview_features: set[str]
     _default_datasource_name: str
     _relational_field_mappings: dict[str, dict[str, str]]
 
@@ -99,7 +100,6 @@ class BasePrisma(Generic[_EngineT]):
         '_connect_timeout',
         '_internal_engine',
         '_packaged_schema_path',
-        '_preview_features',
         '_default_datasource_name',
         '_relational_field_mappings',
     )
@@ -144,7 +144,6 @@ class BasePrisma(Generic[_EngineT]):
         packaged_schema_path: Path,
         active_provider: str,
         prisma_models: set[str],
-        preview_features: set[str],
         relational_field_mappings: dict[str, dict[str, str]],
         default_datasource_name: str,
     ) -> None:
@@ -158,7 +157,6 @@ class BasePrisma(Generic[_EngineT]):
         self._prisma_models = prisma_models
         self._active_provider = active_provider
         self._packaged_schema_path = packaged_schema_path
-        self._preview_features = preview_features
         self._relational_field_mappings = relational_field_mappings
         self._default_datasource_name = default_datasource_name
 
@@ -226,19 +224,12 @@ class BasePrisma(Generic[_EngineT]):
         """Override the default SQLite path to protect against
         https://github.com/RobertCraigie/prisma-client-py/issues/409
         """
-        source_file_path: str | Path | None = self._default_datasource.get('source_file_path')
-        if source_file_path:
-            source_file_path = Path(source_file_path).parent
-
         return {
             'name': self._default_datasource['name'],
-            'url': self._make_sqlite_url(
-                self._default_datasource['url'],
-                relative_to=source_file_path,
-            ),
+            'url': self._make_sqlite_url(self._default_datasource['url']),
         }
 
-    def _make_sqlite_url(self, url: str, *, relative_to: Path | str | None = None) -> str:
+    def _make_sqlite_url(self, url: str, *, relative_to: Path | None = None) -> str:
         url_path = removeprefix(removeprefix(url, 'file:'), 'sqlite:')
         if url_path == url:
             return url
@@ -248,9 +239,6 @@ class BasePrisma(Generic[_EngineT]):
 
         if relative_to is None:
             relative_to = self._schema_path.parent
-
-        if isinstance(relative_to, str):
-            relative_to = Path(relative_to)
 
         return f'file:{relative_to.joinpath(url_path).resolve()}'
 
@@ -278,12 +266,10 @@ class BasePrisma(Generic[_EngineT]):
             ds.setdefault('name', self._default_datasource_name)
             datasources = [ds]
         elif self._active_provider == 'sqlite':
-            log.debug('overriding default SQLite datasource path')
             # Override the default SQLite path to protect against
             # https://github.com/RobertCraigie/prisma-client-py/issues/409
             datasources = [self._make_sqlite_datasource()]
 
-        log.debug('datasources: %s', datasources)
         return timeout, datasources
 
     def _make_query_builder(
@@ -362,7 +348,8 @@ class SyncBasePrisma(BasePrisma[SyncAbstractEngine]):
         format: Literal['json'] = 'json',
         *,
         global_labels: dict[str, str] | None = None,
-    ) -> Metrics: ...
+    ) -> Metrics:
+        ...
 
     @overload
     def get_metrics(
@@ -370,7 +357,8 @@ class SyncBasePrisma(BasePrisma[SyncAbstractEngine]):
         format: Literal['prometheus'],
         *,
         global_labels: dict[str, str] | None = None,
-    ) -> str: ...
+    ) -> str:
+        ...
 
     def get_metrics(
         self,
@@ -481,7 +469,8 @@ class AsyncBasePrisma(BasePrisma[AsyncAbstractEngine]):
         format: Literal['json'] = 'json',
         *,
         global_labels: dict[str, str] | None = None,
-    ) -> Metrics: ...
+    ) -> Metrics:
+        ...
 
     @overload
     async def get_metrics(
@@ -489,7 +478,8 @@ class AsyncBasePrisma(BasePrisma[AsyncAbstractEngine]):
         format: Literal['prometheus'],
         *,
         global_labels: dict[str, str] | None = None,
-    ) -> str: ...
+    ) -> str:
+        ...
 
     async def get_metrics(
         self,

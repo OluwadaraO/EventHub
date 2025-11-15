@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+import shutil
 import logging
 import traceback
 from abc import ABC, abstractmethod
@@ -72,7 +73,8 @@ class GenericGenerator(ABC, Generic[BaseModelT]):
         ...
 
     @abstractmethod
-    def generate(self, data: BaseModelT) -> None: ...
+    def generate(self, data: BaseModelT) -> None:
+        ...
 
     @classmethod
     def invoke(cls) -> None:
@@ -238,7 +240,7 @@ class Generator(GenericGenerator[PythonData]):
         # package so we can use it to instantiate the query engine
         packaged_schema = rootdir / 'schema.prisma'
         if not is_same_path(data.schema_path, packaged_schema):
-            packaged_schema.write_text(data.datamodel)
+            shutil.copy(data.schema_path, packaged_schema)
 
         params = data.to_params()
 

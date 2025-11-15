@@ -94,7 +94,6 @@ StringFilter = TypedDict(
         'in': List[str],
         'not': Union[str, 'StringFilterRecursive1'],
         'mode': SortMode,
-        'search': str,
     },
     total=False,
 )
@@ -115,7 +114,6 @@ StringFilterRecursive1 = TypedDict(
         'in': List[str],
         'not': Union[str, 'StringFilterRecursive2'],
         'mode': SortMode,
-        'search': str,
     },
     total=False,
 )
@@ -136,7 +134,6 @@ StringFilterRecursive2 = TypedDict(
         'in': List[str],
         'not': Union[str, 'StringFilterRecursive3'],
         'mode': SortMode,
-        'search': str,
     },
     total=False,
 )
@@ -157,7 +154,6 @@ StringFilterRecursive3 = TypedDict(
         'in': List[str],
         'not': Union[str, 'StringFilterRecursive4'],
         'mode': SortMode,
-        'search': str,
     },
     total=False,
 )
@@ -177,7 +173,6 @@ StringFilterRecursive4 = TypedDict(
         'endswith': str,
         'in': List[str],
                 'mode': SortMode,
-        'search': str,
     },
     total=False,
 )
@@ -1171,20 +1166,16 @@ class UserCreateWithoutRelationsInput(UserOptionalCreateWithoutRelationsInput):
     email: _str
     passwordHash: _str
 
-class UserConnectOrCreateWithoutRelationsInput(TypedDict):
-    create: 'UserCreateWithoutRelationsInput'
-    where: 'UserWhereUniqueInput'
 
 class UserCreateNestedWithoutRelationsInput(TypedDict, total=False):
     create: 'UserCreateWithoutRelationsInput'
     connect: 'UserWhereUniqueInput'
-    connect_or_create: 'UserConnectOrCreateWithoutRelationsInput'
 
 
 class UserCreateManyNestedWithoutRelationsInput(TypedDict, total=False):
     create: Union['UserCreateWithoutRelationsInput', List['UserCreateWithoutRelationsInput']]
     connect: Union['UserWhereUniqueInput', List['UserWhereUniqueInput']]
-    connect_or_create: Union['UserConnectOrCreateWithoutRelationsInput', List['UserConnectOrCreateWithoutRelationsInput']]
+
 
 _UserWhereUnique_id_Input = TypedDict(
     '_UserWhereUnique_id_Input',
@@ -1230,7 +1221,6 @@ class UserUpdateManyMutationInput(TypedDict, total=False):
 class UserUpdateManyWithoutRelationsInput(TypedDict, total=False):
     create: List['UserCreateWithoutRelationsInput']
     connect: List['UserWhereUniqueInput']
-    connect_or_create: List['UserConnectOrCreateWithoutRelationsInput']
     set: List['UserWhereUniqueInput']
     disconnect: List['UserWhereUniqueInput']
     delete: List['UserWhereUniqueInput']
@@ -1240,18 +1230,19 @@ class UserUpdateManyWithoutRelationsInput(TypedDict, total=False):
     # updateMany: List['UserUpdateManyWithWhereUniqueWithoutRelationsInput']
     # deleteMany: List['UserScalarWhereInput']
     # upsert: List['UserUpserteWithWhereUniqueWithoutRelationsInput']
+    # connectOrCreate: List['UserCreateOrConnectWithoutRelationsInput']
 
 
 class UserUpdateOneWithoutRelationsInput(TypedDict, total=False):
     create: 'UserCreateWithoutRelationsInput'
     connect: 'UserWhereUniqueInput'
-    connect_or_create: 'UserConnectOrCreateWithoutRelationsInput'
     disconnect: bool
     delete: bool
 
     # TODO
     # update: 'UserUpdateInput'
     # upsert: 'UserUpsertWithoutRelationsInput'
+    # connectOrCreate: 'UserCreateOrConnectWithoutRelationsInput'
 
 
 class UserUpsertInput(TypedDict):
@@ -1299,31 +1290,12 @@ _User_createdAt_OrderByInput = TypedDict(
     total=True
 )
 
-_User_RelevanceInner = TypedDict(
-    '_User_RelevanceInner',
-    {
-        'fields': 'List[UserScalarFieldKeys]',
-        'search': 'str',
-        'sort': 'SortOrder',
-    },
-    total=True
-)
-
-_User_RelevanceOrderByInput = TypedDict(
-    '_User_RelevanceOrderByInput',
-    {
-        '_relevance': '_User_RelevanceInner',
-    },
-    total=True
-)
-
 UserOrderByInput = Union[
     '_User_id_OrderByInput',
     '_User_name_OrderByInput',
     '_User_email_OrderByInput',
     '_User_passwordHash_OrderByInput',
     '_User_createdAt_OrderByInput',
-    '_User_RelevanceOrderByInput',
 ]
 
 
@@ -2303,20 +2275,16 @@ class VenueOptionalCreateWithoutRelationsInput(TypedDict, total=False):
 class VenueCreateWithoutRelationsInput(VenueOptionalCreateWithoutRelationsInput):
     """Required arguments to the Venue create method, without relations"""
 
-class VenueConnectOrCreateWithoutRelationsInput(TypedDict):
-    create: 'VenueCreateWithoutRelationsInput'
-    where: 'VenueWhereUniqueInput'
 
 class VenueCreateNestedWithoutRelationsInput(TypedDict, total=False):
     create: 'VenueCreateWithoutRelationsInput'
     connect: 'VenueWhereUniqueInput'
-    connect_or_create: 'VenueConnectOrCreateWithoutRelationsInput'
 
 
 class VenueCreateManyNestedWithoutRelationsInput(TypedDict, total=False):
     create: Union['VenueCreateWithoutRelationsInput', List['VenueCreateWithoutRelationsInput']]
     connect: Union['VenueWhereUniqueInput', List['VenueWhereUniqueInput']]
-    connect_or_create: Union['VenueConnectOrCreateWithoutRelationsInput', List['VenueConnectOrCreateWithoutRelationsInput']]
+
 
 _VenueWhereUnique_id_Input = TypedDict(
     '_VenueWhereUnique_id_Input',
@@ -2359,7 +2327,6 @@ class VenueUpdateManyMutationInput(TypedDict, total=False):
 class VenueUpdateManyWithoutRelationsInput(TypedDict, total=False):
     create: List['VenueCreateWithoutRelationsInput']
     connect: List['VenueWhereUniqueInput']
-    connect_or_create: List['VenueConnectOrCreateWithoutRelationsInput']
     set: List['VenueWhereUniqueInput']
     disconnect: List['VenueWhereUniqueInput']
     delete: List['VenueWhereUniqueInput']
@@ -2369,18 +2336,19 @@ class VenueUpdateManyWithoutRelationsInput(TypedDict, total=False):
     # updateMany: List['VenueUpdateManyWithWhereUniqueWithoutRelationsInput']
     # deleteMany: List['VenueScalarWhereInput']
     # upsert: List['VenueUpserteWithWhereUniqueWithoutRelationsInput']
+    # connectOrCreate: List['VenueCreateOrConnectWithoutRelationsInput']
 
 
 class VenueUpdateOneWithoutRelationsInput(TypedDict, total=False):
     create: 'VenueCreateWithoutRelationsInput'
     connect: 'VenueWhereUniqueInput'
-    connect_or_create: 'VenueConnectOrCreateWithoutRelationsInput'
     disconnect: bool
     delete: bool
 
     # TODO
     # update: 'VenueUpdateInput'
     # upsert: 'VenueUpsertWithoutRelationsInput'
+    # connectOrCreate: 'VenueCreateOrConnectWithoutRelationsInput'
 
 
 class VenueUpsertInput(TypedDict):
@@ -2460,24 +2428,6 @@ _Venue_createdAt_OrderByInput = TypedDict(
     total=True
 )
 
-_Venue_RelevanceInner = TypedDict(
-    '_Venue_RelevanceInner',
-    {
-        'fields': 'List[VenueScalarFieldKeys]',
-        'search': 'str',
-        'sort': 'SortOrder',
-    },
-    total=True
-)
-
-_Venue_RelevanceOrderByInput = TypedDict(
-    '_Venue_RelevanceOrderByInput',
-    {
-        '_relevance': '_Venue_RelevanceInner',
-    },
-    total=True
-)
-
 VenueOrderByInput = Union[
     '_Venue_id_OrderByInput',
     '_Venue_name_OrderByInput',
@@ -2488,7 +2438,6 @@ VenueOrderByInput = Union[
     '_Venue_lat_OrderByInput',
     '_Venue_lng_OrderByInput',
     '_Venue_createdAt_OrderByInput',
-    '_Venue_RelevanceOrderByInput',
 ]
 
 
@@ -3536,20 +3485,16 @@ class EventSourceCreateWithoutRelationsInput(EventSourceOptionalCreateWithoutRel
     """Required arguments to the EventSource create method, without relations"""
     domain: _str
 
-class EventSourceConnectOrCreateWithoutRelationsInput(TypedDict):
-    create: 'EventSourceCreateWithoutRelationsInput'
-    where: 'EventSourceWhereUniqueInput'
 
 class EventSourceCreateNestedWithoutRelationsInput(TypedDict, total=False):
     create: 'EventSourceCreateWithoutRelationsInput'
     connect: 'EventSourceWhereUniqueInput'
-    connect_or_create: 'EventSourceConnectOrCreateWithoutRelationsInput'
 
 
 class EventSourceCreateManyNestedWithoutRelationsInput(TypedDict, total=False):
     create: Union['EventSourceCreateWithoutRelationsInput', List['EventSourceCreateWithoutRelationsInput']]
     connect: Union['EventSourceWhereUniqueInput', List['EventSourceWhereUniqueInput']]
-    connect_or_create: Union['EventSourceConnectOrCreateWithoutRelationsInput', List['EventSourceConnectOrCreateWithoutRelationsInput']]
+
 
 _EventSourceWhereUnique_id_Input = TypedDict(
     '_EventSourceWhereUnique_id_Input',
@@ -3593,7 +3538,6 @@ class EventSourceUpdateManyMutationInput(TypedDict, total=False):
 class EventSourceUpdateManyWithoutRelationsInput(TypedDict, total=False):
     create: List['EventSourceCreateWithoutRelationsInput']
     connect: List['EventSourceWhereUniqueInput']
-    connect_or_create: List['EventSourceConnectOrCreateWithoutRelationsInput']
     set: List['EventSourceWhereUniqueInput']
     disconnect: List['EventSourceWhereUniqueInput']
     delete: List['EventSourceWhereUniqueInput']
@@ -3603,18 +3547,19 @@ class EventSourceUpdateManyWithoutRelationsInput(TypedDict, total=False):
     # updateMany: List['EventSourceUpdateManyWithWhereUniqueWithoutRelationsInput']
     # deleteMany: List['EventSourceScalarWhereInput']
     # upsert: List['EventSourceUpserteWithWhereUniqueWithoutRelationsInput']
+    # connectOrCreate: List['EventSourceCreateOrConnectWithoutRelationsInput']
 
 
 class EventSourceUpdateOneWithoutRelationsInput(TypedDict, total=False):
     create: 'EventSourceCreateWithoutRelationsInput'
     connect: 'EventSourceWhereUniqueInput'
-    connect_or_create: 'EventSourceConnectOrCreateWithoutRelationsInput'
     disconnect: bool
     delete: bool
 
     # TODO
     # update: 'EventSourceUpdateInput'
     # upsert: 'EventSourceUpsertWithoutRelationsInput'
+    # connectOrCreate: 'EventSourceCreateOrConnectWithoutRelationsInput'
 
 
 class EventSourceUpsertInput(TypedDict):
@@ -3654,30 +3599,11 @@ _EventSource_createdAt_OrderByInput = TypedDict(
     total=True
 )
 
-_EventSource_RelevanceInner = TypedDict(
-    '_EventSource_RelevanceInner',
-    {
-        'fields': 'List[EventSourceScalarFieldKeys]',
-        'search': 'str',
-        'sort': 'SortOrder',
-    },
-    total=True
-)
-
-_EventSource_RelevanceOrderByInput = TypedDict(
-    '_EventSource_RelevanceOrderByInput',
-    {
-        '_relevance': '_EventSource_RelevanceInner',
-    },
-    total=True
-)
-
 EventSourceOrderByInput = Union[
     '_EventSource_id_OrderByInput',
     '_EventSource_domain_OrderByInput',
     '_EventSource_label_OrderByInput',
     '_EventSource_createdAt_OrderByInput',
-    '_EventSource_RelevanceOrderByInput',
 ]
 
 
@@ -4625,20 +4551,16 @@ class TagCreateWithoutRelationsInput(TagOptionalCreateWithoutRelationsInput):
     """Required arguments to the Tag create method, without relations"""
     name: _str
 
-class TagConnectOrCreateWithoutRelationsInput(TypedDict):
-    create: 'TagCreateWithoutRelationsInput'
-    where: 'TagWhereUniqueInput'
 
 class TagCreateNestedWithoutRelationsInput(TypedDict, total=False):
     create: 'TagCreateWithoutRelationsInput'
     connect: 'TagWhereUniqueInput'
-    connect_or_create: 'TagConnectOrCreateWithoutRelationsInput'
 
 
 class TagCreateManyNestedWithoutRelationsInput(TypedDict, total=False):
     create: Union['TagCreateWithoutRelationsInput', List['TagCreateWithoutRelationsInput']]
     connect: Union['TagWhereUniqueInput', List['TagWhereUniqueInput']]
-    connect_or_create: Union['TagConnectOrCreateWithoutRelationsInput', List['TagConnectOrCreateWithoutRelationsInput']]
+
 
 _TagWhereUnique_id_Input = TypedDict(
     '_TagWhereUnique_id_Input',
@@ -4678,7 +4600,6 @@ class TagUpdateManyMutationInput(TypedDict, total=False):
 class TagUpdateManyWithoutRelationsInput(TypedDict, total=False):
     create: List['TagCreateWithoutRelationsInput']
     connect: List['TagWhereUniqueInput']
-    connect_or_create: List['TagConnectOrCreateWithoutRelationsInput']
     set: List['TagWhereUniqueInput']
     disconnect: List['TagWhereUniqueInput']
     delete: List['TagWhereUniqueInput']
@@ -4688,18 +4609,19 @@ class TagUpdateManyWithoutRelationsInput(TypedDict, total=False):
     # updateMany: List['TagUpdateManyWithWhereUniqueWithoutRelationsInput']
     # deleteMany: List['TagScalarWhereInput']
     # upsert: List['TagUpserteWithWhereUniqueWithoutRelationsInput']
+    # connectOrCreate: List['TagCreateOrConnectWithoutRelationsInput']
 
 
 class TagUpdateOneWithoutRelationsInput(TypedDict, total=False):
     create: 'TagCreateWithoutRelationsInput'
     connect: 'TagWhereUniqueInput'
-    connect_or_create: 'TagConnectOrCreateWithoutRelationsInput'
     disconnect: bool
     delete: bool
 
     # TODO
     # update: 'TagUpdateInput'
     # upsert: 'TagUpsertWithoutRelationsInput'
+    # connectOrCreate: 'TagCreateOrConnectWithoutRelationsInput'
 
 
 class TagUpsertInput(TypedDict):
@@ -4723,28 +4645,9 @@ _Tag_name_OrderByInput = TypedDict(
     total=True
 )
 
-_Tag_RelevanceInner = TypedDict(
-    '_Tag_RelevanceInner',
-    {
-        'fields': 'List[TagScalarFieldKeys]',
-        'search': 'str',
-        'sort': 'SortOrder',
-    },
-    total=True
-)
-
-_Tag_RelevanceOrderByInput = TypedDict(
-    '_Tag_RelevanceOrderByInput',
-    {
-        '_relevance': '_Tag_RelevanceInner',
-    },
-    total=True
-)
-
 TagOrderByInput = Union[
     '_Tag_id_OrderByInput',
     '_Tag_name_OrderByInput',
-    '_Tag_RelevanceOrderByInput',
 ]
 
 
@@ -5683,20 +5586,16 @@ class EventCreateWithoutRelationsInput(EventOptionalCreateWithoutRelationsInput)
     title: _str
     url: _str
 
-class EventConnectOrCreateWithoutRelationsInput(TypedDict):
-    create: 'EventCreateWithoutRelationsInput'
-    where: 'EventWhereUniqueInput'
 
 class EventCreateNestedWithoutRelationsInput(TypedDict, total=False):
     create: 'EventCreateWithoutRelationsInput'
     connect: 'EventWhereUniqueInput'
-    connect_or_create: 'EventConnectOrCreateWithoutRelationsInput'
 
 
 class EventCreateManyNestedWithoutRelationsInput(TypedDict, total=False):
     create: Union['EventCreateWithoutRelationsInput', List['EventCreateWithoutRelationsInput']]
     connect: Union['EventWhereUniqueInput', List['EventWhereUniqueInput']]
-    connect_or_create: Union['EventConnectOrCreateWithoutRelationsInput', List['EventConnectOrCreateWithoutRelationsInput']]
+
 
 _EventWhereUnique_id_Input = TypedDict(
     '_EventWhereUnique_id_Input',
@@ -5759,7 +5658,6 @@ class EventUpdateManyMutationInput(TypedDict, total=False):
 class EventUpdateManyWithoutRelationsInput(TypedDict, total=False):
     create: List['EventCreateWithoutRelationsInput']
     connect: List['EventWhereUniqueInput']
-    connect_or_create: List['EventConnectOrCreateWithoutRelationsInput']
     set: List['EventWhereUniqueInput']
     disconnect: List['EventWhereUniqueInput']
     delete: List['EventWhereUniqueInput']
@@ -5769,18 +5667,19 @@ class EventUpdateManyWithoutRelationsInput(TypedDict, total=False):
     # updateMany: List['EventUpdateManyWithWhereUniqueWithoutRelationsInput']
     # deleteMany: List['EventScalarWhereInput']
     # upsert: List['EventUpserteWithWhereUniqueWithoutRelationsInput']
+    # connectOrCreate: List['EventCreateOrConnectWithoutRelationsInput']
 
 
 class EventUpdateOneWithoutRelationsInput(TypedDict, total=False):
     create: 'EventCreateWithoutRelationsInput'
     connect: 'EventWhereUniqueInput'
-    connect_or_create: 'EventConnectOrCreateWithoutRelationsInput'
     disconnect: bool
     delete: bool
 
     # TODO
     # update: 'EventUpdateInput'
     # upsert: 'EventUpsertWithoutRelationsInput'
+    # connectOrCreate: 'EventCreateOrConnectWithoutRelationsInput'
 
 
 class EventUpsertInput(TypedDict):
@@ -5900,24 +5799,6 @@ _Event_updatedAt_OrderByInput = TypedDict(
     total=True
 )
 
-_Event_RelevanceInner = TypedDict(
-    '_Event_RelevanceInner',
-    {
-        'fields': 'List[EventScalarFieldKeys]',
-        'search': 'str',
-        'sort': 'SortOrder',
-    },
-    total=True
-)
-
-_Event_RelevanceOrderByInput = TypedDict(
-    '_Event_RelevanceOrderByInput',
-    {
-        '_relevance': '_Event_RelevanceInner',
-    },
-    total=True
-)
-
 EventOrderByInput = Union[
     '_Event_id_OrderByInput',
     '_Event_title_OrderByInput',
@@ -5933,7 +5814,6 @@ EventOrderByInput = Union[
     '_Event_sourceId_OrderByInput',
     '_Event_createdAt_OrderByInput',
     '_Event_updatedAt_OrderByInput',
-    '_Event_RelevanceOrderByInput',
 ]
 
 
@@ -7096,20 +6976,16 @@ class SavedEventOptionalCreateWithoutRelationsInput(TypedDict, total=False):
 class SavedEventCreateWithoutRelationsInput(SavedEventOptionalCreateWithoutRelationsInput):
     """Required arguments to the SavedEvent create method, without relations"""
 
-class SavedEventConnectOrCreateWithoutRelationsInput(TypedDict):
-    create: 'SavedEventCreateWithoutRelationsInput'
-    where: 'SavedEventWhereUniqueInput'
 
 class SavedEventCreateNestedWithoutRelationsInput(TypedDict, total=False):
     create: 'SavedEventCreateWithoutRelationsInput'
     connect: 'SavedEventWhereUniqueInput'
-    connect_or_create: 'SavedEventConnectOrCreateWithoutRelationsInput'
 
 
 class SavedEventCreateManyNestedWithoutRelationsInput(TypedDict, total=False):
     create: Union['SavedEventCreateWithoutRelationsInput', List['SavedEventCreateWithoutRelationsInput']]
     connect: Union['SavedEventWhereUniqueInput', List['SavedEventWhereUniqueInput']]
-    connect_or_create: Union['SavedEventConnectOrCreateWithoutRelationsInput', List['SavedEventConnectOrCreateWithoutRelationsInput']]
+
 
 _SavedEventWhereUnique_id_Input = TypedDict(
     '_SavedEventWhereUnique_id_Input',
@@ -7159,7 +7035,6 @@ class SavedEventUpdateManyMutationInput(TypedDict, total=False):
 class SavedEventUpdateManyWithoutRelationsInput(TypedDict, total=False):
     create: List['SavedEventCreateWithoutRelationsInput']
     connect: List['SavedEventWhereUniqueInput']
-    connect_or_create: List['SavedEventConnectOrCreateWithoutRelationsInput']
     set: List['SavedEventWhereUniqueInput']
     disconnect: List['SavedEventWhereUniqueInput']
     delete: List['SavedEventWhereUniqueInput']
@@ -7169,18 +7044,19 @@ class SavedEventUpdateManyWithoutRelationsInput(TypedDict, total=False):
     # updateMany: List['SavedEventUpdateManyWithWhereUniqueWithoutRelationsInput']
     # deleteMany: List['SavedEventScalarWhereInput']
     # upsert: List['SavedEventUpserteWithWhereUniqueWithoutRelationsInput']
+    # connectOrCreate: List['SavedEventCreateOrConnectWithoutRelationsInput']
 
 
 class SavedEventUpdateOneWithoutRelationsInput(TypedDict, total=False):
     create: 'SavedEventCreateWithoutRelationsInput'
     connect: 'SavedEventWhereUniqueInput'
-    connect_or_create: 'SavedEventConnectOrCreateWithoutRelationsInput'
     disconnect: bool
     delete: bool
 
     # TODO
     # update: 'SavedEventUpdateInput'
     # upsert: 'SavedEventUpsertWithoutRelationsInput'
+    # connectOrCreate: 'SavedEventCreateOrConnectWithoutRelationsInput'
 
 
 class SavedEventUpsertInput(TypedDict):
@@ -7220,30 +7096,11 @@ _SavedEvent_createdAt_OrderByInput = TypedDict(
     total=True
 )
 
-_SavedEvent_RelevanceInner = TypedDict(
-    '_SavedEvent_RelevanceInner',
-    {
-        'fields': 'List[SavedEventScalarFieldKeys]',
-        'search': 'str',
-        'sort': 'SortOrder',
-    },
-    total=True
-)
-
-_SavedEvent_RelevanceOrderByInput = TypedDict(
-    '_SavedEvent_RelevanceOrderByInput',
-    {
-        '_relevance': '_SavedEvent_RelevanceInner',
-    },
-    total=True
-)
-
 SavedEventOrderByInput = Union[
     '_SavedEvent_id_OrderByInput',
     '_SavedEvent_userId_OrderByInput',
     '_SavedEvent_eventId_OrderByInput',
     '_SavedEvent_createdAt_OrderByInput',
-    '_SavedEvent_RelevanceOrderByInput',
 ]
 
 

@@ -1,81 +1,55 @@
 from __future__ import annotations
 
 import json
-from typing import Any, Callable, overload
-from typing_extensions import Literal
+from typing import (
+    Any,
+    Callable,
+    overload,
+)
 
 from ._types import BaseModelT
 from ._compat import model_parse
 
-# from https://github.com/prisma/prisma/blob/7da6f030350931eff8574e805acb9c0de9087e8e/packages/client/src/runtime/utils/deserializeRawResults.ts
-PrismaType = Literal[
-    'int',
-    'bigint',
-    'float',
-    'double',
-    'string',
-    'enum',
-    'bytes',
-    'bool',
-    'char',
-    'decimal',
-    'json',
-    'xml',
-    'uuid',
-    'datetime',
-    'date',
-    'time',
-    'int-array',
-    'bigint-array',
-    'float-array',
-    'double-array',
-    'string-array',
-    'enum-array',
-    'bytes-array',
-    'bool-array',
-    'char-array',
-    'decimal-array',
-    'json-array',
-    'xml-array',
-    'uuid-array',
-    'datetime-array',
-    'date-array',
-    'time-array',
-    'unknown-array',
-    'unknown',
-]
-
-
-class RawQueryResult:
-    columns: list[str]
-    types: list[PrismaType]
-    rows: list[list[object]]
-
-    def __init__(
-        self,
-        *,
-        columns: list[str],
-        types: list[PrismaType],
-        rows: list[list[object]],
-    ) -> None:
-        self.columns = columns
-        self.types = types
-        self.rows = rows
+# From: https://github.com/prisma/prisma/blob/main/packages/client/src/runtime/utils/deserializeRawResults.ts
+# Last checked: 2022-12-04
+"""
+type PrismaType =
+  | 'int'
+  | 'bigint'
+  | 'float'
+  | 'double'
+  | 'string'
+  | 'enum'
+  | 'bytes'
+  | 'bool'
+  | 'char'
+  | 'decimal'
+  | 'json'
+  | 'xml'
+  | 'uuid'
+  | 'datetime'
+  | 'date'
+  | 'time'
+  | 'array'
+  | 'null'
+"""
 
 
 @overload
-def deserialize_raw_results(raw_result: dict[str, Any]) -> list[dict[str, Any]]: ...
+def deserialize_raw_results(raw_list: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    ...
 
 
 @overload
 def deserialize_raw_results(
-    raw_result: dict[str, Any],
+    raw_list: list[dict[str, object]],
     model: type[BaseModelT],
-) -> list[BaseModelT]: ...
+) -> list[BaseModelT]:
+    ...
 
 
 def deserialize_raw_results(
-    raw_result: dict[str, Any],
+    raw_list: list[dict[str, Any]],
     model: type[BaseModelT] | None = None,
 ) -> list[BaseModelT] | list[dict[str, Any]]:
     """Deserialize a list of raw query results into their rich Python types.
@@ -83,15 +57,10 @@ def deserialize_raw_results(
     If `model` is given, convert each result into the corresponding model.
     Otherwise results are returned as a dictionary
     """
-    result = RawQueryResult(
-        columns=raw_result['columns'],
-        types=raw_result['types'],
-        rows=raw_result['rows'],
-    )
     if model is not None:
-        return [_deserialize_prisma_object(obj, result=result, model=model, for_model=True) for obj in result.rows]
+        return [_deserialize_prisma_object(obj, model=model, for_model=True) for obj in raw_list]
 
-    return [_deserialize_prisma_object(obj, result=result, for_model=False) for obj in result.rows]
+    return [_deserialize_prisma_object(obj, for_model=False) for obj in raw_list]
 
 
 # NOTE: this very weird `for_model` API is simply here as a workaround for
@@ -102,27 +71,26 @@ def deserialize_raw_results(
 
 @overload
 def _deserialize_prisma_object(
-    fields: list[object],
+    raw_obj: dict[str, Any],
     *,
-    result: RawQueryResult,
     for_model: bool,
-) -> dict[str, Any]: ...
+) -> dict[str, Any]:
+    ...
 
 
 @overload
 def _deserialize_prisma_object(
-    fields: list[object],
+    raw_obj: dict[str, object],
     *,
-    result: RawQueryResult,
     for_model: bool,
     model: type[BaseModelT],
-) -> BaseModelT: ...
+) -> BaseModelT:
+    ...
 
 
 def _deserialize_prisma_object(
-    fields: list[object],
+    raw_obj: dict[Any, Any],
     *,
-    result: RawQueryResult,
     for_model: bool,
     model: type[BaseModelT] | None = None,
 ) -> BaseModelT | dict[str, Any]:
@@ -130,34 +98,12 @@ def _deserialize_prisma_object(
     # lookups on some python versions
     _deserializers = DESERIALIZERS
 
-    new_obj: dict[str, Any] = {}
-    for i, field in enumerate(fields):
-        key = result.columns[i]
-        prisma_type = result.types[i]
+    new_obj = {}
+    for key, raw_value in raw_obj.items():
+        value = raw_value['prisma__value']
+        prisma_type = raw_value['prisma__type']
 
-        if field is None:
-            new_obj[key] = None
-            continue
-
-        if prisma_type.endswith('-array'):
-            if not isinstance(field, list):
-                raise TypeError(
-                    f'Expected array data for {key} column with internal type {prisma_type}',
-                )
-
-            item_type, _ = prisma_type.split('-')
-
-            new_obj[key] = [
-                _deserializers[item_type](value, for_model)
-                #
-                if item_type in _deserializers
-                else value
-                for value in field
-            ]
-        else:
-            value = field
-
-            new_obj[key] = _deserializers[prisma_type](value, for_model) if prisma_type in _deserializers else value
+        new_obj[key] = _deserializers[prisma_type](value, for_model) if prisma_type in _deserializers else value
 
     if model is not None:
         return model_parse(model, new_obj)
@@ -171,6 +117,22 @@ def _deserialize_bigint(value: str, _for_model: bool) -> int:
 
 def _deserialize_decimal(value: str, _for_model: bool) -> float:
     return float(value)
+
+
+def _deserialize_array(value: list[Any], for_model: bool) -> list[Any]:
+    # create a local reference to avoid performance penalty of global
+    # lookups on some python versions
+    _deserializers = DESERIALIZERS
+
+    arr = []
+    for entry in value:
+        prisma_type = entry['prisma__type']
+        prisma_value = entry['prisma__value']
+        arr.append(
+            (_deserializers[prisma_type](prisma_value, for_model) if prisma_type in _deserializers else prisma_value)
+        )
+
+    return arr
 
 
 def _deserialize_json(value: object, for_model: bool) -> object:
@@ -187,8 +149,9 @@ def _deserialize_json(value: object, for_model: bool) -> object:
     return value
 
 
-DESERIALIZERS: dict[PrismaType, Callable[[Any, bool], object]] = {
+DESERIALIZERS: dict[str, Callable[[Any, bool], object]] = {
     'bigint': _deserialize_bigint,
     'decimal': _deserialize_decimal,
+    'array': _deserialize_array,
     'json': _deserialize_json,
 }

@@ -19,3 +19,11 @@ def create_access_token(sub: str):
     expire = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_MIN)
     payload = {"sub": sub, "exp": expire}
     return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALG)
+
+def decode_access_token(token: str) -> dict:
+    """
+    Decode JWT and return the payload.
+    Raises JWTError if invalid/expired.
+    """
+    payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALG])
+    return payload

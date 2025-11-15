@@ -92,7 +92,8 @@ class SyncAbstractEngine(BaseAbstractEngine):
         *,
         format: Literal['json'],
         global_labels: dict[str, str] | None,
-    ) -> dict[str, Any]: ...
+    ) -> dict[str, Any]:
+        ...
 
     @overload
     @abstractmethod
@@ -101,7 +102,8 @@ class SyncAbstractEngine(BaseAbstractEngine):
         *,
         format: Literal['prometheus'],
         global_labels: dict[str, str] | None,
-    ) -> str: ...
+    ) -> str:
+        ...
 
     @abstractmethod
     def metrics(
@@ -109,7 +111,8 @@ class SyncAbstractEngine(BaseAbstractEngine):
         *,
         format: MetricsFormat,
         global_labels: dict[str, str] | None,
-    ) -> str | dict[str, Any]: ...
+    ) -> str | dict[str, Any]:
+        ...
 
 
 class AsyncAbstractEngine(BaseAbstractEngine):
@@ -158,7 +161,8 @@ class AsyncAbstractEngine(BaseAbstractEngine):
         *,
         format: Literal['json'],
         global_labels: dict[str, str] | None,
-    ) -> dict[str, Any]: ...
+    ) -> dict[str, Any]:
+        ...
 
     @overload
     @abstractmethod
@@ -167,7 +171,8 @@ class AsyncAbstractEngine(BaseAbstractEngine):
         *,
         format: Literal['prometheus'],
         global_labels: dict[str, str] | None,
-    ) -> str: ...
+    ) -> str:
+        ...
 
     @abstractmethod
     async def metrics(
@@ -175,4 +180,5 @@ class AsyncAbstractEngine(BaseAbstractEngine):
         *,
         format: MetricsFormat,
         global_labels: dict[str, str] | None,
-    ) -> str | dict[str, Any]: ...
+    ) -> str | dict[str, Any]:
+        ...

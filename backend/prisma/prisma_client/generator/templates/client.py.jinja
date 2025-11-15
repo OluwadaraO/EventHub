@@ -19,7 +19,7 @@ from .bases import _PrismaModel
 from ._builder import QueryBuilder, dumps
 from .generator.models import EngineType, OptionalValueFromEnvVar, BinaryPaths
 from ._compat import removeprefix, model_parse
-from ._constants import CREATE_MANY_SKIP_DUPLICATES_UNSUPPORTED, DEFAULT_CONNECT_TIMEOUT, DEFAULT_TX_MAX_WAIT, DEFAULT_TX_TIMEOUT
+from ._constants import DEFAULT_CONNECT_TIMEOUT, DEFAULT_TX_MAX_WAIT, DEFAULT_TX_TIMEOUT
 from ._raw_query import deserialize_raw_results
 from ._metrics import Metrics
 from .metadata import PRISMA_MODELS, RELATIONAL_FIELD_MAPPINGS
@@ -90,7 +90,6 @@ class Prisma({% if is_async %}AsyncBasePrisma{% else %}SyncBasePrisma{% endif %}
             prisma_models=PRISMA_MODELS,
             packaged_schema_path=PACKAGED_SCHEMA_PATH,
             relational_field_mappings=RELATIONAL_FIELD_MAPPINGS,
-            preview_features=set({{ generator.preview_features }}),
             active_provider='{{ active_provider }}',
             default_datasource_name='{{ datasources[0].name }}',
         )
@@ -108,9 +107,6 @@ class Prisma({% if is_async %}AsyncBasePrisma{% else %}SyncBasePrisma{% endif %}
         return {
             'name': '{{ datasources[0].name }}',
             'url': OptionalValueFromEnvVar(**{{ model_dict(datasources[0].url, by_alias=True) }}).resolve(),
-            {% if datasources[0].source_file_path %}
-            'source_file_path': '{{ datasources[0].source_file_path.as_posix() }}',
-            {% endif %}
         }
 
     {% if active_provider != 'mongodb' %}
@@ -358,8 +354,8 @@ class {{ model.name }}BatchActions:
         *,
         skip_duplicates: Optional[bool] = None,
     ) -> None:
-        if skip_duplicates and self._batcher._active_provider in CREATE_MANY_SKIP_DUPLICATES_UNSUPPORTED:
-            raise errors.UnsupportedDatabaseError(self._batcher._active_provider, 'create_many_skip_duplicates')
+        if self._batcher._active_provider == 'sqlite':
+            raise errors.UnsupportedDatabaseError('sqlite', 'create_many()')
 
         self._batcher._add(
             method='create_many',
