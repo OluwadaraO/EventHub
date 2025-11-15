@@ -88,16 +88,26 @@ log: logging.Logger = logging.getLogger(__name__)
 SCHEMA_PATH = Path('C:/Users/daras/Documents/EventHub/backend/prisma/schema.prisma')
 PACKAGED_SCHEMA_PATH = Path(__file__).parent.joinpath('schema.prisma')
 ENGINE_TYPE: EngineType = EngineType.binary
-BINARY_PATHS = model_parse(BinaryPaths, {'queryEngine': {'windows': 'C:\\Users\\daras\\AppData\\Local\\npm-cache\\_npx\\55ad0b431757dc30\\node_modules\\prisma\\query-engine-windows.exe'}, 'introspectionEngine': {}, 'migrationEngine': {}, 'libqueryEngine': {}, 'prismaFmt': {}})
+BINARY_PATHS = model_parse(BinaryPaths, {'queryEngine': {'windows': 'C:\\Users\\daras\\.cache\\prisma-python\\binaries\\5.17.0\\393aa359c9ad4a4bb28630fb5613f9c281cde053\\node_modules\\prisma\\query-engine-windows.exe'}, 'introspectionEngine': {}, 'migrationEngine': {}, 'libqueryEngine': {}, 'prismaFmt': {}})
 
 
 class Prisma(AsyncBasePrisma):
     # Note: these property names can be customised using `/// @Python(instance_name: '...')`
     # https://prisma-client-py.readthedocs.io/en/stable/reference/schema-extensions/#instance_name
     user: 'actions.UserActions[models.User]'
+    venue: 'actions.VenueActions[models.Venue]'
+    eventsource: 'actions.EventSourceActions[models.EventSource]'
+    tag: 'actions.TagActions[models.Tag]'
+    event: 'actions.EventActions[models.Event]'
+    savedevent: 'actions.SavedEventActions[models.SavedEvent]'
 
     __slots__ = (
         'user',
+        'venue',
+        'eventsource',
+        'tag',
+        'event',
+        'savedevent',
     )
 
     def __init__(
@@ -129,6 +139,11 @@ class Prisma(AsyncBasePrisma):
         )
 
         self.user = actions.UserActions[models.User](self, models.User)
+        self.venue = actions.VenueActions[models.Venue](self, models.Venue)
+        self.eventsource = actions.EventSourceActions[models.EventSource](self, models.EventSource)
+        self.tag = actions.TagActions[models.Tag](self, models.Tag)
+        self.event = actions.EventActions[models.Event](self, models.Event)
+        self.savedevent = actions.SavedEventActions[models.SavedEvent](self, models.SavedEvent)
 
         if auto_register:
             register(self)
@@ -280,12 +295,22 @@ TransactionManager = AsyncTransactionManager[Prisma]
 # TODO: don't require copy-pasting arguments between actions and batch actions
 class Batch:
     user: 'UserBatchActions'
+    venue: 'VenueBatchActions'
+    eventsource: 'EventSourceBatchActions'
+    tag: 'TagBatchActions'
+    event: 'EventBatchActions'
+    savedevent: 'SavedEventBatchActions'
 
     def __init__(self, client: Prisma) -> None:
         self.__client = client
         self.__queries: List[str] = []
         self._active_provider = client._active_provider
         self.user = UserBatchActions(self)
+        self.venue = VenueBatchActions(self)
+        self.eventsource = EventSourceBatchActions(self)
+        self.tag = TagBatchActions(self)
+        self.event = EventBatchActions(self)
+        self.savedevent = SavedEventBatchActions(self)
 
     def _add(self, **kwargs: Any) -> None:
         builder = QueryBuilder(
@@ -443,6 +468,561 @@ class UserBatchActions:
         self._batcher._add(
             method='delete_many',
             model=models.User,
+            arguments={'where': where},
+            root_selection=['count'],
+        )
+
+
+
+# NOTE: some arguments are meaningless in this context but are included
+# for completeness sake
+class VenueBatchActions:
+    def __init__(self, batcher: Batch) -> None:
+        self._batcher = batcher
+
+    def create(
+        self,
+        data: types.VenueCreateInput,
+        include: Optional[types.VenueInclude] = None
+    ) -> None:
+        self._batcher._add(
+            method='create',
+            model=models.Venue,
+            arguments={
+                'data': data,
+                'include': include,
+            },
+        )
+
+    def create_many(
+        self,
+        data: List[types.VenueCreateWithoutRelationsInput],
+        *,
+        skip_duplicates: Optional[bool] = None,
+    ) -> None:
+        if skip_duplicates and self._batcher._active_provider in CREATE_MANY_SKIP_DUPLICATES_UNSUPPORTED:
+            raise errors.UnsupportedDatabaseError(self._batcher._active_provider, 'create_many_skip_duplicates')
+
+        self._batcher._add(
+            method='create_many',
+            model=models.Venue,
+            arguments={
+                'data': data,
+                'skipDuplicates': skip_duplicates,
+            },
+            root_selection=['count'],
+        )
+
+    def delete(
+        self,
+        where: types.VenueWhereUniqueInput,
+        include: Optional[types.VenueInclude] = None,
+    ) -> None:
+        self._batcher._add(
+            method='delete',
+            model=models.Venue,
+            arguments={
+                'where': where,
+                'include': include,
+            },
+        )
+
+    def update(
+        self,
+        data: types.VenueUpdateInput,
+        where: types.VenueWhereUniqueInput,
+        include: Optional[types.VenueInclude] = None
+    ) -> None:
+        self._batcher._add(
+            method='update',
+            model=models.Venue,
+            arguments={
+                'data': data,
+                'where': where,
+                'include': include,
+            },
+        )
+
+    def upsert(
+        self,
+        where: types.VenueWhereUniqueInput,
+        data: types.VenueUpsertInput,
+        include: Optional[types.VenueInclude] = None,
+    ) -> None:
+        self._batcher._add(
+            method='upsert',
+            model=models.Venue,
+            arguments={
+                'where': where,
+                'include': include,
+                'create': data.get('create'),
+                'update': data.get('update'),
+            },
+        )
+
+    def update_many(
+        self,
+        data: types.VenueUpdateManyMutationInput,
+        where: types.VenueWhereInput,
+    ) -> None:
+        self._batcher._add(
+            method='update_many',
+            model=models.Venue,
+            arguments={'data': data, 'where': where,},
+            root_selection=['count'],
+        )
+
+    def delete_many(
+        self,
+        where: Optional[types.VenueWhereInput] = None,
+    ) -> None:
+        self._batcher._add(
+            method='delete_many',
+            model=models.Venue,
+            arguments={'where': where},
+            root_selection=['count'],
+        )
+
+
+
+# NOTE: some arguments are meaningless in this context but are included
+# for completeness sake
+class EventSourceBatchActions:
+    def __init__(self, batcher: Batch) -> None:
+        self._batcher = batcher
+
+    def create(
+        self,
+        data: types.EventSourceCreateInput,
+        include: Optional[types.EventSourceInclude] = None
+    ) -> None:
+        self._batcher._add(
+            method='create',
+            model=models.EventSource,
+            arguments={
+                'data': data,
+                'include': include,
+            },
+        )
+
+    def create_many(
+        self,
+        data: List[types.EventSourceCreateWithoutRelationsInput],
+        *,
+        skip_duplicates: Optional[bool] = None,
+    ) -> None:
+        if skip_duplicates and self._batcher._active_provider in CREATE_MANY_SKIP_DUPLICATES_UNSUPPORTED:
+            raise errors.UnsupportedDatabaseError(self._batcher._active_provider, 'create_many_skip_duplicates')
+
+        self._batcher._add(
+            method='create_many',
+            model=models.EventSource,
+            arguments={
+                'data': data,
+                'skipDuplicates': skip_duplicates,
+            },
+            root_selection=['count'],
+        )
+
+    def delete(
+        self,
+        where: types.EventSourceWhereUniqueInput,
+        include: Optional[types.EventSourceInclude] = None,
+    ) -> None:
+        self._batcher._add(
+            method='delete',
+            model=models.EventSource,
+            arguments={
+                'where': where,
+                'include': include,
+            },
+        )
+
+    def update(
+        self,
+        data: types.EventSourceUpdateInput,
+        where: types.EventSourceWhereUniqueInput,
+        include: Optional[types.EventSourceInclude] = None
+    ) -> None:
+        self._batcher._add(
+            method='update',
+            model=models.EventSource,
+            arguments={
+                'data': data,
+                'where': where,
+                'include': include,
+            },
+        )
+
+    def upsert(
+        self,
+        where: types.EventSourceWhereUniqueInput,
+        data: types.EventSourceUpsertInput,
+        include: Optional[types.EventSourceInclude] = None,
+    ) -> None:
+        self._batcher._add(
+            method='upsert',
+            model=models.EventSource,
+            arguments={
+                'where': where,
+                'include': include,
+                'create': data.get('create'),
+                'update': data.get('update'),
+            },
+        )
+
+    def update_many(
+        self,
+        data: types.EventSourceUpdateManyMutationInput,
+        where: types.EventSourceWhereInput,
+    ) -> None:
+        self._batcher._add(
+            method='update_many',
+            model=models.EventSource,
+            arguments={'data': data, 'where': where,},
+            root_selection=['count'],
+        )
+
+    def delete_many(
+        self,
+        where: Optional[types.EventSourceWhereInput] = None,
+    ) -> None:
+        self._batcher._add(
+            method='delete_many',
+            model=models.EventSource,
+            arguments={'where': where},
+            root_selection=['count'],
+        )
+
+
+
+# NOTE: some arguments are meaningless in this context but are included
+# for completeness sake
+class TagBatchActions:
+    def __init__(self, batcher: Batch) -> None:
+        self._batcher = batcher
+
+    def create(
+        self,
+        data: types.TagCreateInput,
+        include: Optional[types.TagInclude] = None
+    ) -> None:
+        self._batcher._add(
+            method='create',
+            model=models.Tag,
+            arguments={
+                'data': data,
+                'include': include,
+            },
+        )
+
+    def create_many(
+        self,
+        data: List[types.TagCreateWithoutRelationsInput],
+        *,
+        skip_duplicates: Optional[bool] = None,
+    ) -> None:
+        if skip_duplicates and self._batcher._active_provider in CREATE_MANY_SKIP_DUPLICATES_UNSUPPORTED:
+            raise errors.UnsupportedDatabaseError(self._batcher._active_provider, 'create_many_skip_duplicates')
+
+        self._batcher._add(
+            method='create_many',
+            model=models.Tag,
+            arguments={
+                'data': data,
+                'skipDuplicates': skip_duplicates,
+            },
+            root_selection=['count'],
+        )
+
+    def delete(
+        self,
+        where: types.TagWhereUniqueInput,
+        include: Optional[types.TagInclude] = None,
+    ) -> None:
+        self._batcher._add(
+            method='delete',
+            model=models.Tag,
+            arguments={
+                'where': where,
+                'include': include,
+            },
+        )
+
+    def update(
+        self,
+        data: types.TagUpdateInput,
+        where: types.TagWhereUniqueInput,
+        include: Optional[types.TagInclude] = None
+    ) -> None:
+        self._batcher._add(
+            method='update',
+            model=models.Tag,
+            arguments={
+                'data': data,
+                'where': where,
+                'include': include,
+            },
+        )
+
+    def upsert(
+        self,
+        where: types.TagWhereUniqueInput,
+        data: types.TagUpsertInput,
+        include: Optional[types.TagInclude] = None,
+    ) -> None:
+        self._batcher._add(
+            method='upsert',
+            model=models.Tag,
+            arguments={
+                'where': where,
+                'include': include,
+                'create': data.get('create'),
+                'update': data.get('update'),
+            },
+        )
+
+    def update_many(
+        self,
+        data: types.TagUpdateManyMutationInput,
+        where: types.TagWhereInput,
+    ) -> None:
+        self._batcher._add(
+            method='update_many',
+            model=models.Tag,
+            arguments={'data': data, 'where': where,},
+            root_selection=['count'],
+        )
+
+    def delete_many(
+        self,
+        where: Optional[types.TagWhereInput] = None,
+    ) -> None:
+        self._batcher._add(
+            method='delete_many',
+            model=models.Tag,
+            arguments={'where': where},
+            root_selection=['count'],
+        )
+
+
+
+# NOTE: some arguments are meaningless in this context but are included
+# for completeness sake
+class EventBatchActions:
+    def __init__(self, batcher: Batch) -> None:
+        self._batcher = batcher
+
+    def create(
+        self,
+        data: types.EventCreateInput,
+        include: Optional[types.EventInclude] = None
+    ) -> None:
+        self._batcher._add(
+            method='create',
+            model=models.Event,
+            arguments={
+                'data': data,
+                'include': include,
+            },
+        )
+
+    def create_many(
+        self,
+        data: List[types.EventCreateWithoutRelationsInput],
+        *,
+        skip_duplicates: Optional[bool] = None,
+    ) -> None:
+        if skip_duplicates and self._batcher._active_provider in CREATE_MANY_SKIP_DUPLICATES_UNSUPPORTED:
+            raise errors.UnsupportedDatabaseError(self._batcher._active_provider, 'create_many_skip_duplicates')
+
+        self._batcher._add(
+            method='create_many',
+            model=models.Event,
+            arguments={
+                'data': data,
+                'skipDuplicates': skip_duplicates,
+            },
+            root_selection=['count'],
+        )
+
+    def delete(
+        self,
+        where: types.EventWhereUniqueInput,
+        include: Optional[types.EventInclude] = None,
+    ) -> None:
+        self._batcher._add(
+            method='delete',
+            model=models.Event,
+            arguments={
+                'where': where,
+                'include': include,
+            },
+        )
+
+    def update(
+        self,
+        data: types.EventUpdateInput,
+        where: types.EventWhereUniqueInput,
+        include: Optional[types.EventInclude] = None
+    ) -> None:
+        self._batcher._add(
+            method='update',
+            model=models.Event,
+            arguments={
+                'data': data,
+                'where': where,
+                'include': include,
+            },
+        )
+
+    def upsert(
+        self,
+        where: types.EventWhereUniqueInput,
+        data: types.EventUpsertInput,
+        include: Optional[types.EventInclude] = None,
+    ) -> None:
+        self._batcher._add(
+            method='upsert',
+            model=models.Event,
+            arguments={
+                'where': where,
+                'include': include,
+                'create': data.get('create'),
+                'update': data.get('update'),
+            },
+        )
+
+    def update_many(
+        self,
+        data: types.EventUpdateManyMutationInput,
+        where: types.EventWhereInput,
+    ) -> None:
+        self._batcher._add(
+            method='update_many',
+            model=models.Event,
+            arguments={'data': data, 'where': where,},
+            root_selection=['count'],
+        )
+
+    def delete_many(
+        self,
+        where: Optional[types.EventWhereInput] = None,
+    ) -> None:
+        self._batcher._add(
+            method='delete_many',
+            model=models.Event,
+            arguments={'where': where},
+            root_selection=['count'],
+        )
+
+
+
+# NOTE: some arguments are meaningless in this context but are included
+# for completeness sake
+class SavedEventBatchActions:
+    def __init__(self, batcher: Batch) -> None:
+        self._batcher = batcher
+
+    def create(
+        self,
+        data: types.SavedEventCreateInput,
+        include: Optional[types.SavedEventInclude] = None
+    ) -> None:
+        self._batcher._add(
+            method='create',
+            model=models.SavedEvent,
+            arguments={
+                'data': data,
+                'include': include,
+            },
+        )
+
+    def create_many(
+        self,
+        data: List[types.SavedEventCreateWithoutRelationsInput],
+        *,
+        skip_duplicates: Optional[bool] = None,
+    ) -> None:
+        if skip_duplicates and self._batcher._active_provider in CREATE_MANY_SKIP_DUPLICATES_UNSUPPORTED:
+            raise errors.UnsupportedDatabaseError(self._batcher._active_provider, 'create_many_skip_duplicates')
+
+        self._batcher._add(
+            method='create_many',
+            model=models.SavedEvent,
+            arguments={
+                'data': data,
+                'skipDuplicates': skip_duplicates,
+            },
+            root_selection=['count'],
+        )
+
+    def delete(
+        self,
+        where: types.SavedEventWhereUniqueInput,
+        include: Optional[types.SavedEventInclude] = None,
+    ) -> None:
+        self._batcher._add(
+            method='delete',
+            model=models.SavedEvent,
+            arguments={
+                'where': where,
+                'include': include,
+            },
+        )
+
+    def update(
+        self,
+        data: types.SavedEventUpdateInput,
+        where: types.SavedEventWhereUniqueInput,
+        include: Optional[types.SavedEventInclude] = None
+    ) -> None:
+        self._batcher._add(
+            method='update',
+            model=models.SavedEvent,
+            arguments={
+                'data': data,
+                'where': where,
+                'include': include,
+            },
+        )
+
+    def upsert(
+        self,
+        where: types.SavedEventWhereUniqueInput,
+        data: types.SavedEventUpsertInput,
+        include: Optional[types.SavedEventInclude] = None,
+    ) -> None:
+        self._batcher._add(
+            method='upsert',
+            model=models.SavedEvent,
+            arguments={
+                'where': where,
+                'include': include,
+                'create': data.get('create'),
+                'update': data.get('update'),
+            },
+        )
+
+    def update_many(
+        self,
+        data: types.SavedEventUpdateManyMutationInput,
+        where: types.SavedEventWhereInput,
+    ) -> None:
+        self._batcher._add(
+            method='update_many',
+            model=models.SavedEvent,
+            arguments={'data': data, 'where': where,},
+            root_selection=['count'],
+        )
+
+    def delete_many(
+        self,
+        where: Optional[types.SavedEventWhereInput] = None,
+    ) -> None:
+        self._batcher._add(
+            method='delete_many',
+            model=models.SavedEvent,
             arguments={'where': where},
             root_selection=['count'],
         )

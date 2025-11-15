@@ -7,10 +7,35 @@ from __future__ import annotations
 
 PRISMA_MODELS: set[str] = {
     'User',
+    'Venue',
+    'EventSource',
+    'Tag',
+    'Event',
+    'SavedEvent',
 }
 
 RELATIONAL_FIELD_MAPPINGS: dict[str, dict[str, str]] = {
     'User': {
+        'savedEvents': 'SavedEvent',
+    },
+    'Venue': {
+        'events': 'Event',
+    },
+    'EventSource': {
+        'events': 'Event',
+    },
+    'Tag': {
+        'events': 'Event',
+    },
+    'Event': {
+        'venue': 'Venue',
+        'source': 'EventSource',
+        'tags': 'Tag',
+        'savedBy': 'SavedEvent',
+    },
+    'SavedEvent': {
+        'user': 'User',
+        'event': 'Event',
     },
 }
 

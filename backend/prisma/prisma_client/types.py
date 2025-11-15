@@ -1147,6 +1147,7 @@ class UserOptionalCreateInput(TypedDict, total=False):
     id: _int
     name: Optional[_str]
     createdAt: datetime.datetime
+    savedEvents: 'SavedEventCreateManyNestedWithoutRelationsInput'
 
 
 class UserCreateInput(UserOptionalCreateInput):
@@ -1214,6 +1215,7 @@ class UserUpdateInput(TypedDict, total=False):
     email: _str
     passwordHash: _str
     createdAt: datetime.datetime
+    savedEvents: 'SavedEventUpdateManyWithoutRelationsInput'
 
 
 class UserUpdateManyMutationInput(TypedDict, total=False):
@@ -1352,24 +1354,29 @@ class UserListRelationFilter(TypedDict, total=False):
 
 class UserInclude(TypedDict, total=False):
     """User relational arguments"""
+    savedEvents: Union[bool, 'FindManySavedEventArgsFromUser']
 
 
     
 
 class UserIncludeFromUser(TypedDict, total=False):
     """Relational arguments for User"""
+    savedEvents: Union[bool, 'FindManySavedEventArgsFromUserRecursive1']
 
 
 class UserIncludeFromUserRecursive1(TypedDict, total=False):
     """Relational arguments for User"""
+    savedEvents: Union[bool, 'FindManySavedEventArgsFromUserRecursive2']
 
 
 class UserIncludeFromUserRecursive2(TypedDict, total=False):
     """Relational arguments for User"""
+    savedEvents: Union[bool, 'FindManySavedEventArgsFromUserRecursive3']
 
 
 class UserIncludeFromUserRecursive3(TypedDict, total=False):
     """Relational arguments for User"""
+    savedEvents: Union[bool, 'FindManySavedEventArgsFromUserRecursive4']
 
 
 class UserIncludeFromUserRecursive4(TypedDict, total=False):
@@ -1455,6 +1462,547 @@ class FindManyUserArgsFromUserRecursive4(TypedDict, total=False):
     cursor: 'UserWhereUniqueInput'
     distinct: List['UserScalarFieldKeys']
     
+    
+
+class VenueIncludeFromUser(TypedDict, total=False):
+    """Relational arguments for User"""
+    events: Union[bool, 'FindManyEventArgsFromUserRecursive1']
+
+
+class VenueIncludeFromUserRecursive1(TypedDict, total=False):
+    """Relational arguments for User"""
+    events: Union[bool, 'FindManyEventArgsFromUserRecursive2']
+
+
+class VenueIncludeFromUserRecursive2(TypedDict, total=False):
+    """Relational arguments for User"""
+    events: Union[bool, 'FindManyEventArgsFromUserRecursive3']
+
+
+class VenueIncludeFromUserRecursive3(TypedDict, total=False):
+    """Relational arguments for User"""
+    events: Union[bool, 'FindManyEventArgsFromUserRecursive4']
+
+
+class VenueIncludeFromUserRecursive4(TypedDict, total=False):
+    """Relational arguments for User"""
+
+    
+
+class VenueArgsFromUser(TypedDict, total=False):
+    """Arguments for User"""
+    include: 'VenueIncludeFromVenueRecursive1'
+
+
+class VenueArgsFromUserRecursive1(TypedDict, total=False):
+    """Arguments for User"""
+    include: 'VenueIncludeFromVenueRecursive2'
+
+
+class VenueArgsFromUserRecursive2(TypedDict, total=False):
+    """Arguments for User"""
+    include: 'VenueIncludeFromVenueRecursive3'
+
+
+class VenueArgsFromUserRecursive3(TypedDict, total=False):
+    """Arguments for User"""
+    include: 'VenueIncludeFromVenueRecursive4'
+
+
+class VenueArgsFromUserRecursive4(TypedDict, total=False):
+    """Arguments for User"""
+    
+    
+
+class FindManyVenueArgsFromUser(TypedDict, total=False):
+    """Arguments for User"""
+    take: int
+    skip: int
+    order_by: Union['VenueOrderByInput', List['VenueOrderByInput']]
+    where: 'VenueWhereInput'
+    cursor: 'VenueWhereUniqueInput'
+    distinct: List['VenueScalarFieldKeys']
+    include: 'VenueIncludeFromVenueRecursive1'
+
+
+class FindManyVenueArgsFromUserRecursive1(TypedDict, total=False):
+    """Arguments for User"""
+    take: int
+    skip: int
+    order_by: Union['VenueOrderByInput', List['VenueOrderByInput']]
+    where: 'VenueWhereInput'
+    cursor: 'VenueWhereUniqueInput'
+    distinct: List['VenueScalarFieldKeys']
+    include: 'VenueIncludeFromVenueRecursive2'
+
+
+class FindManyVenueArgsFromUserRecursive2(TypedDict, total=False):
+    """Arguments for User"""
+    take: int
+    skip: int
+    order_by: Union['VenueOrderByInput', List['VenueOrderByInput']]
+    where: 'VenueWhereInput'
+    cursor: 'VenueWhereUniqueInput'
+    distinct: List['VenueScalarFieldKeys']
+    include: 'VenueIncludeFromVenueRecursive3'
+
+
+class FindManyVenueArgsFromUserRecursive3(TypedDict, total=False):
+    """Arguments for User"""
+    take: int
+    skip: int
+    order_by: Union['VenueOrderByInput', List['VenueOrderByInput']]
+    where: 'VenueWhereInput'
+    cursor: 'VenueWhereUniqueInput'
+    distinct: List['VenueScalarFieldKeys']
+    include: 'VenueIncludeFromVenueRecursive4'
+
+
+class FindManyVenueArgsFromUserRecursive4(TypedDict, total=False):
+    """Arguments for User"""
+    take: int
+    skip: int
+    order_by: Union['VenueOrderByInput', List['VenueOrderByInput']]
+    where: 'VenueWhereInput'
+    cursor: 'VenueWhereUniqueInput'
+    distinct: List['VenueScalarFieldKeys']
+    
+    
+
+class EventSourceIncludeFromUser(TypedDict, total=False):
+    """Relational arguments for User"""
+    events: Union[bool, 'FindManyEventArgsFromUserRecursive1']
+
+
+class EventSourceIncludeFromUserRecursive1(TypedDict, total=False):
+    """Relational arguments for User"""
+    events: Union[bool, 'FindManyEventArgsFromUserRecursive2']
+
+
+class EventSourceIncludeFromUserRecursive2(TypedDict, total=False):
+    """Relational arguments for User"""
+    events: Union[bool, 'FindManyEventArgsFromUserRecursive3']
+
+
+class EventSourceIncludeFromUserRecursive3(TypedDict, total=False):
+    """Relational arguments for User"""
+    events: Union[bool, 'FindManyEventArgsFromUserRecursive4']
+
+
+class EventSourceIncludeFromUserRecursive4(TypedDict, total=False):
+    """Relational arguments for User"""
+
+    
+
+class EventSourceArgsFromUser(TypedDict, total=False):
+    """Arguments for User"""
+    include: 'EventSourceIncludeFromEventSourceRecursive1'
+
+
+class EventSourceArgsFromUserRecursive1(TypedDict, total=False):
+    """Arguments for User"""
+    include: 'EventSourceIncludeFromEventSourceRecursive2'
+
+
+class EventSourceArgsFromUserRecursive2(TypedDict, total=False):
+    """Arguments for User"""
+    include: 'EventSourceIncludeFromEventSourceRecursive3'
+
+
+class EventSourceArgsFromUserRecursive3(TypedDict, total=False):
+    """Arguments for User"""
+    include: 'EventSourceIncludeFromEventSourceRecursive4'
+
+
+class EventSourceArgsFromUserRecursive4(TypedDict, total=False):
+    """Arguments for User"""
+    
+    
+
+class FindManyEventSourceArgsFromUser(TypedDict, total=False):
+    """Arguments for User"""
+    take: int
+    skip: int
+    order_by: Union['EventSourceOrderByInput', List['EventSourceOrderByInput']]
+    where: 'EventSourceWhereInput'
+    cursor: 'EventSourceWhereUniqueInput'
+    distinct: List['EventSourceScalarFieldKeys']
+    include: 'EventSourceIncludeFromEventSourceRecursive1'
+
+
+class FindManyEventSourceArgsFromUserRecursive1(TypedDict, total=False):
+    """Arguments for User"""
+    take: int
+    skip: int
+    order_by: Union['EventSourceOrderByInput', List['EventSourceOrderByInput']]
+    where: 'EventSourceWhereInput'
+    cursor: 'EventSourceWhereUniqueInput'
+    distinct: List['EventSourceScalarFieldKeys']
+    include: 'EventSourceIncludeFromEventSourceRecursive2'
+
+
+class FindManyEventSourceArgsFromUserRecursive2(TypedDict, total=False):
+    """Arguments for User"""
+    take: int
+    skip: int
+    order_by: Union['EventSourceOrderByInput', List['EventSourceOrderByInput']]
+    where: 'EventSourceWhereInput'
+    cursor: 'EventSourceWhereUniqueInput'
+    distinct: List['EventSourceScalarFieldKeys']
+    include: 'EventSourceIncludeFromEventSourceRecursive3'
+
+
+class FindManyEventSourceArgsFromUserRecursive3(TypedDict, total=False):
+    """Arguments for User"""
+    take: int
+    skip: int
+    order_by: Union['EventSourceOrderByInput', List['EventSourceOrderByInput']]
+    where: 'EventSourceWhereInput'
+    cursor: 'EventSourceWhereUniqueInput'
+    distinct: List['EventSourceScalarFieldKeys']
+    include: 'EventSourceIncludeFromEventSourceRecursive4'
+
+
+class FindManyEventSourceArgsFromUserRecursive4(TypedDict, total=False):
+    """Arguments for User"""
+    take: int
+    skip: int
+    order_by: Union['EventSourceOrderByInput', List['EventSourceOrderByInput']]
+    where: 'EventSourceWhereInput'
+    cursor: 'EventSourceWhereUniqueInput'
+    distinct: List['EventSourceScalarFieldKeys']
+    
+    
+
+class TagIncludeFromUser(TypedDict, total=False):
+    """Relational arguments for User"""
+    events: Union[bool, 'FindManyEventArgsFromUserRecursive1']
+
+
+class TagIncludeFromUserRecursive1(TypedDict, total=False):
+    """Relational arguments for User"""
+    events: Union[bool, 'FindManyEventArgsFromUserRecursive2']
+
+
+class TagIncludeFromUserRecursive2(TypedDict, total=False):
+    """Relational arguments for User"""
+    events: Union[bool, 'FindManyEventArgsFromUserRecursive3']
+
+
+class TagIncludeFromUserRecursive3(TypedDict, total=False):
+    """Relational arguments for User"""
+    events: Union[bool, 'FindManyEventArgsFromUserRecursive4']
+
+
+class TagIncludeFromUserRecursive4(TypedDict, total=False):
+    """Relational arguments for User"""
+
+    
+
+class TagArgsFromUser(TypedDict, total=False):
+    """Arguments for User"""
+    include: 'TagIncludeFromTagRecursive1'
+
+
+class TagArgsFromUserRecursive1(TypedDict, total=False):
+    """Arguments for User"""
+    include: 'TagIncludeFromTagRecursive2'
+
+
+class TagArgsFromUserRecursive2(TypedDict, total=False):
+    """Arguments for User"""
+    include: 'TagIncludeFromTagRecursive3'
+
+
+class TagArgsFromUserRecursive3(TypedDict, total=False):
+    """Arguments for User"""
+    include: 'TagIncludeFromTagRecursive4'
+
+
+class TagArgsFromUserRecursive4(TypedDict, total=False):
+    """Arguments for User"""
+    
+    
+
+class FindManyTagArgsFromUser(TypedDict, total=False):
+    """Arguments for User"""
+    take: int
+    skip: int
+    order_by: Union['TagOrderByInput', List['TagOrderByInput']]
+    where: 'TagWhereInput'
+    cursor: 'TagWhereUniqueInput'
+    distinct: List['TagScalarFieldKeys']
+    include: 'TagIncludeFromTagRecursive1'
+
+
+class FindManyTagArgsFromUserRecursive1(TypedDict, total=False):
+    """Arguments for User"""
+    take: int
+    skip: int
+    order_by: Union['TagOrderByInput', List['TagOrderByInput']]
+    where: 'TagWhereInput'
+    cursor: 'TagWhereUniqueInput'
+    distinct: List['TagScalarFieldKeys']
+    include: 'TagIncludeFromTagRecursive2'
+
+
+class FindManyTagArgsFromUserRecursive2(TypedDict, total=False):
+    """Arguments for User"""
+    take: int
+    skip: int
+    order_by: Union['TagOrderByInput', List['TagOrderByInput']]
+    where: 'TagWhereInput'
+    cursor: 'TagWhereUniqueInput'
+    distinct: List['TagScalarFieldKeys']
+    include: 'TagIncludeFromTagRecursive3'
+
+
+class FindManyTagArgsFromUserRecursive3(TypedDict, total=False):
+    """Arguments for User"""
+    take: int
+    skip: int
+    order_by: Union['TagOrderByInput', List['TagOrderByInput']]
+    where: 'TagWhereInput'
+    cursor: 'TagWhereUniqueInput'
+    distinct: List['TagScalarFieldKeys']
+    include: 'TagIncludeFromTagRecursive4'
+
+
+class FindManyTagArgsFromUserRecursive4(TypedDict, total=False):
+    """Arguments for User"""
+    take: int
+    skip: int
+    order_by: Union['TagOrderByInput', List['TagOrderByInput']]
+    where: 'TagWhereInput'
+    cursor: 'TagWhereUniqueInput'
+    distinct: List['TagScalarFieldKeys']
+    
+    
+
+class EventIncludeFromUser(TypedDict, total=False):
+    """Relational arguments for User"""
+    venue: Union[bool, 'VenueArgsFromUserRecursive1']
+    source: Union[bool, 'EventSourceArgsFromUserRecursive1']
+    tags: Union[bool, 'FindManyTagArgsFromUserRecursive1']
+    savedBy: Union[bool, 'FindManySavedEventArgsFromUserRecursive1']
+
+
+class EventIncludeFromUserRecursive1(TypedDict, total=False):
+    """Relational arguments for User"""
+    venue: Union[bool, 'VenueArgsFromUserRecursive2']
+    source: Union[bool, 'EventSourceArgsFromUserRecursive2']
+    tags: Union[bool, 'FindManyTagArgsFromUserRecursive2']
+    savedBy: Union[bool, 'FindManySavedEventArgsFromUserRecursive2']
+
+
+class EventIncludeFromUserRecursive2(TypedDict, total=False):
+    """Relational arguments for User"""
+    venue: Union[bool, 'VenueArgsFromUserRecursive3']
+    source: Union[bool, 'EventSourceArgsFromUserRecursive3']
+    tags: Union[bool, 'FindManyTagArgsFromUserRecursive3']
+    savedBy: Union[bool, 'FindManySavedEventArgsFromUserRecursive3']
+
+
+class EventIncludeFromUserRecursive3(TypedDict, total=False):
+    """Relational arguments for User"""
+    venue: Union[bool, 'VenueArgsFromUserRecursive4']
+    source: Union[bool, 'EventSourceArgsFromUserRecursive4']
+    tags: Union[bool, 'FindManyTagArgsFromUserRecursive4']
+    savedBy: Union[bool, 'FindManySavedEventArgsFromUserRecursive4']
+
+
+class EventIncludeFromUserRecursive4(TypedDict, total=False):
+    """Relational arguments for User"""
+
+    
+
+class EventArgsFromUser(TypedDict, total=False):
+    """Arguments for User"""
+    include: 'EventIncludeFromEventRecursive1'
+
+
+class EventArgsFromUserRecursive1(TypedDict, total=False):
+    """Arguments for User"""
+    include: 'EventIncludeFromEventRecursive2'
+
+
+class EventArgsFromUserRecursive2(TypedDict, total=False):
+    """Arguments for User"""
+    include: 'EventIncludeFromEventRecursive3'
+
+
+class EventArgsFromUserRecursive3(TypedDict, total=False):
+    """Arguments for User"""
+    include: 'EventIncludeFromEventRecursive4'
+
+
+class EventArgsFromUserRecursive4(TypedDict, total=False):
+    """Arguments for User"""
+    
+    
+
+class FindManyEventArgsFromUser(TypedDict, total=False):
+    """Arguments for User"""
+    take: int
+    skip: int
+    order_by: Union['EventOrderByInput', List['EventOrderByInput']]
+    where: 'EventWhereInput'
+    cursor: 'EventWhereUniqueInput'
+    distinct: List['EventScalarFieldKeys']
+    include: 'EventIncludeFromEventRecursive1'
+
+
+class FindManyEventArgsFromUserRecursive1(TypedDict, total=False):
+    """Arguments for User"""
+    take: int
+    skip: int
+    order_by: Union['EventOrderByInput', List['EventOrderByInput']]
+    where: 'EventWhereInput'
+    cursor: 'EventWhereUniqueInput'
+    distinct: List['EventScalarFieldKeys']
+    include: 'EventIncludeFromEventRecursive2'
+
+
+class FindManyEventArgsFromUserRecursive2(TypedDict, total=False):
+    """Arguments for User"""
+    take: int
+    skip: int
+    order_by: Union['EventOrderByInput', List['EventOrderByInput']]
+    where: 'EventWhereInput'
+    cursor: 'EventWhereUniqueInput'
+    distinct: List['EventScalarFieldKeys']
+    include: 'EventIncludeFromEventRecursive3'
+
+
+class FindManyEventArgsFromUserRecursive3(TypedDict, total=False):
+    """Arguments for User"""
+    take: int
+    skip: int
+    order_by: Union['EventOrderByInput', List['EventOrderByInput']]
+    where: 'EventWhereInput'
+    cursor: 'EventWhereUniqueInput'
+    distinct: List['EventScalarFieldKeys']
+    include: 'EventIncludeFromEventRecursive4'
+
+
+class FindManyEventArgsFromUserRecursive4(TypedDict, total=False):
+    """Arguments for User"""
+    take: int
+    skip: int
+    order_by: Union['EventOrderByInput', List['EventOrderByInput']]
+    where: 'EventWhereInput'
+    cursor: 'EventWhereUniqueInput'
+    distinct: List['EventScalarFieldKeys']
+    
+    
+
+class SavedEventIncludeFromUser(TypedDict, total=False):
+    """Relational arguments for User"""
+    user: Union[bool, 'UserArgsFromUserRecursive1']
+    event: Union[bool, 'EventArgsFromUserRecursive1']
+
+
+class SavedEventIncludeFromUserRecursive1(TypedDict, total=False):
+    """Relational arguments for User"""
+    user: Union[bool, 'UserArgsFromUserRecursive2']
+    event: Union[bool, 'EventArgsFromUserRecursive2']
+
+
+class SavedEventIncludeFromUserRecursive2(TypedDict, total=False):
+    """Relational arguments for User"""
+    user: Union[bool, 'UserArgsFromUserRecursive3']
+    event: Union[bool, 'EventArgsFromUserRecursive3']
+
+
+class SavedEventIncludeFromUserRecursive3(TypedDict, total=False):
+    """Relational arguments for User"""
+    user: Union[bool, 'UserArgsFromUserRecursive4']
+    event: Union[bool, 'EventArgsFromUserRecursive4']
+
+
+class SavedEventIncludeFromUserRecursive4(TypedDict, total=False):
+    """Relational arguments for User"""
+
+    
+
+class SavedEventArgsFromUser(TypedDict, total=False):
+    """Arguments for User"""
+    include: 'SavedEventIncludeFromSavedEventRecursive1'
+
+
+class SavedEventArgsFromUserRecursive1(TypedDict, total=False):
+    """Arguments for User"""
+    include: 'SavedEventIncludeFromSavedEventRecursive2'
+
+
+class SavedEventArgsFromUserRecursive2(TypedDict, total=False):
+    """Arguments for User"""
+    include: 'SavedEventIncludeFromSavedEventRecursive3'
+
+
+class SavedEventArgsFromUserRecursive3(TypedDict, total=False):
+    """Arguments for User"""
+    include: 'SavedEventIncludeFromSavedEventRecursive4'
+
+
+class SavedEventArgsFromUserRecursive4(TypedDict, total=False):
+    """Arguments for User"""
+    
+    
+
+class FindManySavedEventArgsFromUser(TypedDict, total=False):
+    """Arguments for User"""
+    take: int
+    skip: int
+    order_by: Union['SavedEventOrderByInput', List['SavedEventOrderByInput']]
+    where: 'SavedEventWhereInput'
+    cursor: 'SavedEventWhereUniqueInput'
+    distinct: List['SavedEventScalarFieldKeys']
+    include: 'SavedEventIncludeFromSavedEventRecursive1'
+
+
+class FindManySavedEventArgsFromUserRecursive1(TypedDict, total=False):
+    """Arguments for User"""
+    take: int
+    skip: int
+    order_by: Union['SavedEventOrderByInput', List['SavedEventOrderByInput']]
+    where: 'SavedEventWhereInput'
+    cursor: 'SavedEventWhereUniqueInput'
+    distinct: List['SavedEventScalarFieldKeys']
+    include: 'SavedEventIncludeFromSavedEventRecursive2'
+
+
+class FindManySavedEventArgsFromUserRecursive2(TypedDict, total=False):
+    """Arguments for User"""
+    take: int
+    skip: int
+    order_by: Union['SavedEventOrderByInput', List['SavedEventOrderByInput']]
+    where: 'SavedEventWhereInput'
+    cursor: 'SavedEventWhereUniqueInput'
+    distinct: List['SavedEventScalarFieldKeys']
+    include: 'SavedEventIncludeFromSavedEventRecursive3'
+
+
+class FindManySavedEventArgsFromUserRecursive3(TypedDict, total=False):
+    """Arguments for User"""
+    take: int
+    skip: int
+    order_by: Union['SavedEventOrderByInput', List['SavedEventOrderByInput']]
+    where: 'SavedEventWhereInput'
+    cursor: 'SavedEventWhereUniqueInput'
+    distinct: List['SavedEventScalarFieldKeys']
+    include: 'SavedEventIncludeFromSavedEventRecursive4'
+
+
+class FindManySavedEventArgsFromUserRecursive4(TypedDict, total=False):
+    """Arguments for User"""
+    take: int
+    skip: int
+    order_by: Union['SavedEventOrderByInput', List['SavedEventOrderByInput']]
+    where: 'SavedEventWhereInput'
+    cursor: 'SavedEventWhereUniqueInput'
+    distinct: List['SavedEventScalarFieldKeys']
+    
 
 
 FindManyUserArgs = FindManyUserArgsFromUser
@@ -1470,6 +2018,7 @@ class UserWhereInput(TypedDict, total=False):
     email: Union[_str, 'types.StringFilter']
     passwordHash: Union[_str, 'types.StringFilter']
     createdAt: Union[datetime.datetime, 'types.DateTimeFilter']
+    savedEvents: 'SavedEventListRelationFilter'
 
     # should be noted that AND and NOT should be Union['UserWhereInputRecursive1', List['UserWhereInputRecursive1']]
     # but this causes mypy to hang :/
@@ -1485,6 +2034,7 @@ class UserWhereInputRecursive1(TypedDict, total=False):
     email: Union[_str, 'types.StringFilter']
     passwordHash: Union[_str, 'types.StringFilter']
     createdAt: Union[datetime.datetime, 'types.DateTimeFilter']
+    savedEvents: 'SavedEventListRelationFilter'
 
     # should be noted that AND and NOT should be Union['UserWhereInputRecursive2', List['UserWhereInputRecursive2']]
     # but this causes mypy to hang :/
@@ -1500,6 +2050,7 @@ class UserWhereInputRecursive2(TypedDict, total=False):
     email: Union[_str, 'types.StringFilter']
     passwordHash: Union[_str, 'types.StringFilter']
     createdAt: Union[datetime.datetime, 'types.DateTimeFilter']
+    savedEvents: 'SavedEventListRelationFilter'
 
     # should be noted that AND and NOT should be Union['UserWhereInputRecursive3', List['UserWhereInputRecursive3']]
     # but this causes mypy to hang :/
@@ -1515,6 +2066,7 @@ class UserWhereInputRecursive3(TypedDict, total=False):
     email: Union[_str, 'types.StringFilter']
     passwordHash: Union[_str, 'types.StringFilter']
     createdAt: Union[datetime.datetime, 'types.DateTimeFilter']
+    savedEvents: 'SavedEventListRelationFilter'
 
     # should be noted that AND and NOT should be Union['UserWhereInputRecursive4', List['UserWhereInputRecursive4']]
     # but this causes mypy to hang :/
@@ -1530,6 +2082,7 @@ class UserWhereInputRecursive4(TypedDict, total=False):
     email: Union[_str, 'types.StringFilter']
     passwordHash: Union[_str, 'types.StringFilter']
     createdAt: Union[datetime.datetime, 'types.DateTimeFilter']
+    savedEvents: 'SavedEventListRelationFilter'
 
 
 
@@ -1696,6 +2249,7 @@ UserKeys = Literal[
     'email',
     'passwordHash',
     'createdAt',
+    'savedEvents',
 ]
 UserScalarFieldKeys = Literal[
     'id',
@@ -1706,7 +2260,5925 @@ UserScalarFieldKeys = Literal[
 ]
 UserScalarFieldKeysT = TypeVar('UserScalarFieldKeysT', bound=UserScalarFieldKeys)
 
-UserRelationalFieldKeys = _NoneType
+UserRelationalFieldKeys = Literal[
+        'savedEvents',
+    ]
+
+# Venue types
+
+class VenueOptionalCreateInput(TypedDict, total=False):
+    """Optional arguments to the Venue create method"""
+    id: _int
+    name: Optional[_str]
+    street: Optional[_str]
+    city: Optional[_str]
+    state: Optional[_str]
+    country: Optional[_str]
+    lat: Optional[_float]
+    lng: Optional[_float]
+    createdAt: datetime.datetime
+    events: 'EventCreateManyNestedWithoutRelationsInput'
+
+
+class VenueCreateInput(VenueOptionalCreateInput):
+    """Required arguments to the Venue create method"""
+
+
+# TODO: remove this in favour of without explicit relations
+# e.g. PostCreateWithoutAuthorInput
+
+class VenueOptionalCreateWithoutRelationsInput(TypedDict, total=False):
+    """Optional arguments to the Venue create method, without relations"""
+    id: _int
+    name: Optional[_str]
+    street: Optional[_str]
+    city: Optional[_str]
+    state: Optional[_str]
+    country: Optional[_str]
+    lat: Optional[_float]
+    lng: Optional[_float]
+    createdAt: datetime.datetime
+
+
+class VenueCreateWithoutRelationsInput(VenueOptionalCreateWithoutRelationsInput):
+    """Required arguments to the Venue create method, without relations"""
+
+class VenueConnectOrCreateWithoutRelationsInput(TypedDict):
+    create: 'VenueCreateWithoutRelationsInput'
+    where: 'VenueWhereUniqueInput'
+
+class VenueCreateNestedWithoutRelationsInput(TypedDict, total=False):
+    create: 'VenueCreateWithoutRelationsInput'
+    connect: 'VenueWhereUniqueInput'
+    connect_or_create: 'VenueConnectOrCreateWithoutRelationsInput'
+
+
+class VenueCreateManyNestedWithoutRelationsInput(TypedDict, total=False):
+    create: Union['VenueCreateWithoutRelationsInput', List['VenueCreateWithoutRelationsInput']]
+    connect: Union['VenueWhereUniqueInput', List['VenueWhereUniqueInput']]
+    connect_or_create: Union['VenueConnectOrCreateWithoutRelationsInput', List['VenueConnectOrCreateWithoutRelationsInput']]
+
+_VenueWhereUnique_id_Input = TypedDict(
+    '_VenueWhereUnique_id_Input',
+    {
+        'id': '_int',
+    },
+    total=True
+)
+
+VenueWhereUniqueInput = _VenueWhereUnique_id_Input
+
+
+class VenueUpdateInput(TypedDict, total=False):
+    """Optional arguments for updating a record"""
+    id: Union[AtomicIntInput, _int]
+    name: Optional[_str]
+    street: Optional[_str]
+    city: Optional[_str]
+    state: Optional[_str]
+    country: Optional[_str]
+    lat: Optional[Union[AtomicFloatInput, _float]]
+    lng: Optional[Union[AtomicFloatInput, _float]]
+    createdAt: datetime.datetime
+    events: 'EventUpdateManyWithoutRelationsInput'
+
+
+class VenueUpdateManyMutationInput(TypedDict, total=False):
+    """Arguments for updating many records"""
+    id: Union[AtomicIntInput, _int]
+    name: Optional[_str]
+    street: Optional[_str]
+    city: Optional[_str]
+    state: Optional[_str]
+    country: Optional[_str]
+    lat: Optional[Union[AtomicFloatInput, _float]]
+    lng: Optional[Union[AtomicFloatInput, _float]]
+    createdAt: datetime.datetime
+
+
+class VenueUpdateManyWithoutRelationsInput(TypedDict, total=False):
+    create: List['VenueCreateWithoutRelationsInput']
+    connect: List['VenueWhereUniqueInput']
+    connect_or_create: List['VenueConnectOrCreateWithoutRelationsInput']
+    set: List['VenueWhereUniqueInput']
+    disconnect: List['VenueWhereUniqueInput']
+    delete: List['VenueWhereUniqueInput']
+
+    # TODO
+    # update: List['VenueUpdateWithWhereUniqueWithoutRelationsInput']
+    # updateMany: List['VenueUpdateManyWithWhereUniqueWithoutRelationsInput']
+    # deleteMany: List['VenueScalarWhereInput']
+    # upsert: List['VenueUpserteWithWhereUniqueWithoutRelationsInput']
+
+
+class VenueUpdateOneWithoutRelationsInput(TypedDict, total=False):
+    create: 'VenueCreateWithoutRelationsInput'
+    connect: 'VenueWhereUniqueInput'
+    connect_or_create: 'VenueConnectOrCreateWithoutRelationsInput'
+    disconnect: bool
+    delete: bool
+
+    # TODO
+    # update: 'VenueUpdateInput'
+    # upsert: 'VenueUpsertWithoutRelationsInput'
+
+
+class VenueUpsertInput(TypedDict):
+    create: 'VenueCreateInput'
+    update: 'VenueUpdateInput'  # pyright: ignore[reportIncompatibleMethodOverride]
+
+
+_Venue_id_OrderByInput = TypedDict(
+    '_Venue_id_OrderByInput',
+    {
+        'id': 'SortOrder',
+    },
+    total=True
+)
+
+_Venue_name_OrderByInput = TypedDict(
+    '_Venue_name_OrderByInput',
+    {
+        'name': 'SortOrder',
+    },
+    total=True
+)
+
+_Venue_street_OrderByInput = TypedDict(
+    '_Venue_street_OrderByInput',
+    {
+        'street': 'SortOrder',
+    },
+    total=True
+)
+
+_Venue_city_OrderByInput = TypedDict(
+    '_Venue_city_OrderByInput',
+    {
+        'city': 'SortOrder',
+    },
+    total=True
+)
+
+_Venue_state_OrderByInput = TypedDict(
+    '_Venue_state_OrderByInput',
+    {
+        'state': 'SortOrder',
+    },
+    total=True
+)
+
+_Venue_country_OrderByInput = TypedDict(
+    '_Venue_country_OrderByInput',
+    {
+        'country': 'SortOrder',
+    },
+    total=True
+)
+
+_Venue_lat_OrderByInput = TypedDict(
+    '_Venue_lat_OrderByInput',
+    {
+        'lat': 'SortOrder',
+    },
+    total=True
+)
+
+_Venue_lng_OrderByInput = TypedDict(
+    '_Venue_lng_OrderByInput',
+    {
+        'lng': 'SortOrder',
+    },
+    total=True
+)
+
+_Venue_createdAt_OrderByInput = TypedDict(
+    '_Venue_createdAt_OrderByInput',
+    {
+        'createdAt': 'SortOrder',
+    },
+    total=True
+)
+
+_Venue_RelevanceInner = TypedDict(
+    '_Venue_RelevanceInner',
+    {
+        'fields': 'List[VenueScalarFieldKeys]',
+        'search': 'str',
+        'sort': 'SortOrder',
+    },
+    total=True
+)
+
+_Venue_RelevanceOrderByInput = TypedDict(
+    '_Venue_RelevanceOrderByInput',
+    {
+        '_relevance': '_Venue_RelevanceInner',
+    },
+    total=True
+)
+
+VenueOrderByInput = Union[
+    '_Venue_id_OrderByInput',
+    '_Venue_name_OrderByInput',
+    '_Venue_street_OrderByInput',
+    '_Venue_city_OrderByInput',
+    '_Venue_state_OrderByInput',
+    '_Venue_country_OrderByInput',
+    '_Venue_lat_OrderByInput',
+    '_Venue_lng_OrderByInput',
+    '_Venue_createdAt_OrderByInput',
+    '_Venue_RelevanceOrderByInput',
+]
+
+
+
+# recursive Venue types
+# TODO: cleanup these types
+
+
+# Dict[str, Any] is a mypy limitation
+# see https://github.com/RobertCraigie/prisma-client-py/issues/45
+# switch to pyright for improved types, see https://prisma-client-py.readthedocs.io/en/stable/reference/limitations/
+
+VenueRelationFilter = TypedDict(
+    'VenueRelationFilter',
+    {
+        'is': 'Dict[str, Any]',
+        'is_not': 'Dict[str, Any]',
+    },
+    total=False,
+)
+
+
+class VenueListRelationFilter(TypedDict, total=False):
+    some: 'Dict[str, Any]'
+    none: 'Dict[str, Any]'
+    every: 'Dict[str, Any]'
+
+
+class VenueInclude(TypedDict, total=False):
+    """Venue relational arguments"""
+    events: Union[bool, 'FindManyEventArgsFromVenue']
+
+
+    
+
+class UserIncludeFromVenue(TypedDict, total=False):
+    """Relational arguments for Venue"""
+    savedEvents: Union[bool, 'FindManySavedEventArgsFromVenueRecursive1']
+
+
+class UserIncludeFromVenueRecursive1(TypedDict, total=False):
+    """Relational arguments for Venue"""
+    savedEvents: Union[bool, 'FindManySavedEventArgsFromVenueRecursive2']
+
+
+class UserIncludeFromVenueRecursive2(TypedDict, total=False):
+    """Relational arguments for Venue"""
+    savedEvents: Union[bool, 'FindManySavedEventArgsFromVenueRecursive3']
+
+
+class UserIncludeFromVenueRecursive3(TypedDict, total=False):
+    """Relational arguments for Venue"""
+    savedEvents: Union[bool, 'FindManySavedEventArgsFromVenueRecursive4']
+
+
+class UserIncludeFromVenueRecursive4(TypedDict, total=False):
+    """Relational arguments for Venue"""
+
+    
+
+class UserArgsFromVenue(TypedDict, total=False):
+    """Arguments for Venue"""
+    include: 'UserIncludeFromUserRecursive1'
+
+
+class UserArgsFromVenueRecursive1(TypedDict, total=False):
+    """Arguments for Venue"""
+    include: 'UserIncludeFromUserRecursive2'
+
+
+class UserArgsFromVenueRecursive2(TypedDict, total=False):
+    """Arguments for Venue"""
+    include: 'UserIncludeFromUserRecursive3'
+
+
+class UserArgsFromVenueRecursive3(TypedDict, total=False):
+    """Arguments for Venue"""
+    include: 'UserIncludeFromUserRecursive4'
+
+
+class UserArgsFromVenueRecursive4(TypedDict, total=False):
+    """Arguments for Venue"""
+    
+    
+
+class FindManyUserArgsFromVenue(TypedDict, total=False):
+    """Arguments for Venue"""
+    take: int
+    skip: int
+    order_by: Union['UserOrderByInput', List['UserOrderByInput']]
+    where: 'UserWhereInput'
+    cursor: 'UserWhereUniqueInput'
+    distinct: List['UserScalarFieldKeys']
+    include: 'UserIncludeFromUserRecursive1'
+
+
+class FindManyUserArgsFromVenueRecursive1(TypedDict, total=False):
+    """Arguments for Venue"""
+    take: int
+    skip: int
+    order_by: Union['UserOrderByInput', List['UserOrderByInput']]
+    where: 'UserWhereInput'
+    cursor: 'UserWhereUniqueInput'
+    distinct: List['UserScalarFieldKeys']
+    include: 'UserIncludeFromUserRecursive2'
+
+
+class FindManyUserArgsFromVenueRecursive2(TypedDict, total=False):
+    """Arguments for Venue"""
+    take: int
+    skip: int
+    order_by: Union['UserOrderByInput', List['UserOrderByInput']]
+    where: 'UserWhereInput'
+    cursor: 'UserWhereUniqueInput'
+    distinct: List['UserScalarFieldKeys']
+    include: 'UserIncludeFromUserRecursive3'
+
+
+class FindManyUserArgsFromVenueRecursive3(TypedDict, total=False):
+    """Arguments for Venue"""
+    take: int
+    skip: int
+    order_by: Union['UserOrderByInput', List['UserOrderByInput']]
+    where: 'UserWhereInput'
+    cursor: 'UserWhereUniqueInput'
+    distinct: List['UserScalarFieldKeys']
+    include: 'UserIncludeFromUserRecursive4'
+
+
+class FindManyUserArgsFromVenueRecursive4(TypedDict, total=False):
+    """Arguments for Venue"""
+    take: int
+    skip: int
+    order_by: Union['UserOrderByInput', List['UserOrderByInput']]
+    where: 'UserWhereInput'
+    cursor: 'UserWhereUniqueInput'
+    distinct: List['UserScalarFieldKeys']
+    
+    
+
+class VenueIncludeFromVenue(TypedDict, total=False):
+    """Relational arguments for Venue"""
+    events: Union[bool, 'FindManyEventArgsFromVenueRecursive1']
+
+
+class VenueIncludeFromVenueRecursive1(TypedDict, total=False):
+    """Relational arguments for Venue"""
+    events: Union[bool, 'FindManyEventArgsFromVenueRecursive2']
+
+
+class VenueIncludeFromVenueRecursive2(TypedDict, total=False):
+    """Relational arguments for Venue"""
+    events: Union[bool, 'FindManyEventArgsFromVenueRecursive3']
+
+
+class VenueIncludeFromVenueRecursive3(TypedDict, total=False):
+    """Relational arguments for Venue"""
+    events: Union[bool, 'FindManyEventArgsFromVenueRecursive4']
+
+
+class VenueIncludeFromVenueRecursive4(TypedDict, total=False):
+    """Relational arguments for Venue"""
+
+    
+
+class VenueArgsFromVenue(TypedDict, total=False):
+    """Arguments for Venue"""
+    include: 'VenueIncludeFromVenueRecursive1'
+
+
+class VenueArgsFromVenueRecursive1(TypedDict, total=False):
+    """Arguments for Venue"""
+    include: 'VenueIncludeFromVenueRecursive2'
+
+
+class VenueArgsFromVenueRecursive2(TypedDict, total=False):
+    """Arguments for Venue"""
+    include: 'VenueIncludeFromVenueRecursive3'
+
+
+class VenueArgsFromVenueRecursive3(TypedDict, total=False):
+    """Arguments for Venue"""
+    include: 'VenueIncludeFromVenueRecursive4'
+
+
+class VenueArgsFromVenueRecursive4(TypedDict, total=False):
+    """Arguments for Venue"""
+    
+    
+
+class FindManyVenueArgsFromVenue(TypedDict, total=False):
+    """Arguments for Venue"""
+    take: int
+    skip: int
+    order_by: Union['VenueOrderByInput', List['VenueOrderByInput']]
+    where: 'VenueWhereInput'
+    cursor: 'VenueWhereUniqueInput'
+    distinct: List['VenueScalarFieldKeys']
+    include: 'VenueIncludeFromVenueRecursive1'
+
+
+class FindManyVenueArgsFromVenueRecursive1(TypedDict, total=False):
+    """Arguments for Venue"""
+    take: int
+    skip: int
+    order_by: Union['VenueOrderByInput', List['VenueOrderByInput']]
+    where: 'VenueWhereInput'
+    cursor: 'VenueWhereUniqueInput'
+    distinct: List['VenueScalarFieldKeys']
+    include: 'VenueIncludeFromVenueRecursive2'
+
+
+class FindManyVenueArgsFromVenueRecursive2(TypedDict, total=False):
+    """Arguments for Venue"""
+    take: int
+    skip: int
+    order_by: Union['VenueOrderByInput', List['VenueOrderByInput']]
+    where: 'VenueWhereInput'
+    cursor: 'VenueWhereUniqueInput'
+    distinct: List['VenueScalarFieldKeys']
+    include: 'VenueIncludeFromVenueRecursive3'
+
+
+class FindManyVenueArgsFromVenueRecursive3(TypedDict, total=False):
+    """Arguments for Venue"""
+    take: int
+    skip: int
+    order_by: Union['VenueOrderByInput', List['VenueOrderByInput']]
+    where: 'VenueWhereInput'
+    cursor: 'VenueWhereUniqueInput'
+    distinct: List['VenueScalarFieldKeys']
+    include: 'VenueIncludeFromVenueRecursive4'
+
+
+class FindManyVenueArgsFromVenueRecursive4(TypedDict, total=False):
+    """Arguments for Venue"""
+    take: int
+    skip: int
+    order_by: Union['VenueOrderByInput', List['VenueOrderByInput']]
+    where: 'VenueWhereInput'
+    cursor: 'VenueWhereUniqueInput'
+    distinct: List['VenueScalarFieldKeys']
+    
+    
+
+class EventSourceIncludeFromVenue(TypedDict, total=False):
+    """Relational arguments for Venue"""
+    events: Union[bool, 'FindManyEventArgsFromVenueRecursive1']
+
+
+class EventSourceIncludeFromVenueRecursive1(TypedDict, total=False):
+    """Relational arguments for Venue"""
+    events: Union[bool, 'FindManyEventArgsFromVenueRecursive2']
+
+
+class EventSourceIncludeFromVenueRecursive2(TypedDict, total=False):
+    """Relational arguments for Venue"""
+    events: Union[bool, 'FindManyEventArgsFromVenueRecursive3']
+
+
+class EventSourceIncludeFromVenueRecursive3(TypedDict, total=False):
+    """Relational arguments for Venue"""
+    events: Union[bool, 'FindManyEventArgsFromVenueRecursive4']
+
+
+class EventSourceIncludeFromVenueRecursive4(TypedDict, total=False):
+    """Relational arguments for Venue"""
+
+    
+
+class EventSourceArgsFromVenue(TypedDict, total=False):
+    """Arguments for Venue"""
+    include: 'EventSourceIncludeFromEventSourceRecursive1'
+
+
+class EventSourceArgsFromVenueRecursive1(TypedDict, total=False):
+    """Arguments for Venue"""
+    include: 'EventSourceIncludeFromEventSourceRecursive2'
+
+
+class EventSourceArgsFromVenueRecursive2(TypedDict, total=False):
+    """Arguments for Venue"""
+    include: 'EventSourceIncludeFromEventSourceRecursive3'
+
+
+class EventSourceArgsFromVenueRecursive3(TypedDict, total=False):
+    """Arguments for Venue"""
+    include: 'EventSourceIncludeFromEventSourceRecursive4'
+
+
+class EventSourceArgsFromVenueRecursive4(TypedDict, total=False):
+    """Arguments for Venue"""
+    
+    
+
+class FindManyEventSourceArgsFromVenue(TypedDict, total=False):
+    """Arguments for Venue"""
+    take: int
+    skip: int
+    order_by: Union['EventSourceOrderByInput', List['EventSourceOrderByInput']]
+    where: 'EventSourceWhereInput'
+    cursor: 'EventSourceWhereUniqueInput'
+    distinct: List['EventSourceScalarFieldKeys']
+    include: 'EventSourceIncludeFromEventSourceRecursive1'
+
+
+class FindManyEventSourceArgsFromVenueRecursive1(TypedDict, total=False):
+    """Arguments for Venue"""
+    take: int
+    skip: int
+    order_by: Union['EventSourceOrderByInput', List['EventSourceOrderByInput']]
+    where: 'EventSourceWhereInput'
+    cursor: 'EventSourceWhereUniqueInput'
+    distinct: List['EventSourceScalarFieldKeys']
+    include: 'EventSourceIncludeFromEventSourceRecursive2'
+
+
+class FindManyEventSourceArgsFromVenueRecursive2(TypedDict, total=False):
+    """Arguments for Venue"""
+    take: int
+    skip: int
+    order_by: Union['EventSourceOrderByInput', List['EventSourceOrderByInput']]
+    where: 'EventSourceWhereInput'
+    cursor: 'EventSourceWhereUniqueInput'
+    distinct: List['EventSourceScalarFieldKeys']
+    include: 'EventSourceIncludeFromEventSourceRecursive3'
+
+
+class FindManyEventSourceArgsFromVenueRecursive3(TypedDict, total=False):
+    """Arguments for Venue"""
+    take: int
+    skip: int
+    order_by: Union['EventSourceOrderByInput', List['EventSourceOrderByInput']]
+    where: 'EventSourceWhereInput'
+    cursor: 'EventSourceWhereUniqueInput'
+    distinct: List['EventSourceScalarFieldKeys']
+    include: 'EventSourceIncludeFromEventSourceRecursive4'
+
+
+class FindManyEventSourceArgsFromVenueRecursive4(TypedDict, total=False):
+    """Arguments for Venue"""
+    take: int
+    skip: int
+    order_by: Union['EventSourceOrderByInput', List['EventSourceOrderByInput']]
+    where: 'EventSourceWhereInput'
+    cursor: 'EventSourceWhereUniqueInput'
+    distinct: List['EventSourceScalarFieldKeys']
+    
+    
+
+class TagIncludeFromVenue(TypedDict, total=False):
+    """Relational arguments for Venue"""
+    events: Union[bool, 'FindManyEventArgsFromVenueRecursive1']
+
+
+class TagIncludeFromVenueRecursive1(TypedDict, total=False):
+    """Relational arguments for Venue"""
+    events: Union[bool, 'FindManyEventArgsFromVenueRecursive2']
+
+
+class TagIncludeFromVenueRecursive2(TypedDict, total=False):
+    """Relational arguments for Venue"""
+    events: Union[bool, 'FindManyEventArgsFromVenueRecursive3']
+
+
+class TagIncludeFromVenueRecursive3(TypedDict, total=False):
+    """Relational arguments for Venue"""
+    events: Union[bool, 'FindManyEventArgsFromVenueRecursive4']
+
+
+class TagIncludeFromVenueRecursive4(TypedDict, total=False):
+    """Relational arguments for Venue"""
+
+    
+
+class TagArgsFromVenue(TypedDict, total=False):
+    """Arguments for Venue"""
+    include: 'TagIncludeFromTagRecursive1'
+
+
+class TagArgsFromVenueRecursive1(TypedDict, total=False):
+    """Arguments for Venue"""
+    include: 'TagIncludeFromTagRecursive2'
+
+
+class TagArgsFromVenueRecursive2(TypedDict, total=False):
+    """Arguments for Venue"""
+    include: 'TagIncludeFromTagRecursive3'
+
+
+class TagArgsFromVenueRecursive3(TypedDict, total=False):
+    """Arguments for Venue"""
+    include: 'TagIncludeFromTagRecursive4'
+
+
+class TagArgsFromVenueRecursive4(TypedDict, total=False):
+    """Arguments for Venue"""
+    
+    
+
+class FindManyTagArgsFromVenue(TypedDict, total=False):
+    """Arguments for Venue"""
+    take: int
+    skip: int
+    order_by: Union['TagOrderByInput', List['TagOrderByInput']]
+    where: 'TagWhereInput'
+    cursor: 'TagWhereUniqueInput'
+    distinct: List['TagScalarFieldKeys']
+    include: 'TagIncludeFromTagRecursive1'
+
+
+class FindManyTagArgsFromVenueRecursive1(TypedDict, total=False):
+    """Arguments for Venue"""
+    take: int
+    skip: int
+    order_by: Union['TagOrderByInput', List['TagOrderByInput']]
+    where: 'TagWhereInput'
+    cursor: 'TagWhereUniqueInput'
+    distinct: List['TagScalarFieldKeys']
+    include: 'TagIncludeFromTagRecursive2'
+
+
+class FindManyTagArgsFromVenueRecursive2(TypedDict, total=False):
+    """Arguments for Venue"""
+    take: int
+    skip: int
+    order_by: Union['TagOrderByInput', List['TagOrderByInput']]
+    where: 'TagWhereInput'
+    cursor: 'TagWhereUniqueInput'
+    distinct: List['TagScalarFieldKeys']
+    include: 'TagIncludeFromTagRecursive3'
+
+
+class FindManyTagArgsFromVenueRecursive3(TypedDict, total=False):
+    """Arguments for Venue"""
+    take: int
+    skip: int
+    order_by: Union['TagOrderByInput', List['TagOrderByInput']]
+    where: 'TagWhereInput'
+    cursor: 'TagWhereUniqueInput'
+    distinct: List['TagScalarFieldKeys']
+    include: 'TagIncludeFromTagRecursive4'
+
+
+class FindManyTagArgsFromVenueRecursive4(TypedDict, total=False):
+    """Arguments for Venue"""
+    take: int
+    skip: int
+    order_by: Union['TagOrderByInput', List['TagOrderByInput']]
+    where: 'TagWhereInput'
+    cursor: 'TagWhereUniqueInput'
+    distinct: List['TagScalarFieldKeys']
+    
+    
+
+class EventIncludeFromVenue(TypedDict, total=False):
+    """Relational arguments for Venue"""
+    venue: Union[bool, 'VenueArgsFromVenueRecursive1']
+    source: Union[bool, 'EventSourceArgsFromVenueRecursive1']
+    tags: Union[bool, 'FindManyTagArgsFromVenueRecursive1']
+    savedBy: Union[bool, 'FindManySavedEventArgsFromVenueRecursive1']
+
+
+class EventIncludeFromVenueRecursive1(TypedDict, total=False):
+    """Relational arguments for Venue"""
+    venue: Union[bool, 'VenueArgsFromVenueRecursive2']
+    source: Union[bool, 'EventSourceArgsFromVenueRecursive2']
+    tags: Union[bool, 'FindManyTagArgsFromVenueRecursive2']
+    savedBy: Union[bool, 'FindManySavedEventArgsFromVenueRecursive2']
+
+
+class EventIncludeFromVenueRecursive2(TypedDict, total=False):
+    """Relational arguments for Venue"""
+    venue: Union[bool, 'VenueArgsFromVenueRecursive3']
+    source: Union[bool, 'EventSourceArgsFromVenueRecursive3']
+    tags: Union[bool, 'FindManyTagArgsFromVenueRecursive3']
+    savedBy: Union[bool, 'FindManySavedEventArgsFromVenueRecursive3']
+
+
+class EventIncludeFromVenueRecursive3(TypedDict, total=False):
+    """Relational arguments for Venue"""
+    venue: Union[bool, 'VenueArgsFromVenueRecursive4']
+    source: Union[bool, 'EventSourceArgsFromVenueRecursive4']
+    tags: Union[bool, 'FindManyTagArgsFromVenueRecursive4']
+    savedBy: Union[bool, 'FindManySavedEventArgsFromVenueRecursive4']
+
+
+class EventIncludeFromVenueRecursive4(TypedDict, total=False):
+    """Relational arguments for Venue"""
+
+    
+
+class EventArgsFromVenue(TypedDict, total=False):
+    """Arguments for Venue"""
+    include: 'EventIncludeFromEventRecursive1'
+
+
+class EventArgsFromVenueRecursive1(TypedDict, total=False):
+    """Arguments for Venue"""
+    include: 'EventIncludeFromEventRecursive2'
+
+
+class EventArgsFromVenueRecursive2(TypedDict, total=False):
+    """Arguments for Venue"""
+    include: 'EventIncludeFromEventRecursive3'
+
+
+class EventArgsFromVenueRecursive3(TypedDict, total=False):
+    """Arguments for Venue"""
+    include: 'EventIncludeFromEventRecursive4'
+
+
+class EventArgsFromVenueRecursive4(TypedDict, total=False):
+    """Arguments for Venue"""
+    
+    
+
+class FindManyEventArgsFromVenue(TypedDict, total=False):
+    """Arguments for Venue"""
+    take: int
+    skip: int
+    order_by: Union['EventOrderByInput', List['EventOrderByInput']]
+    where: 'EventWhereInput'
+    cursor: 'EventWhereUniqueInput'
+    distinct: List['EventScalarFieldKeys']
+    include: 'EventIncludeFromEventRecursive1'
+
+
+class FindManyEventArgsFromVenueRecursive1(TypedDict, total=False):
+    """Arguments for Venue"""
+    take: int
+    skip: int
+    order_by: Union['EventOrderByInput', List['EventOrderByInput']]
+    where: 'EventWhereInput'
+    cursor: 'EventWhereUniqueInput'
+    distinct: List['EventScalarFieldKeys']
+    include: 'EventIncludeFromEventRecursive2'
+
+
+class FindManyEventArgsFromVenueRecursive2(TypedDict, total=False):
+    """Arguments for Venue"""
+    take: int
+    skip: int
+    order_by: Union['EventOrderByInput', List['EventOrderByInput']]
+    where: 'EventWhereInput'
+    cursor: 'EventWhereUniqueInput'
+    distinct: List['EventScalarFieldKeys']
+    include: 'EventIncludeFromEventRecursive3'
+
+
+class FindManyEventArgsFromVenueRecursive3(TypedDict, total=False):
+    """Arguments for Venue"""
+    take: int
+    skip: int
+    order_by: Union['EventOrderByInput', List['EventOrderByInput']]
+    where: 'EventWhereInput'
+    cursor: 'EventWhereUniqueInput'
+    distinct: List['EventScalarFieldKeys']
+    include: 'EventIncludeFromEventRecursive4'
+
+
+class FindManyEventArgsFromVenueRecursive4(TypedDict, total=False):
+    """Arguments for Venue"""
+    take: int
+    skip: int
+    order_by: Union['EventOrderByInput', List['EventOrderByInput']]
+    where: 'EventWhereInput'
+    cursor: 'EventWhereUniqueInput'
+    distinct: List['EventScalarFieldKeys']
+    
+    
+
+class SavedEventIncludeFromVenue(TypedDict, total=False):
+    """Relational arguments for Venue"""
+    user: Union[bool, 'UserArgsFromVenueRecursive1']
+    event: Union[bool, 'EventArgsFromVenueRecursive1']
+
+
+class SavedEventIncludeFromVenueRecursive1(TypedDict, total=False):
+    """Relational arguments for Venue"""
+    user: Union[bool, 'UserArgsFromVenueRecursive2']
+    event: Union[bool, 'EventArgsFromVenueRecursive2']
+
+
+class SavedEventIncludeFromVenueRecursive2(TypedDict, total=False):
+    """Relational arguments for Venue"""
+    user: Union[bool, 'UserArgsFromVenueRecursive3']
+    event: Union[bool, 'EventArgsFromVenueRecursive3']
+
+
+class SavedEventIncludeFromVenueRecursive3(TypedDict, total=False):
+    """Relational arguments for Venue"""
+    user: Union[bool, 'UserArgsFromVenueRecursive4']
+    event: Union[bool, 'EventArgsFromVenueRecursive4']
+
+
+class SavedEventIncludeFromVenueRecursive4(TypedDict, total=False):
+    """Relational arguments for Venue"""
+
+    
+
+class SavedEventArgsFromVenue(TypedDict, total=False):
+    """Arguments for Venue"""
+    include: 'SavedEventIncludeFromSavedEventRecursive1'
+
+
+class SavedEventArgsFromVenueRecursive1(TypedDict, total=False):
+    """Arguments for Venue"""
+    include: 'SavedEventIncludeFromSavedEventRecursive2'
+
+
+class SavedEventArgsFromVenueRecursive2(TypedDict, total=False):
+    """Arguments for Venue"""
+    include: 'SavedEventIncludeFromSavedEventRecursive3'
+
+
+class SavedEventArgsFromVenueRecursive3(TypedDict, total=False):
+    """Arguments for Venue"""
+    include: 'SavedEventIncludeFromSavedEventRecursive4'
+
+
+class SavedEventArgsFromVenueRecursive4(TypedDict, total=False):
+    """Arguments for Venue"""
+    
+    
+
+class FindManySavedEventArgsFromVenue(TypedDict, total=False):
+    """Arguments for Venue"""
+    take: int
+    skip: int
+    order_by: Union['SavedEventOrderByInput', List['SavedEventOrderByInput']]
+    where: 'SavedEventWhereInput'
+    cursor: 'SavedEventWhereUniqueInput'
+    distinct: List['SavedEventScalarFieldKeys']
+    include: 'SavedEventIncludeFromSavedEventRecursive1'
+
+
+class FindManySavedEventArgsFromVenueRecursive1(TypedDict, total=False):
+    """Arguments for Venue"""
+    take: int
+    skip: int
+    order_by: Union['SavedEventOrderByInput', List['SavedEventOrderByInput']]
+    where: 'SavedEventWhereInput'
+    cursor: 'SavedEventWhereUniqueInput'
+    distinct: List['SavedEventScalarFieldKeys']
+    include: 'SavedEventIncludeFromSavedEventRecursive2'
+
+
+class FindManySavedEventArgsFromVenueRecursive2(TypedDict, total=False):
+    """Arguments for Venue"""
+    take: int
+    skip: int
+    order_by: Union['SavedEventOrderByInput', List['SavedEventOrderByInput']]
+    where: 'SavedEventWhereInput'
+    cursor: 'SavedEventWhereUniqueInput'
+    distinct: List['SavedEventScalarFieldKeys']
+    include: 'SavedEventIncludeFromSavedEventRecursive3'
+
+
+class FindManySavedEventArgsFromVenueRecursive3(TypedDict, total=False):
+    """Arguments for Venue"""
+    take: int
+    skip: int
+    order_by: Union['SavedEventOrderByInput', List['SavedEventOrderByInput']]
+    where: 'SavedEventWhereInput'
+    cursor: 'SavedEventWhereUniqueInput'
+    distinct: List['SavedEventScalarFieldKeys']
+    include: 'SavedEventIncludeFromSavedEventRecursive4'
+
+
+class FindManySavedEventArgsFromVenueRecursive4(TypedDict, total=False):
+    """Arguments for Venue"""
+    take: int
+    skip: int
+    order_by: Union['SavedEventOrderByInput', List['SavedEventOrderByInput']]
+    where: 'SavedEventWhereInput'
+    cursor: 'SavedEventWhereUniqueInput'
+    distinct: List['SavedEventScalarFieldKeys']
+    
+
+
+FindManyVenueArgs = FindManyVenueArgsFromVenue
+FindFirstVenueArgs = FindManyVenueArgsFromVenue
+
+
+    
+
+class VenueWhereInput(TypedDict, total=False):
+    """Venue arguments for searching"""
+    id: Union[_int, 'types.IntFilter']
+    name: Union[None, _str, 'types.StringFilter']
+    street: Union[None, _str, 'types.StringFilter']
+    city: Union[None, _str, 'types.StringFilter']
+    state: Union[None, _str, 'types.StringFilter']
+    country: Union[None, _str, 'types.StringFilter']
+    lat: Union[None, _float, 'types.FloatFilter']
+    lng: Union[None, _float, 'types.FloatFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeFilter']
+    events: 'EventListRelationFilter'
+
+    # should be noted that AND and NOT should be Union['VenueWhereInputRecursive1', List['VenueWhereInputRecursive1']]
+    # but this causes mypy to hang :/
+    AND: List['VenueWhereInputRecursive1']
+    OR: List['VenueWhereInputRecursive1']
+    NOT: List['VenueWhereInputRecursive1']
+
+
+class VenueWhereInputRecursive1(TypedDict, total=False):
+    """Venue arguments for searching"""
+    id: Union[_int, 'types.IntFilter']
+    name: Union[None, _str, 'types.StringFilter']
+    street: Union[None, _str, 'types.StringFilter']
+    city: Union[None, _str, 'types.StringFilter']
+    state: Union[None, _str, 'types.StringFilter']
+    country: Union[None, _str, 'types.StringFilter']
+    lat: Union[None, _float, 'types.FloatFilter']
+    lng: Union[None, _float, 'types.FloatFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeFilter']
+    events: 'EventListRelationFilter'
+
+    # should be noted that AND and NOT should be Union['VenueWhereInputRecursive2', List['VenueWhereInputRecursive2']]
+    # but this causes mypy to hang :/
+    AND: List['VenueWhereInputRecursive2']
+    OR: List['VenueWhereInputRecursive2']
+    NOT: List['VenueWhereInputRecursive2']
+
+
+class VenueWhereInputRecursive2(TypedDict, total=False):
+    """Venue arguments for searching"""
+    id: Union[_int, 'types.IntFilter']
+    name: Union[None, _str, 'types.StringFilter']
+    street: Union[None, _str, 'types.StringFilter']
+    city: Union[None, _str, 'types.StringFilter']
+    state: Union[None, _str, 'types.StringFilter']
+    country: Union[None, _str, 'types.StringFilter']
+    lat: Union[None, _float, 'types.FloatFilter']
+    lng: Union[None, _float, 'types.FloatFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeFilter']
+    events: 'EventListRelationFilter'
+
+    # should be noted that AND and NOT should be Union['VenueWhereInputRecursive3', List['VenueWhereInputRecursive3']]
+    # but this causes mypy to hang :/
+    AND: List['VenueWhereInputRecursive3']
+    OR: List['VenueWhereInputRecursive3']
+    NOT: List['VenueWhereInputRecursive3']
+
+
+class VenueWhereInputRecursive3(TypedDict, total=False):
+    """Venue arguments for searching"""
+    id: Union[_int, 'types.IntFilter']
+    name: Union[None, _str, 'types.StringFilter']
+    street: Union[None, _str, 'types.StringFilter']
+    city: Union[None, _str, 'types.StringFilter']
+    state: Union[None, _str, 'types.StringFilter']
+    country: Union[None, _str, 'types.StringFilter']
+    lat: Union[None, _float, 'types.FloatFilter']
+    lng: Union[None, _float, 'types.FloatFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeFilter']
+    events: 'EventListRelationFilter'
+
+    # should be noted that AND and NOT should be Union['VenueWhereInputRecursive4', List['VenueWhereInputRecursive4']]
+    # but this causes mypy to hang :/
+    AND: List['VenueWhereInputRecursive4']
+    OR: List['VenueWhereInputRecursive4']
+    NOT: List['VenueWhereInputRecursive4']
+
+
+class VenueWhereInputRecursive4(TypedDict, total=False):
+    """Venue arguments for searching"""
+    id: Union[_int, 'types.IntFilter']
+    name: Union[None, _str, 'types.StringFilter']
+    street: Union[None, _str, 'types.StringFilter']
+    city: Union[None, _str, 'types.StringFilter']
+    state: Union[None, _str, 'types.StringFilter']
+    country: Union[None, _str, 'types.StringFilter']
+    lat: Union[None, _float, 'types.FloatFilter']
+    lng: Union[None, _float, 'types.FloatFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeFilter']
+    events: 'EventListRelationFilter'
+
+
+
+# aggregate Venue types
+
+
+    
+
+class VenueScalarWhereWithAggregatesInput(TypedDict, total=False):
+    """Venue arguments for searching"""
+    id: Union[_int, 'types.IntWithAggregatesFilter']
+    name: Union[_str, 'types.StringWithAggregatesFilter']
+    street: Union[_str, 'types.StringWithAggregatesFilter']
+    city: Union[_str, 'types.StringWithAggregatesFilter']
+    state: Union[_str, 'types.StringWithAggregatesFilter']
+    country: Union[_str, 'types.StringWithAggregatesFilter']
+    lat: Union[_float, 'types.FloatWithAggregatesFilter']
+    lng: Union[_float, 'types.FloatWithAggregatesFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+
+    AND: List['VenueScalarWhereWithAggregatesInputRecursive1']
+    OR: List['VenueScalarWhereWithAggregatesInputRecursive1']
+    NOT: List['VenueScalarWhereWithAggregatesInputRecursive1']
+
+
+class VenueScalarWhereWithAggregatesInputRecursive1(TypedDict, total=False):
+    """Venue arguments for searching"""
+    id: Union[_int, 'types.IntWithAggregatesFilter']
+    name: Union[_str, 'types.StringWithAggregatesFilter']
+    street: Union[_str, 'types.StringWithAggregatesFilter']
+    city: Union[_str, 'types.StringWithAggregatesFilter']
+    state: Union[_str, 'types.StringWithAggregatesFilter']
+    country: Union[_str, 'types.StringWithAggregatesFilter']
+    lat: Union[_float, 'types.FloatWithAggregatesFilter']
+    lng: Union[_float, 'types.FloatWithAggregatesFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+
+    AND: List['VenueScalarWhereWithAggregatesInputRecursive2']
+    OR: List['VenueScalarWhereWithAggregatesInputRecursive2']
+    NOT: List['VenueScalarWhereWithAggregatesInputRecursive2']
+
+
+class VenueScalarWhereWithAggregatesInputRecursive2(TypedDict, total=False):
+    """Venue arguments for searching"""
+    id: Union[_int, 'types.IntWithAggregatesFilter']
+    name: Union[_str, 'types.StringWithAggregatesFilter']
+    street: Union[_str, 'types.StringWithAggregatesFilter']
+    city: Union[_str, 'types.StringWithAggregatesFilter']
+    state: Union[_str, 'types.StringWithAggregatesFilter']
+    country: Union[_str, 'types.StringWithAggregatesFilter']
+    lat: Union[_float, 'types.FloatWithAggregatesFilter']
+    lng: Union[_float, 'types.FloatWithAggregatesFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+
+    AND: List['VenueScalarWhereWithAggregatesInputRecursive3']
+    OR: List['VenueScalarWhereWithAggregatesInputRecursive3']
+    NOT: List['VenueScalarWhereWithAggregatesInputRecursive3']
+
+
+class VenueScalarWhereWithAggregatesInputRecursive3(TypedDict, total=False):
+    """Venue arguments for searching"""
+    id: Union[_int, 'types.IntWithAggregatesFilter']
+    name: Union[_str, 'types.StringWithAggregatesFilter']
+    street: Union[_str, 'types.StringWithAggregatesFilter']
+    city: Union[_str, 'types.StringWithAggregatesFilter']
+    state: Union[_str, 'types.StringWithAggregatesFilter']
+    country: Union[_str, 'types.StringWithAggregatesFilter']
+    lat: Union[_float, 'types.FloatWithAggregatesFilter']
+    lng: Union[_float, 'types.FloatWithAggregatesFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+
+    AND: List['VenueScalarWhereWithAggregatesInputRecursive4']
+    OR: List['VenueScalarWhereWithAggregatesInputRecursive4']
+    NOT: List['VenueScalarWhereWithAggregatesInputRecursive4']
+
+
+class VenueScalarWhereWithAggregatesInputRecursive4(TypedDict, total=False):
+    """Venue arguments for searching"""
+    id: Union[_int, 'types.IntWithAggregatesFilter']
+    name: Union[_str, 'types.StringWithAggregatesFilter']
+    street: Union[_str, 'types.StringWithAggregatesFilter']
+    city: Union[_str, 'types.StringWithAggregatesFilter']
+    state: Union[_str, 'types.StringWithAggregatesFilter']
+    country: Union[_str, 'types.StringWithAggregatesFilter']
+    lat: Union[_float, 'types.FloatWithAggregatesFilter']
+    lng: Union[_float, 'types.FloatWithAggregatesFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+
+
+
+class VenueGroupByOutput(TypedDict, total=False):
+    id: _int
+    name: _str
+    street: _str
+    city: _str
+    state: _str
+    country: _str
+    lat: _float
+    lng: _float
+    createdAt: datetime.datetime
+    _sum: 'VenueSumAggregateOutput'
+    _avg: 'VenueAvgAggregateOutput'
+    _min: 'VenueMinAggregateOutput'
+    _max: 'VenueMaxAggregateOutput'
+    _count: 'VenueCountAggregateOutput'
+
+
+class VenueAvgAggregateOutput(TypedDict, total=False):
+    """Venue output for aggregating averages"""
+    id: float
+    lat: float
+    lng: float
+
+
+class VenueSumAggregateOutput(TypedDict, total=False):
+    """Venue output for aggregating sums"""
+    id: _int
+    lat: _float
+    lng: _float
+
+
+class VenueScalarAggregateOutput(TypedDict, total=False):
+    """Venue output including scalar fields"""
+    id: _int
+    name: _str
+    street: _str
+    city: _str
+    state: _str
+    country: _str
+    lat: _float
+    lng: _float
+    createdAt: datetime.datetime
+
+
+VenueMinAggregateOutput = VenueScalarAggregateOutput
+VenueMaxAggregateOutput = VenueScalarAggregateOutput
+
+
+class VenueMaxAggregateInput(TypedDict, total=False):
+    """Venue input for aggregating by max"""
+    id: bool
+    name: bool
+    street: bool
+    city: bool
+    state: bool
+    country: bool
+    lat: bool
+    lng: bool
+    createdAt: bool
+
+
+class VenueMinAggregateInput(TypedDict, total=False):
+    """Venue input for aggregating by min"""
+    id: bool
+    name: bool
+    street: bool
+    city: bool
+    state: bool
+    country: bool
+    lat: bool
+    lng: bool
+    createdAt: bool
+
+
+class VenueNumberAggregateInput(TypedDict, total=False):
+    """Venue input for aggregating numbers"""
+    id: bool
+    lat: bool
+    lng: bool
+
+
+VenueAvgAggregateInput = VenueNumberAggregateInput
+VenueSumAggregateInput = VenueNumberAggregateInput
+
+
+VenueCountAggregateInput = TypedDict(
+    'VenueCountAggregateInput',
+    {
+        'id': bool,
+        'name': bool,
+        'street': bool,
+        'city': bool,
+        'state': bool,
+        'country': bool,
+        'lat': bool,
+        'lng': bool,
+        'createdAt': bool,
+        '_all': bool,
+    },
+    total=False,
+)
+
+VenueCountAggregateOutput = TypedDict(
+    'VenueCountAggregateOutput',
+    {
+        'id': int,
+        'name': int,
+        'street': int,
+        'city': int,
+        'state': int,
+        'country': int,
+        'lat': int,
+        'lng': int,
+        'createdAt': int,
+        '_all': int,
+    },
+    total=False,
+)
+
+
+VenueKeys = Literal[
+    'id',
+    'name',
+    'street',
+    'city',
+    'state',
+    'country',
+    'lat',
+    'lng',
+    'createdAt',
+    'events',
+]
+VenueScalarFieldKeys = Literal[
+    'id',
+    'name',
+    'street',
+    'city',
+    'state',
+    'country',
+    'lat',
+    'lng',
+    'createdAt',
+]
+VenueScalarFieldKeysT = TypeVar('VenueScalarFieldKeysT', bound=VenueScalarFieldKeys)
+
+VenueRelationalFieldKeys = Literal[
+        'events',
+    ]
+
+# EventSource types
+
+class EventSourceOptionalCreateInput(TypedDict, total=False):
+    """Optional arguments to the EventSource create method"""
+    id: _int
+    label: Optional[_str]
+    createdAt: datetime.datetime
+    events: 'EventCreateManyNestedWithoutRelationsInput'
+
+
+class EventSourceCreateInput(EventSourceOptionalCreateInput):
+    """Required arguments to the EventSource create method"""
+    domain: _str
+
+
+# TODO: remove this in favour of without explicit relations
+# e.g. PostCreateWithoutAuthorInput
+
+class EventSourceOptionalCreateWithoutRelationsInput(TypedDict, total=False):
+    """Optional arguments to the EventSource create method, without relations"""
+    id: _int
+    label: Optional[_str]
+    createdAt: datetime.datetime
+
+
+class EventSourceCreateWithoutRelationsInput(EventSourceOptionalCreateWithoutRelationsInput):
+    """Required arguments to the EventSource create method, without relations"""
+    domain: _str
+
+class EventSourceConnectOrCreateWithoutRelationsInput(TypedDict):
+    create: 'EventSourceCreateWithoutRelationsInput'
+    where: 'EventSourceWhereUniqueInput'
+
+class EventSourceCreateNestedWithoutRelationsInput(TypedDict, total=False):
+    create: 'EventSourceCreateWithoutRelationsInput'
+    connect: 'EventSourceWhereUniqueInput'
+    connect_or_create: 'EventSourceConnectOrCreateWithoutRelationsInput'
+
+
+class EventSourceCreateManyNestedWithoutRelationsInput(TypedDict, total=False):
+    create: Union['EventSourceCreateWithoutRelationsInput', List['EventSourceCreateWithoutRelationsInput']]
+    connect: Union['EventSourceWhereUniqueInput', List['EventSourceWhereUniqueInput']]
+    connect_or_create: Union['EventSourceConnectOrCreateWithoutRelationsInput', List['EventSourceConnectOrCreateWithoutRelationsInput']]
+
+_EventSourceWhereUnique_id_Input = TypedDict(
+    '_EventSourceWhereUnique_id_Input',
+    {
+        'id': '_int',
+    },
+    total=True
+)
+
+_EventSourceWhereUnique_domain_Input = TypedDict(
+    '_EventSourceWhereUnique_domain_Input',
+    {
+        'domain': '_str',
+    },
+    total=True
+)
+
+EventSourceWhereUniqueInput = Union[
+    '_EventSourceWhereUnique_id_Input',
+    '_EventSourceWhereUnique_domain_Input',
+]
+
+
+class EventSourceUpdateInput(TypedDict, total=False):
+    """Optional arguments for updating a record"""
+    id: Union[AtomicIntInput, _int]
+    domain: _str
+    label: Optional[_str]
+    createdAt: datetime.datetime
+    events: 'EventUpdateManyWithoutRelationsInput'
+
+
+class EventSourceUpdateManyMutationInput(TypedDict, total=False):
+    """Arguments for updating many records"""
+    id: Union[AtomicIntInput, _int]
+    domain: _str
+    label: Optional[_str]
+    createdAt: datetime.datetime
+
+
+class EventSourceUpdateManyWithoutRelationsInput(TypedDict, total=False):
+    create: List['EventSourceCreateWithoutRelationsInput']
+    connect: List['EventSourceWhereUniqueInput']
+    connect_or_create: List['EventSourceConnectOrCreateWithoutRelationsInput']
+    set: List['EventSourceWhereUniqueInput']
+    disconnect: List['EventSourceWhereUniqueInput']
+    delete: List['EventSourceWhereUniqueInput']
+
+    # TODO
+    # update: List['EventSourceUpdateWithWhereUniqueWithoutRelationsInput']
+    # updateMany: List['EventSourceUpdateManyWithWhereUniqueWithoutRelationsInput']
+    # deleteMany: List['EventSourceScalarWhereInput']
+    # upsert: List['EventSourceUpserteWithWhereUniqueWithoutRelationsInput']
+
+
+class EventSourceUpdateOneWithoutRelationsInput(TypedDict, total=False):
+    create: 'EventSourceCreateWithoutRelationsInput'
+    connect: 'EventSourceWhereUniqueInput'
+    connect_or_create: 'EventSourceConnectOrCreateWithoutRelationsInput'
+    disconnect: bool
+    delete: bool
+
+    # TODO
+    # update: 'EventSourceUpdateInput'
+    # upsert: 'EventSourceUpsertWithoutRelationsInput'
+
+
+class EventSourceUpsertInput(TypedDict):
+    create: 'EventSourceCreateInput'
+    update: 'EventSourceUpdateInput'  # pyright: ignore[reportIncompatibleMethodOverride]
+
+
+_EventSource_id_OrderByInput = TypedDict(
+    '_EventSource_id_OrderByInput',
+    {
+        'id': 'SortOrder',
+    },
+    total=True
+)
+
+_EventSource_domain_OrderByInput = TypedDict(
+    '_EventSource_domain_OrderByInput',
+    {
+        'domain': 'SortOrder',
+    },
+    total=True
+)
+
+_EventSource_label_OrderByInput = TypedDict(
+    '_EventSource_label_OrderByInput',
+    {
+        'label': 'SortOrder',
+    },
+    total=True
+)
+
+_EventSource_createdAt_OrderByInput = TypedDict(
+    '_EventSource_createdAt_OrderByInput',
+    {
+        'createdAt': 'SortOrder',
+    },
+    total=True
+)
+
+_EventSource_RelevanceInner = TypedDict(
+    '_EventSource_RelevanceInner',
+    {
+        'fields': 'List[EventSourceScalarFieldKeys]',
+        'search': 'str',
+        'sort': 'SortOrder',
+    },
+    total=True
+)
+
+_EventSource_RelevanceOrderByInput = TypedDict(
+    '_EventSource_RelevanceOrderByInput',
+    {
+        '_relevance': '_EventSource_RelevanceInner',
+    },
+    total=True
+)
+
+EventSourceOrderByInput = Union[
+    '_EventSource_id_OrderByInput',
+    '_EventSource_domain_OrderByInput',
+    '_EventSource_label_OrderByInput',
+    '_EventSource_createdAt_OrderByInput',
+    '_EventSource_RelevanceOrderByInput',
+]
+
+
+
+# recursive EventSource types
+# TODO: cleanup these types
+
+
+# Dict[str, Any] is a mypy limitation
+# see https://github.com/RobertCraigie/prisma-client-py/issues/45
+# switch to pyright for improved types, see https://prisma-client-py.readthedocs.io/en/stable/reference/limitations/
+
+EventSourceRelationFilter = TypedDict(
+    'EventSourceRelationFilter',
+    {
+        'is': 'Dict[str, Any]',
+        'is_not': 'Dict[str, Any]',
+    },
+    total=False,
+)
+
+
+class EventSourceListRelationFilter(TypedDict, total=False):
+    some: 'Dict[str, Any]'
+    none: 'Dict[str, Any]'
+    every: 'Dict[str, Any]'
+
+
+class EventSourceInclude(TypedDict, total=False):
+    """EventSource relational arguments"""
+    events: Union[bool, 'FindManyEventArgsFromEventSource']
+
+
+    
+
+class UserIncludeFromEventSource(TypedDict, total=False):
+    """Relational arguments for EventSource"""
+    savedEvents: Union[bool, 'FindManySavedEventArgsFromEventSourceRecursive1']
+
+
+class UserIncludeFromEventSourceRecursive1(TypedDict, total=False):
+    """Relational arguments for EventSource"""
+    savedEvents: Union[bool, 'FindManySavedEventArgsFromEventSourceRecursive2']
+
+
+class UserIncludeFromEventSourceRecursive2(TypedDict, total=False):
+    """Relational arguments for EventSource"""
+    savedEvents: Union[bool, 'FindManySavedEventArgsFromEventSourceRecursive3']
+
+
+class UserIncludeFromEventSourceRecursive3(TypedDict, total=False):
+    """Relational arguments for EventSource"""
+    savedEvents: Union[bool, 'FindManySavedEventArgsFromEventSourceRecursive4']
+
+
+class UserIncludeFromEventSourceRecursive4(TypedDict, total=False):
+    """Relational arguments for EventSource"""
+
+    
+
+class UserArgsFromEventSource(TypedDict, total=False):
+    """Arguments for EventSource"""
+    include: 'UserIncludeFromUserRecursive1'
+
+
+class UserArgsFromEventSourceRecursive1(TypedDict, total=False):
+    """Arguments for EventSource"""
+    include: 'UserIncludeFromUserRecursive2'
+
+
+class UserArgsFromEventSourceRecursive2(TypedDict, total=False):
+    """Arguments for EventSource"""
+    include: 'UserIncludeFromUserRecursive3'
+
+
+class UserArgsFromEventSourceRecursive3(TypedDict, total=False):
+    """Arguments for EventSource"""
+    include: 'UserIncludeFromUserRecursive4'
+
+
+class UserArgsFromEventSourceRecursive4(TypedDict, total=False):
+    """Arguments for EventSource"""
+    
+    
+
+class FindManyUserArgsFromEventSource(TypedDict, total=False):
+    """Arguments for EventSource"""
+    take: int
+    skip: int
+    order_by: Union['UserOrderByInput', List['UserOrderByInput']]
+    where: 'UserWhereInput'
+    cursor: 'UserWhereUniqueInput'
+    distinct: List['UserScalarFieldKeys']
+    include: 'UserIncludeFromUserRecursive1'
+
+
+class FindManyUserArgsFromEventSourceRecursive1(TypedDict, total=False):
+    """Arguments for EventSource"""
+    take: int
+    skip: int
+    order_by: Union['UserOrderByInput', List['UserOrderByInput']]
+    where: 'UserWhereInput'
+    cursor: 'UserWhereUniqueInput'
+    distinct: List['UserScalarFieldKeys']
+    include: 'UserIncludeFromUserRecursive2'
+
+
+class FindManyUserArgsFromEventSourceRecursive2(TypedDict, total=False):
+    """Arguments for EventSource"""
+    take: int
+    skip: int
+    order_by: Union['UserOrderByInput', List['UserOrderByInput']]
+    where: 'UserWhereInput'
+    cursor: 'UserWhereUniqueInput'
+    distinct: List['UserScalarFieldKeys']
+    include: 'UserIncludeFromUserRecursive3'
+
+
+class FindManyUserArgsFromEventSourceRecursive3(TypedDict, total=False):
+    """Arguments for EventSource"""
+    take: int
+    skip: int
+    order_by: Union['UserOrderByInput', List['UserOrderByInput']]
+    where: 'UserWhereInput'
+    cursor: 'UserWhereUniqueInput'
+    distinct: List['UserScalarFieldKeys']
+    include: 'UserIncludeFromUserRecursive4'
+
+
+class FindManyUserArgsFromEventSourceRecursive4(TypedDict, total=False):
+    """Arguments for EventSource"""
+    take: int
+    skip: int
+    order_by: Union['UserOrderByInput', List['UserOrderByInput']]
+    where: 'UserWhereInput'
+    cursor: 'UserWhereUniqueInput'
+    distinct: List['UserScalarFieldKeys']
+    
+    
+
+class VenueIncludeFromEventSource(TypedDict, total=False):
+    """Relational arguments for EventSource"""
+    events: Union[bool, 'FindManyEventArgsFromEventSourceRecursive1']
+
+
+class VenueIncludeFromEventSourceRecursive1(TypedDict, total=False):
+    """Relational arguments for EventSource"""
+    events: Union[bool, 'FindManyEventArgsFromEventSourceRecursive2']
+
+
+class VenueIncludeFromEventSourceRecursive2(TypedDict, total=False):
+    """Relational arguments for EventSource"""
+    events: Union[bool, 'FindManyEventArgsFromEventSourceRecursive3']
+
+
+class VenueIncludeFromEventSourceRecursive3(TypedDict, total=False):
+    """Relational arguments for EventSource"""
+    events: Union[bool, 'FindManyEventArgsFromEventSourceRecursive4']
+
+
+class VenueIncludeFromEventSourceRecursive4(TypedDict, total=False):
+    """Relational arguments for EventSource"""
+
+    
+
+class VenueArgsFromEventSource(TypedDict, total=False):
+    """Arguments for EventSource"""
+    include: 'VenueIncludeFromVenueRecursive1'
+
+
+class VenueArgsFromEventSourceRecursive1(TypedDict, total=False):
+    """Arguments for EventSource"""
+    include: 'VenueIncludeFromVenueRecursive2'
+
+
+class VenueArgsFromEventSourceRecursive2(TypedDict, total=False):
+    """Arguments for EventSource"""
+    include: 'VenueIncludeFromVenueRecursive3'
+
+
+class VenueArgsFromEventSourceRecursive3(TypedDict, total=False):
+    """Arguments for EventSource"""
+    include: 'VenueIncludeFromVenueRecursive4'
+
+
+class VenueArgsFromEventSourceRecursive4(TypedDict, total=False):
+    """Arguments for EventSource"""
+    
+    
+
+class FindManyVenueArgsFromEventSource(TypedDict, total=False):
+    """Arguments for EventSource"""
+    take: int
+    skip: int
+    order_by: Union['VenueOrderByInput', List['VenueOrderByInput']]
+    where: 'VenueWhereInput'
+    cursor: 'VenueWhereUniqueInput'
+    distinct: List['VenueScalarFieldKeys']
+    include: 'VenueIncludeFromVenueRecursive1'
+
+
+class FindManyVenueArgsFromEventSourceRecursive1(TypedDict, total=False):
+    """Arguments for EventSource"""
+    take: int
+    skip: int
+    order_by: Union['VenueOrderByInput', List['VenueOrderByInput']]
+    where: 'VenueWhereInput'
+    cursor: 'VenueWhereUniqueInput'
+    distinct: List['VenueScalarFieldKeys']
+    include: 'VenueIncludeFromVenueRecursive2'
+
+
+class FindManyVenueArgsFromEventSourceRecursive2(TypedDict, total=False):
+    """Arguments for EventSource"""
+    take: int
+    skip: int
+    order_by: Union['VenueOrderByInput', List['VenueOrderByInput']]
+    where: 'VenueWhereInput'
+    cursor: 'VenueWhereUniqueInput'
+    distinct: List['VenueScalarFieldKeys']
+    include: 'VenueIncludeFromVenueRecursive3'
+
+
+class FindManyVenueArgsFromEventSourceRecursive3(TypedDict, total=False):
+    """Arguments for EventSource"""
+    take: int
+    skip: int
+    order_by: Union['VenueOrderByInput', List['VenueOrderByInput']]
+    where: 'VenueWhereInput'
+    cursor: 'VenueWhereUniqueInput'
+    distinct: List['VenueScalarFieldKeys']
+    include: 'VenueIncludeFromVenueRecursive4'
+
+
+class FindManyVenueArgsFromEventSourceRecursive4(TypedDict, total=False):
+    """Arguments for EventSource"""
+    take: int
+    skip: int
+    order_by: Union['VenueOrderByInput', List['VenueOrderByInput']]
+    where: 'VenueWhereInput'
+    cursor: 'VenueWhereUniqueInput'
+    distinct: List['VenueScalarFieldKeys']
+    
+    
+
+class EventSourceIncludeFromEventSource(TypedDict, total=False):
+    """Relational arguments for EventSource"""
+    events: Union[bool, 'FindManyEventArgsFromEventSourceRecursive1']
+
+
+class EventSourceIncludeFromEventSourceRecursive1(TypedDict, total=False):
+    """Relational arguments for EventSource"""
+    events: Union[bool, 'FindManyEventArgsFromEventSourceRecursive2']
+
+
+class EventSourceIncludeFromEventSourceRecursive2(TypedDict, total=False):
+    """Relational arguments for EventSource"""
+    events: Union[bool, 'FindManyEventArgsFromEventSourceRecursive3']
+
+
+class EventSourceIncludeFromEventSourceRecursive3(TypedDict, total=False):
+    """Relational arguments for EventSource"""
+    events: Union[bool, 'FindManyEventArgsFromEventSourceRecursive4']
+
+
+class EventSourceIncludeFromEventSourceRecursive4(TypedDict, total=False):
+    """Relational arguments for EventSource"""
+
+    
+
+class EventSourceArgsFromEventSource(TypedDict, total=False):
+    """Arguments for EventSource"""
+    include: 'EventSourceIncludeFromEventSourceRecursive1'
+
+
+class EventSourceArgsFromEventSourceRecursive1(TypedDict, total=False):
+    """Arguments for EventSource"""
+    include: 'EventSourceIncludeFromEventSourceRecursive2'
+
+
+class EventSourceArgsFromEventSourceRecursive2(TypedDict, total=False):
+    """Arguments for EventSource"""
+    include: 'EventSourceIncludeFromEventSourceRecursive3'
+
+
+class EventSourceArgsFromEventSourceRecursive3(TypedDict, total=False):
+    """Arguments for EventSource"""
+    include: 'EventSourceIncludeFromEventSourceRecursive4'
+
+
+class EventSourceArgsFromEventSourceRecursive4(TypedDict, total=False):
+    """Arguments for EventSource"""
+    
+    
+
+class FindManyEventSourceArgsFromEventSource(TypedDict, total=False):
+    """Arguments for EventSource"""
+    take: int
+    skip: int
+    order_by: Union['EventSourceOrderByInput', List['EventSourceOrderByInput']]
+    where: 'EventSourceWhereInput'
+    cursor: 'EventSourceWhereUniqueInput'
+    distinct: List['EventSourceScalarFieldKeys']
+    include: 'EventSourceIncludeFromEventSourceRecursive1'
+
+
+class FindManyEventSourceArgsFromEventSourceRecursive1(TypedDict, total=False):
+    """Arguments for EventSource"""
+    take: int
+    skip: int
+    order_by: Union['EventSourceOrderByInput', List['EventSourceOrderByInput']]
+    where: 'EventSourceWhereInput'
+    cursor: 'EventSourceWhereUniqueInput'
+    distinct: List['EventSourceScalarFieldKeys']
+    include: 'EventSourceIncludeFromEventSourceRecursive2'
+
+
+class FindManyEventSourceArgsFromEventSourceRecursive2(TypedDict, total=False):
+    """Arguments for EventSource"""
+    take: int
+    skip: int
+    order_by: Union['EventSourceOrderByInput', List['EventSourceOrderByInput']]
+    where: 'EventSourceWhereInput'
+    cursor: 'EventSourceWhereUniqueInput'
+    distinct: List['EventSourceScalarFieldKeys']
+    include: 'EventSourceIncludeFromEventSourceRecursive3'
+
+
+class FindManyEventSourceArgsFromEventSourceRecursive3(TypedDict, total=False):
+    """Arguments for EventSource"""
+    take: int
+    skip: int
+    order_by: Union['EventSourceOrderByInput', List['EventSourceOrderByInput']]
+    where: 'EventSourceWhereInput'
+    cursor: 'EventSourceWhereUniqueInput'
+    distinct: List['EventSourceScalarFieldKeys']
+    include: 'EventSourceIncludeFromEventSourceRecursive4'
+
+
+class FindManyEventSourceArgsFromEventSourceRecursive4(TypedDict, total=False):
+    """Arguments for EventSource"""
+    take: int
+    skip: int
+    order_by: Union['EventSourceOrderByInput', List['EventSourceOrderByInput']]
+    where: 'EventSourceWhereInput'
+    cursor: 'EventSourceWhereUniqueInput'
+    distinct: List['EventSourceScalarFieldKeys']
+    
+    
+
+class TagIncludeFromEventSource(TypedDict, total=False):
+    """Relational arguments for EventSource"""
+    events: Union[bool, 'FindManyEventArgsFromEventSourceRecursive1']
+
+
+class TagIncludeFromEventSourceRecursive1(TypedDict, total=False):
+    """Relational arguments for EventSource"""
+    events: Union[bool, 'FindManyEventArgsFromEventSourceRecursive2']
+
+
+class TagIncludeFromEventSourceRecursive2(TypedDict, total=False):
+    """Relational arguments for EventSource"""
+    events: Union[bool, 'FindManyEventArgsFromEventSourceRecursive3']
+
+
+class TagIncludeFromEventSourceRecursive3(TypedDict, total=False):
+    """Relational arguments for EventSource"""
+    events: Union[bool, 'FindManyEventArgsFromEventSourceRecursive4']
+
+
+class TagIncludeFromEventSourceRecursive4(TypedDict, total=False):
+    """Relational arguments for EventSource"""
+
+    
+
+class TagArgsFromEventSource(TypedDict, total=False):
+    """Arguments for EventSource"""
+    include: 'TagIncludeFromTagRecursive1'
+
+
+class TagArgsFromEventSourceRecursive1(TypedDict, total=False):
+    """Arguments for EventSource"""
+    include: 'TagIncludeFromTagRecursive2'
+
+
+class TagArgsFromEventSourceRecursive2(TypedDict, total=False):
+    """Arguments for EventSource"""
+    include: 'TagIncludeFromTagRecursive3'
+
+
+class TagArgsFromEventSourceRecursive3(TypedDict, total=False):
+    """Arguments for EventSource"""
+    include: 'TagIncludeFromTagRecursive4'
+
+
+class TagArgsFromEventSourceRecursive4(TypedDict, total=False):
+    """Arguments for EventSource"""
+    
+    
+
+class FindManyTagArgsFromEventSource(TypedDict, total=False):
+    """Arguments for EventSource"""
+    take: int
+    skip: int
+    order_by: Union['TagOrderByInput', List['TagOrderByInput']]
+    where: 'TagWhereInput'
+    cursor: 'TagWhereUniqueInput'
+    distinct: List['TagScalarFieldKeys']
+    include: 'TagIncludeFromTagRecursive1'
+
+
+class FindManyTagArgsFromEventSourceRecursive1(TypedDict, total=False):
+    """Arguments for EventSource"""
+    take: int
+    skip: int
+    order_by: Union['TagOrderByInput', List['TagOrderByInput']]
+    where: 'TagWhereInput'
+    cursor: 'TagWhereUniqueInput'
+    distinct: List['TagScalarFieldKeys']
+    include: 'TagIncludeFromTagRecursive2'
+
+
+class FindManyTagArgsFromEventSourceRecursive2(TypedDict, total=False):
+    """Arguments for EventSource"""
+    take: int
+    skip: int
+    order_by: Union['TagOrderByInput', List['TagOrderByInput']]
+    where: 'TagWhereInput'
+    cursor: 'TagWhereUniqueInput'
+    distinct: List['TagScalarFieldKeys']
+    include: 'TagIncludeFromTagRecursive3'
+
+
+class FindManyTagArgsFromEventSourceRecursive3(TypedDict, total=False):
+    """Arguments for EventSource"""
+    take: int
+    skip: int
+    order_by: Union['TagOrderByInput', List['TagOrderByInput']]
+    where: 'TagWhereInput'
+    cursor: 'TagWhereUniqueInput'
+    distinct: List['TagScalarFieldKeys']
+    include: 'TagIncludeFromTagRecursive4'
+
+
+class FindManyTagArgsFromEventSourceRecursive4(TypedDict, total=False):
+    """Arguments for EventSource"""
+    take: int
+    skip: int
+    order_by: Union['TagOrderByInput', List['TagOrderByInput']]
+    where: 'TagWhereInput'
+    cursor: 'TagWhereUniqueInput'
+    distinct: List['TagScalarFieldKeys']
+    
+    
+
+class EventIncludeFromEventSource(TypedDict, total=False):
+    """Relational arguments for EventSource"""
+    venue: Union[bool, 'VenueArgsFromEventSourceRecursive1']
+    source: Union[bool, 'EventSourceArgsFromEventSourceRecursive1']
+    tags: Union[bool, 'FindManyTagArgsFromEventSourceRecursive1']
+    savedBy: Union[bool, 'FindManySavedEventArgsFromEventSourceRecursive1']
+
+
+class EventIncludeFromEventSourceRecursive1(TypedDict, total=False):
+    """Relational arguments for EventSource"""
+    venue: Union[bool, 'VenueArgsFromEventSourceRecursive2']
+    source: Union[bool, 'EventSourceArgsFromEventSourceRecursive2']
+    tags: Union[bool, 'FindManyTagArgsFromEventSourceRecursive2']
+    savedBy: Union[bool, 'FindManySavedEventArgsFromEventSourceRecursive2']
+
+
+class EventIncludeFromEventSourceRecursive2(TypedDict, total=False):
+    """Relational arguments for EventSource"""
+    venue: Union[bool, 'VenueArgsFromEventSourceRecursive3']
+    source: Union[bool, 'EventSourceArgsFromEventSourceRecursive3']
+    tags: Union[bool, 'FindManyTagArgsFromEventSourceRecursive3']
+    savedBy: Union[bool, 'FindManySavedEventArgsFromEventSourceRecursive3']
+
+
+class EventIncludeFromEventSourceRecursive3(TypedDict, total=False):
+    """Relational arguments for EventSource"""
+    venue: Union[bool, 'VenueArgsFromEventSourceRecursive4']
+    source: Union[bool, 'EventSourceArgsFromEventSourceRecursive4']
+    tags: Union[bool, 'FindManyTagArgsFromEventSourceRecursive4']
+    savedBy: Union[bool, 'FindManySavedEventArgsFromEventSourceRecursive4']
+
+
+class EventIncludeFromEventSourceRecursive4(TypedDict, total=False):
+    """Relational arguments for EventSource"""
+
+    
+
+class EventArgsFromEventSource(TypedDict, total=False):
+    """Arguments for EventSource"""
+    include: 'EventIncludeFromEventRecursive1'
+
+
+class EventArgsFromEventSourceRecursive1(TypedDict, total=False):
+    """Arguments for EventSource"""
+    include: 'EventIncludeFromEventRecursive2'
+
+
+class EventArgsFromEventSourceRecursive2(TypedDict, total=False):
+    """Arguments for EventSource"""
+    include: 'EventIncludeFromEventRecursive3'
+
+
+class EventArgsFromEventSourceRecursive3(TypedDict, total=False):
+    """Arguments for EventSource"""
+    include: 'EventIncludeFromEventRecursive4'
+
+
+class EventArgsFromEventSourceRecursive4(TypedDict, total=False):
+    """Arguments for EventSource"""
+    
+    
+
+class FindManyEventArgsFromEventSource(TypedDict, total=False):
+    """Arguments for EventSource"""
+    take: int
+    skip: int
+    order_by: Union['EventOrderByInput', List['EventOrderByInput']]
+    where: 'EventWhereInput'
+    cursor: 'EventWhereUniqueInput'
+    distinct: List['EventScalarFieldKeys']
+    include: 'EventIncludeFromEventRecursive1'
+
+
+class FindManyEventArgsFromEventSourceRecursive1(TypedDict, total=False):
+    """Arguments for EventSource"""
+    take: int
+    skip: int
+    order_by: Union['EventOrderByInput', List['EventOrderByInput']]
+    where: 'EventWhereInput'
+    cursor: 'EventWhereUniqueInput'
+    distinct: List['EventScalarFieldKeys']
+    include: 'EventIncludeFromEventRecursive2'
+
+
+class FindManyEventArgsFromEventSourceRecursive2(TypedDict, total=False):
+    """Arguments for EventSource"""
+    take: int
+    skip: int
+    order_by: Union['EventOrderByInput', List['EventOrderByInput']]
+    where: 'EventWhereInput'
+    cursor: 'EventWhereUniqueInput'
+    distinct: List['EventScalarFieldKeys']
+    include: 'EventIncludeFromEventRecursive3'
+
+
+class FindManyEventArgsFromEventSourceRecursive3(TypedDict, total=False):
+    """Arguments for EventSource"""
+    take: int
+    skip: int
+    order_by: Union['EventOrderByInput', List['EventOrderByInput']]
+    where: 'EventWhereInput'
+    cursor: 'EventWhereUniqueInput'
+    distinct: List['EventScalarFieldKeys']
+    include: 'EventIncludeFromEventRecursive4'
+
+
+class FindManyEventArgsFromEventSourceRecursive4(TypedDict, total=False):
+    """Arguments for EventSource"""
+    take: int
+    skip: int
+    order_by: Union['EventOrderByInput', List['EventOrderByInput']]
+    where: 'EventWhereInput'
+    cursor: 'EventWhereUniqueInput'
+    distinct: List['EventScalarFieldKeys']
+    
+    
+
+class SavedEventIncludeFromEventSource(TypedDict, total=False):
+    """Relational arguments for EventSource"""
+    user: Union[bool, 'UserArgsFromEventSourceRecursive1']
+    event: Union[bool, 'EventArgsFromEventSourceRecursive1']
+
+
+class SavedEventIncludeFromEventSourceRecursive1(TypedDict, total=False):
+    """Relational arguments for EventSource"""
+    user: Union[bool, 'UserArgsFromEventSourceRecursive2']
+    event: Union[bool, 'EventArgsFromEventSourceRecursive2']
+
+
+class SavedEventIncludeFromEventSourceRecursive2(TypedDict, total=False):
+    """Relational arguments for EventSource"""
+    user: Union[bool, 'UserArgsFromEventSourceRecursive3']
+    event: Union[bool, 'EventArgsFromEventSourceRecursive3']
+
+
+class SavedEventIncludeFromEventSourceRecursive3(TypedDict, total=False):
+    """Relational arguments for EventSource"""
+    user: Union[bool, 'UserArgsFromEventSourceRecursive4']
+    event: Union[bool, 'EventArgsFromEventSourceRecursive4']
+
+
+class SavedEventIncludeFromEventSourceRecursive4(TypedDict, total=False):
+    """Relational arguments for EventSource"""
+
+    
+
+class SavedEventArgsFromEventSource(TypedDict, total=False):
+    """Arguments for EventSource"""
+    include: 'SavedEventIncludeFromSavedEventRecursive1'
+
+
+class SavedEventArgsFromEventSourceRecursive1(TypedDict, total=False):
+    """Arguments for EventSource"""
+    include: 'SavedEventIncludeFromSavedEventRecursive2'
+
+
+class SavedEventArgsFromEventSourceRecursive2(TypedDict, total=False):
+    """Arguments for EventSource"""
+    include: 'SavedEventIncludeFromSavedEventRecursive3'
+
+
+class SavedEventArgsFromEventSourceRecursive3(TypedDict, total=False):
+    """Arguments for EventSource"""
+    include: 'SavedEventIncludeFromSavedEventRecursive4'
+
+
+class SavedEventArgsFromEventSourceRecursive4(TypedDict, total=False):
+    """Arguments for EventSource"""
+    
+    
+
+class FindManySavedEventArgsFromEventSource(TypedDict, total=False):
+    """Arguments for EventSource"""
+    take: int
+    skip: int
+    order_by: Union['SavedEventOrderByInput', List['SavedEventOrderByInput']]
+    where: 'SavedEventWhereInput'
+    cursor: 'SavedEventWhereUniqueInput'
+    distinct: List['SavedEventScalarFieldKeys']
+    include: 'SavedEventIncludeFromSavedEventRecursive1'
+
+
+class FindManySavedEventArgsFromEventSourceRecursive1(TypedDict, total=False):
+    """Arguments for EventSource"""
+    take: int
+    skip: int
+    order_by: Union['SavedEventOrderByInput', List['SavedEventOrderByInput']]
+    where: 'SavedEventWhereInput'
+    cursor: 'SavedEventWhereUniqueInput'
+    distinct: List['SavedEventScalarFieldKeys']
+    include: 'SavedEventIncludeFromSavedEventRecursive2'
+
+
+class FindManySavedEventArgsFromEventSourceRecursive2(TypedDict, total=False):
+    """Arguments for EventSource"""
+    take: int
+    skip: int
+    order_by: Union['SavedEventOrderByInput', List['SavedEventOrderByInput']]
+    where: 'SavedEventWhereInput'
+    cursor: 'SavedEventWhereUniqueInput'
+    distinct: List['SavedEventScalarFieldKeys']
+    include: 'SavedEventIncludeFromSavedEventRecursive3'
+
+
+class FindManySavedEventArgsFromEventSourceRecursive3(TypedDict, total=False):
+    """Arguments for EventSource"""
+    take: int
+    skip: int
+    order_by: Union['SavedEventOrderByInput', List['SavedEventOrderByInput']]
+    where: 'SavedEventWhereInput'
+    cursor: 'SavedEventWhereUniqueInput'
+    distinct: List['SavedEventScalarFieldKeys']
+    include: 'SavedEventIncludeFromSavedEventRecursive4'
+
+
+class FindManySavedEventArgsFromEventSourceRecursive4(TypedDict, total=False):
+    """Arguments for EventSource"""
+    take: int
+    skip: int
+    order_by: Union['SavedEventOrderByInput', List['SavedEventOrderByInput']]
+    where: 'SavedEventWhereInput'
+    cursor: 'SavedEventWhereUniqueInput'
+    distinct: List['SavedEventScalarFieldKeys']
+    
+
+
+FindManyEventSourceArgs = FindManyEventSourceArgsFromEventSource
+FindFirstEventSourceArgs = FindManyEventSourceArgsFromEventSource
+
+
+    
+
+class EventSourceWhereInput(TypedDict, total=False):
+    """EventSource arguments for searching"""
+    id: Union[_int, 'types.IntFilter']
+    domain: Union[_str, 'types.StringFilter']
+    label: Union[None, _str, 'types.StringFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeFilter']
+    events: 'EventListRelationFilter'
+
+    # should be noted that AND and NOT should be Union['EventSourceWhereInputRecursive1', List['EventSourceWhereInputRecursive1']]
+    # but this causes mypy to hang :/
+    AND: List['EventSourceWhereInputRecursive1']
+    OR: List['EventSourceWhereInputRecursive1']
+    NOT: List['EventSourceWhereInputRecursive1']
+
+
+class EventSourceWhereInputRecursive1(TypedDict, total=False):
+    """EventSource arguments for searching"""
+    id: Union[_int, 'types.IntFilter']
+    domain: Union[_str, 'types.StringFilter']
+    label: Union[None, _str, 'types.StringFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeFilter']
+    events: 'EventListRelationFilter'
+
+    # should be noted that AND and NOT should be Union['EventSourceWhereInputRecursive2', List['EventSourceWhereInputRecursive2']]
+    # but this causes mypy to hang :/
+    AND: List['EventSourceWhereInputRecursive2']
+    OR: List['EventSourceWhereInputRecursive2']
+    NOT: List['EventSourceWhereInputRecursive2']
+
+
+class EventSourceWhereInputRecursive2(TypedDict, total=False):
+    """EventSource arguments for searching"""
+    id: Union[_int, 'types.IntFilter']
+    domain: Union[_str, 'types.StringFilter']
+    label: Union[None, _str, 'types.StringFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeFilter']
+    events: 'EventListRelationFilter'
+
+    # should be noted that AND and NOT should be Union['EventSourceWhereInputRecursive3', List['EventSourceWhereInputRecursive3']]
+    # but this causes mypy to hang :/
+    AND: List['EventSourceWhereInputRecursive3']
+    OR: List['EventSourceWhereInputRecursive3']
+    NOT: List['EventSourceWhereInputRecursive3']
+
+
+class EventSourceWhereInputRecursive3(TypedDict, total=False):
+    """EventSource arguments for searching"""
+    id: Union[_int, 'types.IntFilter']
+    domain: Union[_str, 'types.StringFilter']
+    label: Union[None, _str, 'types.StringFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeFilter']
+    events: 'EventListRelationFilter'
+
+    # should be noted that AND and NOT should be Union['EventSourceWhereInputRecursive4', List['EventSourceWhereInputRecursive4']]
+    # but this causes mypy to hang :/
+    AND: List['EventSourceWhereInputRecursive4']
+    OR: List['EventSourceWhereInputRecursive4']
+    NOT: List['EventSourceWhereInputRecursive4']
+
+
+class EventSourceWhereInputRecursive4(TypedDict, total=False):
+    """EventSource arguments for searching"""
+    id: Union[_int, 'types.IntFilter']
+    domain: Union[_str, 'types.StringFilter']
+    label: Union[None, _str, 'types.StringFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeFilter']
+    events: 'EventListRelationFilter'
+
+
+
+# aggregate EventSource types
+
+
+    
+
+class EventSourceScalarWhereWithAggregatesInput(TypedDict, total=False):
+    """EventSource arguments for searching"""
+    id: Union[_int, 'types.IntWithAggregatesFilter']
+    domain: Union[_str, 'types.StringWithAggregatesFilter']
+    label: Union[_str, 'types.StringWithAggregatesFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+
+    AND: List['EventSourceScalarWhereWithAggregatesInputRecursive1']
+    OR: List['EventSourceScalarWhereWithAggregatesInputRecursive1']
+    NOT: List['EventSourceScalarWhereWithAggregatesInputRecursive1']
+
+
+class EventSourceScalarWhereWithAggregatesInputRecursive1(TypedDict, total=False):
+    """EventSource arguments for searching"""
+    id: Union[_int, 'types.IntWithAggregatesFilter']
+    domain: Union[_str, 'types.StringWithAggregatesFilter']
+    label: Union[_str, 'types.StringWithAggregatesFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+
+    AND: List['EventSourceScalarWhereWithAggregatesInputRecursive2']
+    OR: List['EventSourceScalarWhereWithAggregatesInputRecursive2']
+    NOT: List['EventSourceScalarWhereWithAggregatesInputRecursive2']
+
+
+class EventSourceScalarWhereWithAggregatesInputRecursive2(TypedDict, total=False):
+    """EventSource arguments for searching"""
+    id: Union[_int, 'types.IntWithAggregatesFilter']
+    domain: Union[_str, 'types.StringWithAggregatesFilter']
+    label: Union[_str, 'types.StringWithAggregatesFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+
+    AND: List['EventSourceScalarWhereWithAggregatesInputRecursive3']
+    OR: List['EventSourceScalarWhereWithAggregatesInputRecursive3']
+    NOT: List['EventSourceScalarWhereWithAggregatesInputRecursive3']
+
+
+class EventSourceScalarWhereWithAggregatesInputRecursive3(TypedDict, total=False):
+    """EventSource arguments for searching"""
+    id: Union[_int, 'types.IntWithAggregatesFilter']
+    domain: Union[_str, 'types.StringWithAggregatesFilter']
+    label: Union[_str, 'types.StringWithAggregatesFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+
+    AND: List['EventSourceScalarWhereWithAggregatesInputRecursive4']
+    OR: List['EventSourceScalarWhereWithAggregatesInputRecursive4']
+    NOT: List['EventSourceScalarWhereWithAggregatesInputRecursive4']
+
+
+class EventSourceScalarWhereWithAggregatesInputRecursive4(TypedDict, total=False):
+    """EventSource arguments for searching"""
+    id: Union[_int, 'types.IntWithAggregatesFilter']
+    domain: Union[_str, 'types.StringWithAggregatesFilter']
+    label: Union[_str, 'types.StringWithAggregatesFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+
+
+
+class EventSourceGroupByOutput(TypedDict, total=False):
+    id: _int
+    domain: _str
+    label: _str
+    createdAt: datetime.datetime
+    _sum: 'EventSourceSumAggregateOutput'
+    _avg: 'EventSourceAvgAggregateOutput'
+    _min: 'EventSourceMinAggregateOutput'
+    _max: 'EventSourceMaxAggregateOutput'
+    _count: 'EventSourceCountAggregateOutput'
+
+
+class EventSourceAvgAggregateOutput(TypedDict, total=False):
+    """EventSource output for aggregating averages"""
+    id: float
+
+
+class EventSourceSumAggregateOutput(TypedDict, total=False):
+    """EventSource output for aggregating sums"""
+    id: _int
+
+
+class EventSourceScalarAggregateOutput(TypedDict, total=False):
+    """EventSource output including scalar fields"""
+    id: _int
+    domain: _str
+    label: _str
+    createdAt: datetime.datetime
+
+
+EventSourceMinAggregateOutput = EventSourceScalarAggregateOutput
+EventSourceMaxAggregateOutput = EventSourceScalarAggregateOutput
+
+
+class EventSourceMaxAggregateInput(TypedDict, total=False):
+    """EventSource input for aggregating by max"""
+    id: bool
+    domain: bool
+    label: bool
+    createdAt: bool
+
+
+class EventSourceMinAggregateInput(TypedDict, total=False):
+    """EventSource input for aggregating by min"""
+    id: bool
+    domain: bool
+    label: bool
+    createdAt: bool
+
+
+class EventSourceNumberAggregateInput(TypedDict, total=False):
+    """EventSource input for aggregating numbers"""
+    id: bool
+
+
+EventSourceAvgAggregateInput = EventSourceNumberAggregateInput
+EventSourceSumAggregateInput = EventSourceNumberAggregateInput
+
+
+EventSourceCountAggregateInput = TypedDict(
+    'EventSourceCountAggregateInput',
+    {
+        'id': bool,
+        'domain': bool,
+        'label': bool,
+        'createdAt': bool,
+        '_all': bool,
+    },
+    total=False,
+)
+
+EventSourceCountAggregateOutput = TypedDict(
+    'EventSourceCountAggregateOutput',
+    {
+        'id': int,
+        'domain': int,
+        'label': int,
+        'createdAt': int,
+        '_all': int,
+    },
+    total=False,
+)
+
+
+EventSourceKeys = Literal[
+    'id',
+    'domain',
+    'label',
+    'createdAt',
+    'events',
+]
+EventSourceScalarFieldKeys = Literal[
+    'id',
+    'domain',
+    'label',
+    'createdAt',
+]
+EventSourceScalarFieldKeysT = TypeVar('EventSourceScalarFieldKeysT', bound=EventSourceScalarFieldKeys)
+
+EventSourceRelationalFieldKeys = Literal[
+        'events',
+    ]
+
+# Tag types
+
+class TagOptionalCreateInput(TypedDict, total=False):
+    """Optional arguments to the Tag create method"""
+    id: _int
+    events: 'EventCreateManyNestedWithoutRelationsInput'
+
+
+class TagCreateInput(TagOptionalCreateInput):
+    """Required arguments to the Tag create method"""
+    name: _str
+
+
+# TODO: remove this in favour of without explicit relations
+# e.g. PostCreateWithoutAuthorInput
+
+class TagOptionalCreateWithoutRelationsInput(TypedDict, total=False):
+    """Optional arguments to the Tag create method, without relations"""
+    id: _int
+
+
+class TagCreateWithoutRelationsInput(TagOptionalCreateWithoutRelationsInput):
+    """Required arguments to the Tag create method, without relations"""
+    name: _str
+
+class TagConnectOrCreateWithoutRelationsInput(TypedDict):
+    create: 'TagCreateWithoutRelationsInput'
+    where: 'TagWhereUniqueInput'
+
+class TagCreateNestedWithoutRelationsInput(TypedDict, total=False):
+    create: 'TagCreateWithoutRelationsInput'
+    connect: 'TagWhereUniqueInput'
+    connect_or_create: 'TagConnectOrCreateWithoutRelationsInput'
+
+
+class TagCreateManyNestedWithoutRelationsInput(TypedDict, total=False):
+    create: Union['TagCreateWithoutRelationsInput', List['TagCreateWithoutRelationsInput']]
+    connect: Union['TagWhereUniqueInput', List['TagWhereUniqueInput']]
+    connect_or_create: Union['TagConnectOrCreateWithoutRelationsInput', List['TagConnectOrCreateWithoutRelationsInput']]
+
+_TagWhereUnique_id_Input = TypedDict(
+    '_TagWhereUnique_id_Input',
+    {
+        'id': '_int',
+    },
+    total=True
+)
+
+_TagWhereUnique_name_Input = TypedDict(
+    '_TagWhereUnique_name_Input',
+    {
+        'name': '_str',
+    },
+    total=True
+)
+
+TagWhereUniqueInput = Union[
+    '_TagWhereUnique_id_Input',
+    '_TagWhereUnique_name_Input',
+]
+
+
+class TagUpdateInput(TypedDict, total=False):
+    """Optional arguments for updating a record"""
+    id: Union[AtomicIntInput, _int]
+    name: _str
+    events: 'EventUpdateManyWithoutRelationsInput'
+
+
+class TagUpdateManyMutationInput(TypedDict, total=False):
+    """Arguments for updating many records"""
+    id: Union[AtomicIntInput, _int]
+    name: _str
+
+
+class TagUpdateManyWithoutRelationsInput(TypedDict, total=False):
+    create: List['TagCreateWithoutRelationsInput']
+    connect: List['TagWhereUniqueInput']
+    connect_or_create: List['TagConnectOrCreateWithoutRelationsInput']
+    set: List['TagWhereUniqueInput']
+    disconnect: List['TagWhereUniqueInput']
+    delete: List['TagWhereUniqueInput']
+
+    # TODO
+    # update: List['TagUpdateWithWhereUniqueWithoutRelationsInput']
+    # updateMany: List['TagUpdateManyWithWhereUniqueWithoutRelationsInput']
+    # deleteMany: List['TagScalarWhereInput']
+    # upsert: List['TagUpserteWithWhereUniqueWithoutRelationsInput']
+
+
+class TagUpdateOneWithoutRelationsInput(TypedDict, total=False):
+    create: 'TagCreateWithoutRelationsInput'
+    connect: 'TagWhereUniqueInput'
+    connect_or_create: 'TagConnectOrCreateWithoutRelationsInput'
+    disconnect: bool
+    delete: bool
+
+    # TODO
+    # update: 'TagUpdateInput'
+    # upsert: 'TagUpsertWithoutRelationsInput'
+
+
+class TagUpsertInput(TypedDict):
+    create: 'TagCreateInput'
+    update: 'TagUpdateInput'  # pyright: ignore[reportIncompatibleMethodOverride]
+
+
+_Tag_id_OrderByInput = TypedDict(
+    '_Tag_id_OrderByInput',
+    {
+        'id': 'SortOrder',
+    },
+    total=True
+)
+
+_Tag_name_OrderByInput = TypedDict(
+    '_Tag_name_OrderByInput',
+    {
+        'name': 'SortOrder',
+    },
+    total=True
+)
+
+_Tag_RelevanceInner = TypedDict(
+    '_Tag_RelevanceInner',
+    {
+        'fields': 'List[TagScalarFieldKeys]',
+        'search': 'str',
+        'sort': 'SortOrder',
+    },
+    total=True
+)
+
+_Tag_RelevanceOrderByInput = TypedDict(
+    '_Tag_RelevanceOrderByInput',
+    {
+        '_relevance': '_Tag_RelevanceInner',
+    },
+    total=True
+)
+
+TagOrderByInput = Union[
+    '_Tag_id_OrderByInput',
+    '_Tag_name_OrderByInput',
+    '_Tag_RelevanceOrderByInput',
+]
+
+
+
+# recursive Tag types
+# TODO: cleanup these types
+
+
+# Dict[str, Any] is a mypy limitation
+# see https://github.com/RobertCraigie/prisma-client-py/issues/45
+# switch to pyright for improved types, see https://prisma-client-py.readthedocs.io/en/stable/reference/limitations/
+
+TagRelationFilter = TypedDict(
+    'TagRelationFilter',
+    {
+        'is': 'Dict[str, Any]',
+        'is_not': 'Dict[str, Any]',
+    },
+    total=False,
+)
+
+
+class TagListRelationFilter(TypedDict, total=False):
+    some: 'Dict[str, Any]'
+    none: 'Dict[str, Any]'
+    every: 'Dict[str, Any]'
+
+
+class TagInclude(TypedDict, total=False):
+    """Tag relational arguments"""
+    events: Union[bool, 'FindManyEventArgsFromTag']
+
+
+    
+
+class UserIncludeFromTag(TypedDict, total=False):
+    """Relational arguments for Tag"""
+    savedEvents: Union[bool, 'FindManySavedEventArgsFromTagRecursive1']
+
+
+class UserIncludeFromTagRecursive1(TypedDict, total=False):
+    """Relational arguments for Tag"""
+    savedEvents: Union[bool, 'FindManySavedEventArgsFromTagRecursive2']
+
+
+class UserIncludeFromTagRecursive2(TypedDict, total=False):
+    """Relational arguments for Tag"""
+    savedEvents: Union[bool, 'FindManySavedEventArgsFromTagRecursive3']
+
+
+class UserIncludeFromTagRecursive3(TypedDict, total=False):
+    """Relational arguments for Tag"""
+    savedEvents: Union[bool, 'FindManySavedEventArgsFromTagRecursive4']
+
+
+class UserIncludeFromTagRecursive4(TypedDict, total=False):
+    """Relational arguments for Tag"""
+
+    
+
+class UserArgsFromTag(TypedDict, total=False):
+    """Arguments for Tag"""
+    include: 'UserIncludeFromUserRecursive1'
+
+
+class UserArgsFromTagRecursive1(TypedDict, total=False):
+    """Arguments for Tag"""
+    include: 'UserIncludeFromUserRecursive2'
+
+
+class UserArgsFromTagRecursive2(TypedDict, total=False):
+    """Arguments for Tag"""
+    include: 'UserIncludeFromUserRecursive3'
+
+
+class UserArgsFromTagRecursive3(TypedDict, total=False):
+    """Arguments for Tag"""
+    include: 'UserIncludeFromUserRecursive4'
+
+
+class UserArgsFromTagRecursive4(TypedDict, total=False):
+    """Arguments for Tag"""
+    
+    
+
+class FindManyUserArgsFromTag(TypedDict, total=False):
+    """Arguments for Tag"""
+    take: int
+    skip: int
+    order_by: Union['UserOrderByInput', List['UserOrderByInput']]
+    where: 'UserWhereInput'
+    cursor: 'UserWhereUniqueInput'
+    distinct: List['UserScalarFieldKeys']
+    include: 'UserIncludeFromUserRecursive1'
+
+
+class FindManyUserArgsFromTagRecursive1(TypedDict, total=False):
+    """Arguments for Tag"""
+    take: int
+    skip: int
+    order_by: Union['UserOrderByInput', List['UserOrderByInput']]
+    where: 'UserWhereInput'
+    cursor: 'UserWhereUniqueInput'
+    distinct: List['UserScalarFieldKeys']
+    include: 'UserIncludeFromUserRecursive2'
+
+
+class FindManyUserArgsFromTagRecursive2(TypedDict, total=False):
+    """Arguments for Tag"""
+    take: int
+    skip: int
+    order_by: Union['UserOrderByInput', List['UserOrderByInput']]
+    where: 'UserWhereInput'
+    cursor: 'UserWhereUniqueInput'
+    distinct: List['UserScalarFieldKeys']
+    include: 'UserIncludeFromUserRecursive3'
+
+
+class FindManyUserArgsFromTagRecursive3(TypedDict, total=False):
+    """Arguments for Tag"""
+    take: int
+    skip: int
+    order_by: Union['UserOrderByInput', List['UserOrderByInput']]
+    where: 'UserWhereInput'
+    cursor: 'UserWhereUniqueInput'
+    distinct: List['UserScalarFieldKeys']
+    include: 'UserIncludeFromUserRecursive4'
+
+
+class FindManyUserArgsFromTagRecursive4(TypedDict, total=False):
+    """Arguments for Tag"""
+    take: int
+    skip: int
+    order_by: Union['UserOrderByInput', List['UserOrderByInput']]
+    where: 'UserWhereInput'
+    cursor: 'UserWhereUniqueInput'
+    distinct: List['UserScalarFieldKeys']
+    
+    
+
+class VenueIncludeFromTag(TypedDict, total=False):
+    """Relational arguments for Tag"""
+    events: Union[bool, 'FindManyEventArgsFromTagRecursive1']
+
+
+class VenueIncludeFromTagRecursive1(TypedDict, total=False):
+    """Relational arguments for Tag"""
+    events: Union[bool, 'FindManyEventArgsFromTagRecursive2']
+
+
+class VenueIncludeFromTagRecursive2(TypedDict, total=False):
+    """Relational arguments for Tag"""
+    events: Union[bool, 'FindManyEventArgsFromTagRecursive3']
+
+
+class VenueIncludeFromTagRecursive3(TypedDict, total=False):
+    """Relational arguments for Tag"""
+    events: Union[bool, 'FindManyEventArgsFromTagRecursive4']
+
+
+class VenueIncludeFromTagRecursive4(TypedDict, total=False):
+    """Relational arguments for Tag"""
+
+    
+
+class VenueArgsFromTag(TypedDict, total=False):
+    """Arguments for Tag"""
+    include: 'VenueIncludeFromVenueRecursive1'
+
+
+class VenueArgsFromTagRecursive1(TypedDict, total=False):
+    """Arguments for Tag"""
+    include: 'VenueIncludeFromVenueRecursive2'
+
+
+class VenueArgsFromTagRecursive2(TypedDict, total=False):
+    """Arguments for Tag"""
+    include: 'VenueIncludeFromVenueRecursive3'
+
+
+class VenueArgsFromTagRecursive3(TypedDict, total=False):
+    """Arguments for Tag"""
+    include: 'VenueIncludeFromVenueRecursive4'
+
+
+class VenueArgsFromTagRecursive4(TypedDict, total=False):
+    """Arguments for Tag"""
+    
+    
+
+class FindManyVenueArgsFromTag(TypedDict, total=False):
+    """Arguments for Tag"""
+    take: int
+    skip: int
+    order_by: Union['VenueOrderByInput', List['VenueOrderByInput']]
+    where: 'VenueWhereInput'
+    cursor: 'VenueWhereUniqueInput'
+    distinct: List['VenueScalarFieldKeys']
+    include: 'VenueIncludeFromVenueRecursive1'
+
+
+class FindManyVenueArgsFromTagRecursive1(TypedDict, total=False):
+    """Arguments for Tag"""
+    take: int
+    skip: int
+    order_by: Union['VenueOrderByInput', List['VenueOrderByInput']]
+    where: 'VenueWhereInput'
+    cursor: 'VenueWhereUniqueInput'
+    distinct: List['VenueScalarFieldKeys']
+    include: 'VenueIncludeFromVenueRecursive2'
+
+
+class FindManyVenueArgsFromTagRecursive2(TypedDict, total=False):
+    """Arguments for Tag"""
+    take: int
+    skip: int
+    order_by: Union['VenueOrderByInput', List['VenueOrderByInput']]
+    where: 'VenueWhereInput'
+    cursor: 'VenueWhereUniqueInput'
+    distinct: List['VenueScalarFieldKeys']
+    include: 'VenueIncludeFromVenueRecursive3'
+
+
+class FindManyVenueArgsFromTagRecursive3(TypedDict, total=False):
+    """Arguments for Tag"""
+    take: int
+    skip: int
+    order_by: Union['VenueOrderByInput', List['VenueOrderByInput']]
+    where: 'VenueWhereInput'
+    cursor: 'VenueWhereUniqueInput'
+    distinct: List['VenueScalarFieldKeys']
+    include: 'VenueIncludeFromVenueRecursive4'
+
+
+class FindManyVenueArgsFromTagRecursive4(TypedDict, total=False):
+    """Arguments for Tag"""
+    take: int
+    skip: int
+    order_by: Union['VenueOrderByInput', List['VenueOrderByInput']]
+    where: 'VenueWhereInput'
+    cursor: 'VenueWhereUniqueInput'
+    distinct: List['VenueScalarFieldKeys']
+    
+    
+
+class EventSourceIncludeFromTag(TypedDict, total=False):
+    """Relational arguments for Tag"""
+    events: Union[bool, 'FindManyEventArgsFromTagRecursive1']
+
+
+class EventSourceIncludeFromTagRecursive1(TypedDict, total=False):
+    """Relational arguments for Tag"""
+    events: Union[bool, 'FindManyEventArgsFromTagRecursive2']
+
+
+class EventSourceIncludeFromTagRecursive2(TypedDict, total=False):
+    """Relational arguments for Tag"""
+    events: Union[bool, 'FindManyEventArgsFromTagRecursive3']
+
+
+class EventSourceIncludeFromTagRecursive3(TypedDict, total=False):
+    """Relational arguments for Tag"""
+    events: Union[bool, 'FindManyEventArgsFromTagRecursive4']
+
+
+class EventSourceIncludeFromTagRecursive4(TypedDict, total=False):
+    """Relational arguments for Tag"""
+
+    
+
+class EventSourceArgsFromTag(TypedDict, total=False):
+    """Arguments for Tag"""
+    include: 'EventSourceIncludeFromEventSourceRecursive1'
+
+
+class EventSourceArgsFromTagRecursive1(TypedDict, total=False):
+    """Arguments for Tag"""
+    include: 'EventSourceIncludeFromEventSourceRecursive2'
+
+
+class EventSourceArgsFromTagRecursive2(TypedDict, total=False):
+    """Arguments for Tag"""
+    include: 'EventSourceIncludeFromEventSourceRecursive3'
+
+
+class EventSourceArgsFromTagRecursive3(TypedDict, total=False):
+    """Arguments for Tag"""
+    include: 'EventSourceIncludeFromEventSourceRecursive4'
+
+
+class EventSourceArgsFromTagRecursive4(TypedDict, total=False):
+    """Arguments for Tag"""
+    
+    
+
+class FindManyEventSourceArgsFromTag(TypedDict, total=False):
+    """Arguments for Tag"""
+    take: int
+    skip: int
+    order_by: Union['EventSourceOrderByInput', List['EventSourceOrderByInput']]
+    where: 'EventSourceWhereInput'
+    cursor: 'EventSourceWhereUniqueInput'
+    distinct: List['EventSourceScalarFieldKeys']
+    include: 'EventSourceIncludeFromEventSourceRecursive1'
+
+
+class FindManyEventSourceArgsFromTagRecursive1(TypedDict, total=False):
+    """Arguments for Tag"""
+    take: int
+    skip: int
+    order_by: Union['EventSourceOrderByInput', List['EventSourceOrderByInput']]
+    where: 'EventSourceWhereInput'
+    cursor: 'EventSourceWhereUniqueInput'
+    distinct: List['EventSourceScalarFieldKeys']
+    include: 'EventSourceIncludeFromEventSourceRecursive2'
+
+
+class FindManyEventSourceArgsFromTagRecursive2(TypedDict, total=False):
+    """Arguments for Tag"""
+    take: int
+    skip: int
+    order_by: Union['EventSourceOrderByInput', List['EventSourceOrderByInput']]
+    where: 'EventSourceWhereInput'
+    cursor: 'EventSourceWhereUniqueInput'
+    distinct: List['EventSourceScalarFieldKeys']
+    include: 'EventSourceIncludeFromEventSourceRecursive3'
+
+
+class FindManyEventSourceArgsFromTagRecursive3(TypedDict, total=False):
+    """Arguments for Tag"""
+    take: int
+    skip: int
+    order_by: Union['EventSourceOrderByInput', List['EventSourceOrderByInput']]
+    where: 'EventSourceWhereInput'
+    cursor: 'EventSourceWhereUniqueInput'
+    distinct: List['EventSourceScalarFieldKeys']
+    include: 'EventSourceIncludeFromEventSourceRecursive4'
+
+
+class FindManyEventSourceArgsFromTagRecursive4(TypedDict, total=False):
+    """Arguments for Tag"""
+    take: int
+    skip: int
+    order_by: Union['EventSourceOrderByInput', List['EventSourceOrderByInput']]
+    where: 'EventSourceWhereInput'
+    cursor: 'EventSourceWhereUniqueInput'
+    distinct: List['EventSourceScalarFieldKeys']
+    
+    
+
+class TagIncludeFromTag(TypedDict, total=False):
+    """Relational arguments for Tag"""
+    events: Union[bool, 'FindManyEventArgsFromTagRecursive1']
+
+
+class TagIncludeFromTagRecursive1(TypedDict, total=False):
+    """Relational arguments for Tag"""
+    events: Union[bool, 'FindManyEventArgsFromTagRecursive2']
+
+
+class TagIncludeFromTagRecursive2(TypedDict, total=False):
+    """Relational arguments for Tag"""
+    events: Union[bool, 'FindManyEventArgsFromTagRecursive3']
+
+
+class TagIncludeFromTagRecursive3(TypedDict, total=False):
+    """Relational arguments for Tag"""
+    events: Union[bool, 'FindManyEventArgsFromTagRecursive4']
+
+
+class TagIncludeFromTagRecursive4(TypedDict, total=False):
+    """Relational arguments for Tag"""
+
+    
+
+class TagArgsFromTag(TypedDict, total=False):
+    """Arguments for Tag"""
+    include: 'TagIncludeFromTagRecursive1'
+
+
+class TagArgsFromTagRecursive1(TypedDict, total=False):
+    """Arguments for Tag"""
+    include: 'TagIncludeFromTagRecursive2'
+
+
+class TagArgsFromTagRecursive2(TypedDict, total=False):
+    """Arguments for Tag"""
+    include: 'TagIncludeFromTagRecursive3'
+
+
+class TagArgsFromTagRecursive3(TypedDict, total=False):
+    """Arguments for Tag"""
+    include: 'TagIncludeFromTagRecursive4'
+
+
+class TagArgsFromTagRecursive4(TypedDict, total=False):
+    """Arguments for Tag"""
+    
+    
+
+class FindManyTagArgsFromTag(TypedDict, total=False):
+    """Arguments for Tag"""
+    take: int
+    skip: int
+    order_by: Union['TagOrderByInput', List['TagOrderByInput']]
+    where: 'TagWhereInput'
+    cursor: 'TagWhereUniqueInput'
+    distinct: List['TagScalarFieldKeys']
+    include: 'TagIncludeFromTagRecursive1'
+
+
+class FindManyTagArgsFromTagRecursive1(TypedDict, total=False):
+    """Arguments for Tag"""
+    take: int
+    skip: int
+    order_by: Union['TagOrderByInput', List['TagOrderByInput']]
+    where: 'TagWhereInput'
+    cursor: 'TagWhereUniqueInput'
+    distinct: List['TagScalarFieldKeys']
+    include: 'TagIncludeFromTagRecursive2'
+
+
+class FindManyTagArgsFromTagRecursive2(TypedDict, total=False):
+    """Arguments for Tag"""
+    take: int
+    skip: int
+    order_by: Union['TagOrderByInput', List['TagOrderByInput']]
+    where: 'TagWhereInput'
+    cursor: 'TagWhereUniqueInput'
+    distinct: List['TagScalarFieldKeys']
+    include: 'TagIncludeFromTagRecursive3'
+
+
+class FindManyTagArgsFromTagRecursive3(TypedDict, total=False):
+    """Arguments for Tag"""
+    take: int
+    skip: int
+    order_by: Union['TagOrderByInput', List['TagOrderByInput']]
+    where: 'TagWhereInput'
+    cursor: 'TagWhereUniqueInput'
+    distinct: List['TagScalarFieldKeys']
+    include: 'TagIncludeFromTagRecursive4'
+
+
+class FindManyTagArgsFromTagRecursive4(TypedDict, total=False):
+    """Arguments for Tag"""
+    take: int
+    skip: int
+    order_by: Union['TagOrderByInput', List['TagOrderByInput']]
+    where: 'TagWhereInput'
+    cursor: 'TagWhereUniqueInput'
+    distinct: List['TagScalarFieldKeys']
+    
+    
+
+class EventIncludeFromTag(TypedDict, total=False):
+    """Relational arguments for Tag"""
+    venue: Union[bool, 'VenueArgsFromTagRecursive1']
+    source: Union[bool, 'EventSourceArgsFromTagRecursive1']
+    tags: Union[bool, 'FindManyTagArgsFromTagRecursive1']
+    savedBy: Union[bool, 'FindManySavedEventArgsFromTagRecursive1']
+
+
+class EventIncludeFromTagRecursive1(TypedDict, total=False):
+    """Relational arguments for Tag"""
+    venue: Union[bool, 'VenueArgsFromTagRecursive2']
+    source: Union[bool, 'EventSourceArgsFromTagRecursive2']
+    tags: Union[bool, 'FindManyTagArgsFromTagRecursive2']
+    savedBy: Union[bool, 'FindManySavedEventArgsFromTagRecursive2']
+
+
+class EventIncludeFromTagRecursive2(TypedDict, total=False):
+    """Relational arguments for Tag"""
+    venue: Union[bool, 'VenueArgsFromTagRecursive3']
+    source: Union[bool, 'EventSourceArgsFromTagRecursive3']
+    tags: Union[bool, 'FindManyTagArgsFromTagRecursive3']
+    savedBy: Union[bool, 'FindManySavedEventArgsFromTagRecursive3']
+
+
+class EventIncludeFromTagRecursive3(TypedDict, total=False):
+    """Relational arguments for Tag"""
+    venue: Union[bool, 'VenueArgsFromTagRecursive4']
+    source: Union[bool, 'EventSourceArgsFromTagRecursive4']
+    tags: Union[bool, 'FindManyTagArgsFromTagRecursive4']
+    savedBy: Union[bool, 'FindManySavedEventArgsFromTagRecursive4']
+
+
+class EventIncludeFromTagRecursive4(TypedDict, total=False):
+    """Relational arguments for Tag"""
+
+    
+
+class EventArgsFromTag(TypedDict, total=False):
+    """Arguments for Tag"""
+    include: 'EventIncludeFromEventRecursive1'
+
+
+class EventArgsFromTagRecursive1(TypedDict, total=False):
+    """Arguments for Tag"""
+    include: 'EventIncludeFromEventRecursive2'
+
+
+class EventArgsFromTagRecursive2(TypedDict, total=False):
+    """Arguments for Tag"""
+    include: 'EventIncludeFromEventRecursive3'
+
+
+class EventArgsFromTagRecursive3(TypedDict, total=False):
+    """Arguments for Tag"""
+    include: 'EventIncludeFromEventRecursive4'
+
+
+class EventArgsFromTagRecursive4(TypedDict, total=False):
+    """Arguments for Tag"""
+    
+    
+
+class FindManyEventArgsFromTag(TypedDict, total=False):
+    """Arguments for Tag"""
+    take: int
+    skip: int
+    order_by: Union['EventOrderByInput', List['EventOrderByInput']]
+    where: 'EventWhereInput'
+    cursor: 'EventWhereUniqueInput'
+    distinct: List['EventScalarFieldKeys']
+    include: 'EventIncludeFromEventRecursive1'
+
+
+class FindManyEventArgsFromTagRecursive1(TypedDict, total=False):
+    """Arguments for Tag"""
+    take: int
+    skip: int
+    order_by: Union['EventOrderByInput', List['EventOrderByInput']]
+    where: 'EventWhereInput'
+    cursor: 'EventWhereUniqueInput'
+    distinct: List['EventScalarFieldKeys']
+    include: 'EventIncludeFromEventRecursive2'
+
+
+class FindManyEventArgsFromTagRecursive2(TypedDict, total=False):
+    """Arguments for Tag"""
+    take: int
+    skip: int
+    order_by: Union['EventOrderByInput', List['EventOrderByInput']]
+    where: 'EventWhereInput'
+    cursor: 'EventWhereUniqueInput'
+    distinct: List['EventScalarFieldKeys']
+    include: 'EventIncludeFromEventRecursive3'
+
+
+class FindManyEventArgsFromTagRecursive3(TypedDict, total=False):
+    """Arguments for Tag"""
+    take: int
+    skip: int
+    order_by: Union['EventOrderByInput', List['EventOrderByInput']]
+    where: 'EventWhereInput'
+    cursor: 'EventWhereUniqueInput'
+    distinct: List['EventScalarFieldKeys']
+    include: 'EventIncludeFromEventRecursive4'
+
+
+class FindManyEventArgsFromTagRecursive4(TypedDict, total=False):
+    """Arguments for Tag"""
+    take: int
+    skip: int
+    order_by: Union['EventOrderByInput', List['EventOrderByInput']]
+    where: 'EventWhereInput'
+    cursor: 'EventWhereUniqueInput'
+    distinct: List['EventScalarFieldKeys']
+    
+    
+
+class SavedEventIncludeFromTag(TypedDict, total=False):
+    """Relational arguments for Tag"""
+    user: Union[bool, 'UserArgsFromTagRecursive1']
+    event: Union[bool, 'EventArgsFromTagRecursive1']
+
+
+class SavedEventIncludeFromTagRecursive1(TypedDict, total=False):
+    """Relational arguments for Tag"""
+    user: Union[bool, 'UserArgsFromTagRecursive2']
+    event: Union[bool, 'EventArgsFromTagRecursive2']
+
+
+class SavedEventIncludeFromTagRecursive2(TypedDict, total=False):
+    """Relational arguments for Tag"""
+    user: Union[bool, 'UserArgsFromTagRecursive3']
+    event: Union[bool, 'EventArgsFromTagRecursive3']
+
+
+class SavedEventIncludeFromTagRecursive3(TypedDict, total=False):
+    """Relational arguments for Tag"""
+    user: Union[bool, 'UserArgsFromTagRecursive4']
+    event: Union[bool, 'EventArgsFromTagRecursive4']
+
+
+class SavedEventIncludeFromTagRecursive4(TypedDict, total=False):
+    """Relational arguments for Tag"""
+
+    
+
+class SavedEventArgsFromTag(TypedDict, total=False):
+    """Arguments for Tag"""
+    include: 'SavedEventIncludeFromSavedEventRecursive1'
+
+
+class SavedEventArgsFromTagRecursive1(TypedDict, total=False):
+    """Arguments for Tag"""
+    include: 'SavedEventIncludeFromSavedEventRecursive2'
+
+
+class SavedEventArgsFromTagRecursive2(TypedDict, total=False):
+    """Arguments for Tag"""
+    include: 'SavedEventIncludeFromSavedEventRecursive3'
+
+
+class SavedEventArgsFromTagRecursive3(TypedDict, total=False):
+    """Arguments for Tag"""
+    include: 'SavedEventIncludeFromSavedEventRecursive4'
+
+
+class SavedEventArgsFromTagRecursive4(TypedDict, total=False):
+    """Arguments for Tag"""
+    
+    
+
+class FindManySavedEventArgsFromTag(TypedDict, total=False):
+    """Arguments for Tag"""
+    take: int
+    skip: int
+    order_by: Union['SavedEventOrderByInput', List['SavedEventOrderByInput']]
+    where: 'SavedEventWhereInput'
+    cursor: 'SavedEventWhereUniqueInput'
+    distinct: List['SavedEventScalarFieldKeys']
+    include: 'SavedEventIncludeFromSavedEventRecursive1'
+
+
+class FindManySavedEventArgsFromTagRecursive1(TypedDict, total=False):
+    """Arguments for Tag"""
+    take: int
+    skip: int
+    order_by: Union['SavedEventOrderByInput', List['SavedEventOrderByInput']]
+    where: 'SavedEventWhereInput'
+    cursor: 'SavedEventWhereUniqueInput'
+    distinct: List['SavedEventScalarFieldKeys']
+    include: 'SavedEventIncludeFromSavedEventRecursive2'
+
+
+class FindManySavedEventArgsFromTagRecursive2(TypedDict, total=False):
+    """Arguments for Tag"""
+    take: int
+    skip: int
+    order_by: Union['SavedEventOrderByInput', List['SavedEventOrderByInput']]
+    where: 'SavedEventWhereInput'
+    cursor: 'SavedEventWhereUniqueInput'
+    distinct: List['SavedEventScalarFieldKeys']
+    include: 'SavedEventIncludeFromSavedEventRecursive3'
+
+
+class FindManySavedEventArgsFromTagRecursive3(TypedDict, total=False):
+    """Arguments for Tag"""
+    take: int
+    skip: int
+    order_by: Union['SavedEventOrderByInput', List['SavedEventOrderByInput']]
+    where: 'SavedEventWhereInput'
+    cursor: 'SavedEventWhereUniqueInput'
+    distinct: List['SavedEventScalarFieldKeys']
+    include: 'SavedEventIncludeFromSavedEventRecursive4'
+
+
+class FindManySavedEventArgsFromTagRecursive4(TypedDict, total=False):
+    """Arguments for Tag"""
+    take: int
+    skip: int
+    order_by: Union['SavedEventOrderByInput', List['SavedEventOrderByInput']]
+    where: 'SavedEventWhereInput'
+    cursor: 'SavedEventWhereUniqueInput'
+    distinct: List['SavedEventScalarFieldKeys']
+    
+
+
+FindManyTagArgs = FindManyTagArgsFromTag
+FindFirstTagArgs = FindManyTagArgsFromTag
+
+
+    
+
+class TagWhereInput(TypedDict, total=False):
+    """Tag arguments for searching"""
+    id: Union[_int, 'types.IntFilter']
+    name: Union[_str, 'types.StringFilter']
+    events: 'EventListRelationFilter'
+
+    # should be noted that AND and NOT should be Union['TagWhereInputRecursive1', List['TagWhereInputRecursive1']]
+    # but this causes mypy to hang :/
+    AND: List['TagWhereInputRecursive1']
+    OR: List['TagWhereInputRecursive1']
+    NOT: List['TagWhereInputRecursive1']
+
+
+class TagWhereInputRecursive1(TypedDict, total=False):
+    """Tag arguments for searching"""
+    id: Union[_int, 'types.IntFilter']
+    name: Union[_str, 'types.StringFilter']
+    events: 'EventListRelationFilter'
+
+    # should be noted that AND and NOT should be Union['TagWhereInputRecursive2', List['TagWhereInputRecursive2']]
+    # but this causes mypy to hang :/
+    AND: List['TagWhereInputRecursive2']
+    OR: List['TagWhereInputRecursive2']
+    NOT: List['TagWhereInputRecursive2']
+
+
+class TagWhereInputRecursive2(TypedDict, total=False):
+    """Tag arguments for searching"""
+    id: Union[_int, 'types.IntFilter']
+    name: Union[_str, 'types.StringFilter']
+    events: 'EventListRelationFilter'
+
+    # should be noted that AND and NOT should be Union['TagWhereInputRecursive3', List['TagWhereInputRecursive3']]
+    # but this causes mypy to hang :/
+    AND: List['TagWhereInputRecursive3']
+    OR: List['TagWhereInputRecursive3']
+    NOT: List['TagWhereInputRecursive3']
+
+
+class TagWhereInputRecursive3(TypedDict, total=False):
+    """Tag arguments for searching"""
+    id: Union[_int, 'types.IntFilter']
+    name: Union[_str, 'types.StringFilter']
+    events: 'EventListRelationFilter'
+
+    # should be noted that AND and NOT should be Union['TagWhereInputRecursive4', List['TagWhereInputRecursive4']]
+    # but this causes mypy to hang :/
+    AND: List['TagWhereInputRecursive4']
+    OR: List['TagWhereInputRecursive4']
+    NOT: List['TagWhereInputRecursive4']
+
+
+class TagWhereInputRecursive4(TypedDict, total=False):
+    """Tag arguments for searching"""
+    id: Union[_int, 'types.IntFilter']
+    name: Union[_str, 'types.StringFilter']
+    events: 'EventListRelationFilter'
+
+
+
+# aggregate Tag types
+
+
+    
+
+class TagScalarWhereWithAggregatesInput(TypedDict, total=False):
+    """Tag arguments for searching"""
+    id: Union[_int, 'types.IntWithAggregatesFilter']
+    name: Union[_str, 'types.StringWithAggregatesFilter']
+
+    AND: List['TagScalarWhereWithAggregatesInputRecursive1']
+    OR: List['TagScalarWhereWithAggregatesInputRecursive1']
+    NOT: List['TagScalarWhereWithAggregatesInputRecursive1']
+
+
+class TagScalarWhereWithAggregatesInputRecursive1(TypedDict, total=False):
+    """Tag arguments for searching"""
+    id: Union[_int, 'types.IntWithAggregatesFilter']
+    name: Union[_str, 'types.StringWithAggregatesFilter']
+
+    AND: List['TagScalarWhereWithAggregatesInputRecursive2']
+    OR: List['TagScalarWhereWithAggregatesInputRecursive2']
+    NOT: List['TagScalarWhereWithAggregatesInputRecursive2']
+
+
+class TagScalarWhereWithAggregatesInputRecursive2(TypedDict, total=False):
+    """Tag arguments for searching"""
+    id: Union[_int, 'types.IntWithAggregatesFilter']
+    name: Union[_str, 'types.StringWithAggregatesFilter']
+
+    AND: List['TagScalarWhereWithAggregatesInputRecursive3']
+    OR: List['TagScalarWhereWithAggregatesInputRecursive3']
+    NOT: List['TagScalarWhereWithAggregatesInputRecursive3']
+
+
+class TagScalarWhereWithAggregatesInputRecursive3(TypedDict, total=False):
+    """Tag arguments for searching"""
+    id: Union[_int, 'types.IntWithAggregatesFilter']
+    name: Union[_str, 'types.StringWithAggregatesFilter']
+
+    AND: List['TagScalarWhereWithAggregatesInputRecursive4']
+    OR: List['TagScalarWhereWithAggregatesInputRecursive4']
+    NOT: List['TagScalarWhereWithAggregatesInputRecursive4']
+
+
+class TagScalarWhereWithAggregatesInputRecursive4(TypedDict, total=False):
+    """Tag arguments for searching"""
+    id: Union[_int, 'types.IntWithAggregatesFilter']
+    name: Union[_str, 'types.StringWithAggregatesFilter']
+
+
+
+class TagGroupByOutput(TypedDict, total=False):
+    id: _int
+    name: _str
+    _sum: 'TagSumAggregateOutput'
+    _avg: 'TagAvgAggregateOutput'
+    _min: 'TagMinAggregateOutput'
+    _max: 'TagMaxAggregateOutput'
+    _count: 'TagCountAggregateOutput'
+
+
+class TagAvgAggregateOutput(TypedDict, total=False):
+    """Tag output for aggregating averages"""
+    id: float
+
+
+class TagSumAggregateOutput(TypedDict, total=False):
+    """Tag output for aggregating sums"""
+    id: _int
+
+
+class TagScalarAggregateOutput(TypedDict, total=False):
+    """Tag output including scalar fields"""
+    id: _int
+    name: _str
+
+
+TagMinAggregateOutput = TagScalarAggregateOutput
+TagMaxAggregateOutput = TagScalarAggregateOutput
+
+
+class TagMaxAggregateInput(TypedDict, total=False):
+    """Tag input for aggregating by max"""
+    id: bool
+    name: bool
+
+
+class TagMinAggregateInput(TypedDict, total=False):
+    """Tag input for aggregating by min"""
+    id: bool
+    name: bool
+
+
+class TagNumberAggregateInput(TypedDict, total=False):
+    """Tag input for aggregating numbers"""
+    id: bool
+
+
+TagAvgAggregateInput = TagNumberAggregateInput
+TagSumAggregateInput = TagNumberAggregateInput
+
+
+TagCountAggregateInput = TypedDict(
+    'TagCountAggregateInput',
+    {
+        'id': bool,
+        'name': bool,
+        '_all': bool,
+    },
+    total=False,
+)
+
+TagCountAggregateOutput = TypedDict(
+    'TagCountAggregateOutput',
+    {
+        'id': int,
+        'name': int,
+        '_all': int,
+    },
+    total=False,
+)
+
+
+TagKeys = Literal[
+    'id',
+    'name',
+    'events',
+]
+TagScalarFieldKeys = Literal[
+    'id',
+    'name',
+]
+TagScalarFieldKeysT = TypeVar('TagScalarFieldKeysT', bound=TagScalarFieldKeys)
+
+TagRelationalFieldKeys = Literal[
+        'events',
+    ]
+
+# Event types
+
+class EventOptionalCreateInput(TypedDict, total=False):
+    """Optional arguments to the Event create method"""
+    id: _int
+    description: Optional[_str]
+    imageUrl: Optional[_str]
+    startTime: Optional[datetime.datetime]
+    endTime: Optional[datetime.datetime]
+    timezone: Optional[_str]
+    price: Optional[_str]
+    isFree: Optional[_bool]
+    venueId: Optional[_int]
+    venue: 'VenueCreateNestedWithoutRelationsInput'
+    sourceId: Optional[_int]
+    source: 'EventSourceCreateNestedWithoutRelationsInput'
+    createdAt: datetime.datetime
+    updatedAt: datetime.datetime
+    tags: 'TagCreateManyNestedWithoutRelationsInput'
+    savedBy: 'SavedEventCreateManyNestedWithoutRelationsInput'
+
+
+class EventCreateInput(EventOptionalCreateInput):
+    """Required arguments to the Event create method"""
+    title: _str
+    url: _str
+
+
+# TODO: remove this in favour of without explicit relations
+# e.g. PostCreateWithoutAuthorInput
+
+class EventOptionalCreateWithoutRelationsInput(TypedDict, total=False):
+    """Optional arguments to the Event create method, without relations"""
+    id: _int
+    description: Optional[_str]
+    imageUrl: Optional[_str]
+    startTime: Optional[datetime.datetime]
+    endTime: Optional[datetime.datetime]
+    timezone: Optional[_str]
+    price: Optional[_str]
+    isFree: Optional[_bool]
+    venueId: Optional[_int]
+    sourceId: Optional[_int]
+    createdAt: datetime.datetime
+    updatedAt: datetime.datetime
+
+
+class EventCreateWithoutRelationsInput(EventOptionalCreateWithoutRelationsInput):
+    """Required arguments to the Event create method, without relations"""
+    title: _str
+    url: _str
+
+class EventConnectOrCreateWithoutRelationsInput(TypedDict):
+    create: 'EventCreateWithoutRelationsInput'
+    where: 'EventWhereUniqueInput'
+
+class EventCreateNestedWithoutRelationsInput(TypedDict, total=False):
+    create: 'EventCreateWithoutRelationsInput'
+    connect: 'EventWhereUniqueInput'
+    connect_or_create: 'EventConnectOrCreateWithoutRelationsInput'
+
+
+class EventCreateManyNestedWithoutRelationsInput(TypedDict, total=False):
+    create: Union['EventCreateWithoutRelationsInput', List['EventCreateWithoutRelationsInput']]
+    connect: Union['EventWhereUniqueInput', List['EventWhereUniqueInput']]
+    connect_or_create: Union['EventConnectOrCreateWithoutRelationsInput', List['EventConnectOrCreateWithoutRelationsInput']]
+
+_EventWhereUnique_id_Input = TypedDict(
+    '_EventWhereUnique_id_Input',
+    {
+        'id': '_int',
+    },
+    total=True
+)
+
+_EventWhereUnique_url_Input = TypedDict(
+    '_EventWhereUnique_url_Input',
+    {
+        'url': '_str',
+    },
+    total=True
+)
+
+EventWhereUniqueInput = Union[
+    '_EventWhereUnique_id_Input',
+    '_EventWhereUnique_url_Input',
+]
+
+
+class EventUpdateInput(TypedDict, total=False):
+    """Optional arguments for updating a record"""
+    id: Union[AtomicIntInput, _int]
+    title: _str
+    description: Optional[_str]
+    url: _str
+    imageUrl: Optional[_str]
+    startTime: Optional[datetime.datetime]
+    endTime: Optional[datetime.datetime]
+    timezone: Optional[_str]
+    price: Optional[_str]
+    isFree: Optional[_bool]
+    venue: 'VenueUpdateOneWithoutRelationsInput'
+    source: 'EventSourceUpdateOneWithoutRelationsInput'
+    createdAt: datetime.datetime
+    updatedAt: datetime.datetime
+    tags: 'TagUpdateManyWithoutRelationsInput'
+    savedBy: 'SavedEventUpdateManyWithoutRelationsInput'
+
+
+class EventUpdateManyMutationInput(TypedDict, total=False):
+    """Arguments for updating many records"""
+    id: Union[AtomicIntInput, _int]
+    title: _str
+    description: Optional[_str]
+    url: _str
+    imageUrl: Optional[_str]
+    startTime: Optional[datetime.datetime]
+    endTime: Optional[datetime.datetime]
+    timezone: Optional[_str]
+    price: Optional[_str]
+    isFree: Optional[_bool]
+    createdAt: datetime.datetime
+    updatedAt: datetime.datetime
+
+
+class EventUpdateManyWithoutRelationsInput(TypedDict, total=False):
+    create: List['EventCreateWithoutRelationsInput']
+    connect: List['EventWhereUniqueInput']
+    connect_or_create: List['EventConnectOrCreateWithoutRelationsInput']
+    set: List['EventWhereUniqueInput']
+    disconnect: List['EventWhereUniqueInput']
+    delete: List['EventWhereUniqueInput']
+
+    # TODO
+    # update: List['EventUpdateWithWhereUniqueWithoutRelationsInput']
+    # updateMany: List['EventUpdateManyWithWhereUniqueWithoutRelationsInput']
+    # deleteMany: List['EventScalarWhereInput']
+    # upsert: List['EventUpserteWithWhereUniqueWithoutRelationsInput']
+
+
+class EventUpdateOneWithoutRelationsInput(TypedDict, total=False):
+    create: 'EventCreateWithoutRelationsInput'
+    connect: 'EventWhereUniqueInput'
+    connect_or_create: 'EventConnectOrCreateWithoutRelationsInput'
+    disconnect: bool
+    delete: bool
+
+    # TODO
+    # update: 'EventUpdateInput'
+    # upsert: 'EventUpsertWithoutRelationsInput'
+
+
+class EventUpsertInput(TypedDict):
+    create: 'EventCreateInput'
+    update: 'EventUpdateInput'  # pyright: ignore[reportIncompatibleMethodOverride]
+
+
+_Event_id_OrderByInput = TypedDict(
+    '_Event_id_OrderByInput',
+    {
+        'id': 'SortOrder',
+    },
+    total=True
+)
+
+_Event_title_OrderByInput = TypedDict(
+    '_Event_title_OrderByInput',
+    {
+        'title': 'SortOrder',
+    },
+    total=True
+)
+
+_Event_description_OrderByInput = TypedDict(
+    '_Event_description_OrderByInput',
+    {
+        'description': 'SortOrder',
+    },
+    total=True
+)
+
+_Event_url_OrderByInput = TypedDict(
+    '_Event_url_OrderByInput',
+    {
+        'url': 'SortOrder',
+    },
+    total=True
+)
+
+_Event_imageUrl_OrderByInput = TypedDict(
+    '_Event_imageUrl_OrderByInput',
+    {
+        'imageUrl': 'SortOrder',
+    },
+    total=True
+)
+
+_Event_startTime_OrderByInput = TypedDict(
+    '_Event_startTime_OrderByInput',
+    {
+        'startTime': 'SortOrder',
+    },
+    total=True
+)
+
+_Event_endTime_OrderByInput = TypedDict(
+    '_Event_endTime_OrderByInput',
+    {
+        'endTime': 'SortOrder',
+    },
+    total=True
+)
+
+_Event_timezone_OrderByInput = TypedDict(
+    '_Event_timezone_OrderByInput',
+    {
+        'timezone': 'SortOrder',
+    },
+    total=True
+)
+
+_Event_price_OrderByInput = TypedDict(
+    '_Event_price_OrderByInput',
+    {
+        'price': 'SortOrder',
+    },
+    total=True
+)
+
+_Event_isFree_OrderByInput = TypedDict(
+    '_Event_isFree_OrderByInput',
+    {
+        'isFree': 'SortOrder',
+    },
+    total=True
+)
+
+_Event_venueId_OrderByInput = TypedDict(
+    '_Event_venueId_OrderByInput',
+    {
+        'venueId': 'SortOrder',
+    },
+    total=True
+)
+
+_Event_sourceId_OrderByInput = TypedDict(
+    '_Event_sourceId_OrderByInput',
+    {
+        'sourceId': 'SortOrder',
+    },
+    total=True
+)
+
+_Event_createdAt_OrderByInput = TypedDict(
+    '_Event_createdAt_OrderByInput',
+    {
+        'createdAt': 'SortOrder',
+    },
+    total=True
+)
+
+_Event_updatedAt_OrderByInput = TypedDict(
+    '_Event_updatedAt_OrderByInput',
+    {
+        'updatedAt': 'SortOrder',
+    },
+    total=True
+)
+
+_Event_RelevanceInner = TypedDict(
+    '_Event_RelevanceInner',
+    {
+        'fields': 'List[EventScalarFieldKeys]',
+        'search': 'str',
+        'sort': 'SortOrder',
+    },
+    total=True
+)
+
+_Event_RelevanceOrderByInput = TypedDict(
+    '_Event_RelevanceOrderByInput',
+    {
+        '_relevance': '_Event_RelevanceInner',
+    },
+    total=True
+)
+
+EventOrderByInput = Union[
+    '_Event_id_OrderByInput',
+    '_Event_title_OrderByInput',
+    '_Event_description_OrderByInput',
+    '_Event_url_OrderByInput',
+    '_Event_imageUrl_OrderByInput',
+    '_Event_startTime_OrderByInput',
+    '_Event_endTime_OrderByInput',
+    '_Event_timezone_OrderByInput',
+    '_Event_price_OrderByInput',
+    '_Event_isFree_OrderByInput',
+    '_Event_venueId_OrderByInput',
+    '_Event_sourceId_OrderByInput',
+    '_Event_createdAt_OrderByInput',
+    '_Event_updatedAt_OrderByInput',
+    '_Event_RelevanceOrderByInput',
+]
+
+
+
+# recursive Event types
+# TODO: cleanup these types
+
+
+# Dict[str, Any] is a mypy limitation
+# see https://github.com/RobertCraigie/prisma-client-py/issues/45
+# switch to pyright for improved types, see https://prisma-client-py.readthedocs.io/en/stable/reference/limitations/
+
+EventRelationFilter = TypedDict(
+    'EventRelationFilter',
+    {
+        'is': 'Dict[str, Any]',
+        'is_not': 'Dict[str, Any]',
+    },
+    total=False,
+)
+
+
+class EventListRelationFilter(TypedDict, total=False):
+    some: 'Dict[str, Any]'
+    none: 'Dict[str, Any]'
+    every: 'Dict[str, Any]'
+
+
+class EventInclude(TypedDict, total=False):
+    """Event relational arguments"""
+    venue: Union[bool, 'VenueArgsFromEvent']
+    source: Union[bool, 'EventSourceArgsFromEvent']
+    tags: Union[bool, 'FindManyTagArgsFromEvent']
+    savedBy: Union[bool, 'FindManySavedEventArgsFromEvent']
+
+
+    
+
+class UserIncludeFromEvent(TypedDict, total=False):
+    """Relational arguments for Event"""
+    savedEvents: Union[bool, 'FindManySavedEventArgsFromEventRecursive1']
+
+
+class UserIncludeFromEventRecursive1(TypedDict, total=False):
+    """Relational arguments for Event"""
+    savedEvents: Union[bool, 'FindManySavedEventArgsFromEventRecursive2']
+
+
+class UserIncludeFromEventRecursive2(TypedDict, total=False):
+    """Relational arguments for Event"""
+    savedEvents: Union[bool, 'FindManySavedEventArgsFromEventRecursive3']
+
+
+class UserIncludeFromEventRecursive3(TypedDict, total=False):
+    """Relational arguments for Event"""
+    savedEvents: Union[bool, 'FindManySavedEventArgsFromEventRecursive4']
+
+
+class UserIncludeFromEventRecursive4(TypedDict, total=False):
+    """Relational arguments for Event"""
+
+    
+
+class UserArgsFromEvent(TypedDict, total=False):
+    """Arguments for Event"""
+    include: 'UserIncludeFromUserRecursive1'
+
+
+class UserArgsFromEventRecursive1(TypedDict, total=False):
+    """Arguments for Event"""
+    include: 'UserIncludeFromUserRecursive2'
+
+
+class UserArgsFromEventRecursive2(TypedDict, total=False):
+    """Arguments for Event"""
+    include: 'UserIncludeFromUserRecursive3'
+
+
+class UserArgsFromEventRecursive3(TypedDict, total=False):
+    """Arguments for Event"""
+    include: 'UserIncludeFromUserRecursive4'
+
+
+class UserArgsFromEventRecursive4(TypedDict, total=False):
+    """Arguments for Event"""
+    
+    
+
+class FindManyUserArgsFromEvent(TypedDict, total=False):
+    """Arguments for Event"""
+    take: int
+    skip: int
+    order_by: Union['UserOrderByInput', List['UserOrderByInput']]
+    where: 'UserWhereInput'
+    cursor: 'UserWhereUniqueInput'
+    distinct: List['UserScalarFieldKeys']
+    include: 'UserIncludeFromUserRecursive1'
+
+
+class FindManyUserArgsFromEventRecursive1(TypedDict, total=False):
+    """Arguments for Event"""
+    take: int
+    skip: int
+    order_by: Union['UserOrderByInput', List['UserOrderByInput']]
+    where: 'UserWhereInput'
+    cursor: 'UserWhereUniqueInput'
+    distinct: List['UserScalarFieldKeys']
+    include: 'UserIncludeFromUserRecursive2'
+
+
+class FindManyUserArgsFromEventRecursive2(TypedDict, total=False):
+    """Arguments for Event"""
+    take: int
+    skip: int
+    order_by: Union['UserOrderByInput', List['UserOrderByInput']]
+    where: 'UserWhereInput'
+    cursor: 'UserWhereUniqueInput'
+    distinct: List['UserScalarFieldKeys']
+    include: 'UserIncludeFromUserRecursive3'
+
+
+class FindManyUserArgsFromEventRecursive3(TypedDict, total=False):
+    """Arguments for Event"""
+    take: int
+    skip: int
+    order_by: Union['UserOrderByInput', List['UserOrderByInput']]
+    where: 'UserWhereInput'
+    cursor: 'UserWhereUniqueInput'
+    distinct: List['UserScalarFieldKeys']
+    include: 'UserIncludeFromUserRecursive4'
+
+
+class FindManyUserArgsFromEventRecursive4(TypedDict, total=False):
+    """Arguments for Event"""
+    take: int
+    skip: int
+    order_by: Union['UserOrderByInput', List['UserOrderByInput']]
+    where: 'UserWhereInput'
+    cursor: 'UserWhereUniqueInput'
+    distinct: List['UserScalarFieldKeys']
+    
+    
+
+class VenueIncludeFromEvent(TypedDict, total=False):
+    """Relational arguments for Event"""
+    events: Union[bool, 'FindManyEventArgsFromEventRecursive1']
+
+
+class VenueIncludeFromEventRecursive1(TypedDict, total=False):
+    """Relational arguments for Event"""
+    events: Union[bool, 'FindManyEventArgsFromEventRecursive2']
+
+
+class VenueIncludeFromEventRecursive2(TypedDict, total=False):
+    """Relational arguments for Event"""
+    events: Union[bool, 'FindManyEventArgsFromEventRecursive3']
+
+
+class VenueIncludeFromEventRecursive3(TypedDict, total=False):
+    """Relational arguments for Event"""
+    events: Union[bool, 'FindManyEventArgsFromEventRecursive4']
+
+
+class VenueIncludeFromEventRecursive4(TypedDict, total=False):
+    """Relational arguments for Event"""
+
+    
+
+class VenueArgsFromEvent(TypedDict, total=False):
+    """Arguments for Event"""
+    include: 'VenueIncludeFromVenueRecursive1'
+
+
+class VenueArgsFromEventRecursive1(TypedDict, total=False):
+    """Arguments for Event"""
+    include: 'VenueIncludeFromVenueRecursive2'
+
+
+class VenueArgsFromEventRecursive2(TypedDict, total=False):
+    """Arguments for Event"""
+    include: 'VenueIncludeFromVenueRecursive3'
+
+
+class VenueArgsFromEventRecursive3(TypedDict, total=False):
+    """Arguments for Event"""
+    include: 'VenueIncludeFromVenueRecursive4'
+
+
+class VenueArgsFromEventRecursive4(TypedDict, total=False):
+    """Arguments for Event"""
+    
+    
+
+class FindManyVenueArgsFromEvent(TypedDict, total=False):
+    """Arguments for Event"""
+    take: int
+    skip: int
+    order_by: Union['VenueOrderByInput', List['VenueOrderByInput']]
+    where: 'VenueWhereInput'
+    cursor: 'VenueWhereUniqueInput'
+    distinct: List['VenueScalarFieldKeys']
+    include: 'VenueIncludeFromVenueRecursive1'
+
+
+class FindManyVenueArgsFromEventRecursive1(TypedDict, total=False):
+    """Arguments for Event"""
+    take: int
+    skip: int
+    order_by: Union['VenueOrderByInput', List['VenueOrderByInput']]
+    where: 'VenueWhereInput'
+    cursor: 'VenueWhereUniqueInput'
+    distinct: List['VenueScalarFieldKeys']
+    include: 'VenueIncludeFromVenueRecursive2'
+
+
+class FindManyVenueArgsFromEventRecursive2(TypedDict, total=False):
+    """Arguments for Event"""
+    take: int
+    skip: int
+    order_by: Union['VenueOrderByInput', List['VenueOrderByInput']]
+    where: 'VenueWhereInput'
+    cursor: 'VenueWhereUniqueInput'
+    distinct: List['VenueScalarFieldKeys']
+    include: 'VenueIncludeFromVenueRecursive3'
+
+
+class FindManyVenueArgsFromEventRecursive3(TypedDict, total=False):
+    """Arguments for Event"""
+    take: int
+    skip: int
+    order_by: Union['VenueOrderByInput', List['VenueOrderByInput']]
+    where: 'VenueWhereInput'
+    cursor: 'VenueWhereUniqueInput'
+    distinct: List['VenueScalarFieldKeys']
+    include: 'VenueIncludeFromVenueRecursive4'
+
+
+class FindManyVenueArgsFromEventRecursive4(TypedDict, total=False):
+    """Arguments for Event"""
+    take: int
+    skip: int
+    order_by: Union['VenueOrderByInput', List['VenueOrderByInput']]
+    where: 'VenueWhereInput'
+    cursor: 'VenueWhereUniqueInput'
+    distinct: List['VenueScalarFieldKeys']
+    
+    
+
+class EventSourceIncludeFromEvent(TypedDict, total=False):
+    """Relational arguments for Event"""
+    events: Union[bool, 'FindManyEventArgsFromEventRecursive1']
+
+
+class EventSourceIncludeFromEventRecursive1(TypedDict, total=False):
+    """Relational arguments for Event"""
+    events: Union[bool, 'FindManyEventArgsFromEventRecursive2']
+
+
+class EventSourceIncludeFromEventRecursive2(TypedDict, total=False):
+    """Relational arguments for Event"""
+    events: Union[bool, 'FindManyEventArgsFromEventRecursive3']
+
+
+class EventSourceIncludeFromEventRecursive3(TypedDict, total=False):
+    """Relational arguments for Event"""
+    events: Union[bool, 'FindManyEventArgsFromEventRecursive4']
+
+
+class EventSourceIncludeFromEventRecursive4(TypedDict, total=False):
+    """Relational arguments for Event"""
+
+    
+
+class EventSourceArgsFromEvent(TypedDict, total=False):
+    """Arguments for Event"""
+    include: 'EventSourceIncludeFromEventSourceRecursive1'
+
+
+class EventSourceArgsFromEventRecursive1(TypedDict, total=False):
+    """Arguments for Event"""
+    include: 'EventSourceIncludeFromEventSourceRecursive2'
+
+
+class EventSourceArgsFromEventRecursive2(TypedDict, total=False):
+    """Arguments for Event"""
+    include: 'EventSourceIncludeFromEventSourceRecursive3'
+
+
+class EventSourceArgsFromEventRecursive3(TypedDict, total=False):
+    """Arguments for Event"""
+    include: 'EventSourceIncludeFromEventSourceRecursive4'
+
+
+class EventSourceArgsFromEventRecursive4(TypedDict, total=False):
+    """Arguments for Event"""
+    
+    
+
+class FindManyEventSourceArgsFromEvent(TypedDict, total=False):
+    """Arguments for Event"""
+    take: int
+    skip: int
+    order_by: Union['EventSourceOrderByInput', List['EventSourceOrderByInput']]
+    where: 'EventSourceWhereInput'
+    cursor: 'EventSourceWhereUniqueInput'
+    distinct: List['EventSourceScalarFieldKeys']
+    include: 'EventSourceIncludeFromEventSourceRecursive1'
+
+
+class FindManyEventSourceArgsFromEventRecursive1(TypedDict, total=False):
+    """Arguments for Event"""
+    take: int
+    skip: int
+    order_by: Union['EventSourceOrderByInput', List['EventSourceOrderByInput']]
+    where: 'EventSourceWhereInput'
+    cursor: 'EventSourceWhereUniqueInput'
+    distinct: List['EventSourceScalarFieldKeys']
+    include: 'EventSourceIncludeFromEventSourceRecursive2'
+
+
+class FindManyEventSourceArgsFromEventRecursive2(TypedDict, total=False):
+    """Arguments for Event"""
+    take: int
+    skip: int
+    order_by: Union['EventSourceOrderByInput', List['EventSourceOrderByInput']]
+    where: 'EventSourceWhereInput'
+    cursor: 'EventSourceWhereUniqueInput'
+    distinct: List['EventSourceScalarFieldKeys']
+    include: 'EventSourceIncludeFromEventSourceRecursive3'
+
+
+class FindManyEventSourceArgsFromEventRecursive3(TypedDict, total=False):
+    """Arguments for Event"""
+    take: int
+    skip: int
+    order_by: Union['EventSourceOrderByInput', List['EventSourceOrderByInput']]
+    where: 'EventSourceWhereInput'
+    cursor: 'EventSourceWhereUniqueInput'
+    distinct: List['EventSourceScalarFieldKeys']
+    include: 'EventSourceIncludeFromEventSourceRecursive4'
+
+
+class FindManyEventSourceArgsFromEventRecursive4(TypedDict, total=False):
+    """Arguments for Event"""
+    take: int
+    skip: int
+    order_by: Union['EventSourceOrderByInput', List['EventSourceOrderByInput']]
+    where: 'EventSourceWhereInput'
+    cursor: 'EventSourceWhereUniqueInput'
+    distinct: List['EventSourceScalarFieldKeys']
+    
+    
+
+class TagIncludeFromEvent(TypedDict, total=False):
+    """Relational arguments for Event"""
+    events: Union[bool, 'FindManyEventArgsFromEventRecursive1']
+
+
+class TagIncludeFromEventRecursive1(TypedDict, total=False):
+    """Relational arguments for Event"""
+    events: Union[bool, 'FindManyEventArgsFromEventRecursive2']
+
+
+class TagIncludeFromEventRecursive2(TypedDict, total=False):
+    """Relational arguments for Event"""
+    events: Union[bool, 'FindManyEventArgsFromEventRecursive3']
+
+
+class TagIncludeFromEventRecursive3(TypedDict, total=False):
+    """Relational arguments for Event"""
+    events: Union[bool, 'FindManyEventArgsFromEventRecursive4']
+
+
+class TagIncludeFromEventRecursive4(TypedDict, total=False):
+    """Relational arguments for Event"""
+
+    
+
+class TagArgsFromEvent(TypedDict, total=False):
+    """Arguments for Event"""
+    include: 'TagIncludeFromTagRecursive1'
+
+
+class TagArgsFromEventRecursive1(TypedDict, total=False):
+    """Arguments for Event"""
+    include: 'TagIncludeFromTagRecursive2'
+
+
+class TagArgsFromEventRecursive2(TypedDict, total=False):
+    """Arguments for Event"""
+    include: 'TagIncludeFromTagRecursive3'
+
+
+class TagArgsFromEventRecursive3(TypedDict, total=False):
+    """Arguments for Event"""
+    include: 'TagIncludeFromTagRecursive4'
+
+
+class TagArgsFromEventRecursive4(TypedDict, total=False):
+    """Arguments for Event"""
+    
+    
+
+class FindManyTagArgsFromEvent(TypedDict, total=False):
+    """Arguments for Event"""
+    take: int
+    skip: int
+    order_by: Union['TagOrderByInput', List['TagOrderByInput']]
+    where: 'TagWhereInput'
+    cursor: 'TagWhereUniqueInput'
+    distinct: List['TagScalarFieldKeys']
+    include: 'TagIncludeFromTagRecursive1'
+
+
+class FindManyTagArgsFromEventRecursive1(TypedDict, total=False):
+    """Arguments for Event"""
+    take: int
+    skip: int
+    order_by: Union['TagOrderByInput', List['TagOrderByInput']]
+    where: 'TagWhereInput'
+    cursor: 'TagWhereUniqueInput'
+    distinct: List['TagScalarFieldKeys']
+    include: 'TagIncludeFromTagRecursive2'
+
+
+class FindManyTagArgsFromEventRecursive2(TypedDict, total=False):
+    """Arguments for Event"""
+    take: int
+    skip: int
+    order_by: Union['TagOrderByInput', List['TagOrderByInput']]
+    where: 'TagWhereInput'
+    cursor: 'TagWhereUniqueInput'
+    distinct: List['TagScalarFieldKeys']
+    include: 'TagIncludeFromTagRecursive3'
+
+
+class FindManyTagArgsFromEventRecursive3(TypedDict, total=False):
+    """Arguments for Event"""
+    take: int
+    skip: int
+    order_by: Union['TagOrderByInput', List['TagOrderByInput']]
+    where: 'TagWhereInput'
+    cursor: 'TagWhereUniqueInput'
+    distinct: List['TagScalarFieldKeys']
+    include: 'TagIncludeFromTagRecursive4'
+
+
+class FindManyTagArgsFromEventRecursive4(TypedDict, total=False):
+    """Arguments for Event"""
+    take: int
+    skip: int
+    order_by: Union['TagOrderByInput', List['TagOrderByInput']]
+    where: 'TagWhereInput'
+    cursor: 'TagWhereUniqueInput'
+    distinct: List['TagScalarFieldKeys']
+    
+    
+
+class EventIncludeFromEvent(TypedDict, total=False):
+    """Relational arguments for Event"""
+    venue: Union[bool, 'VenueArgsFromEventRecursive1']
+    source: Union[bool, 'EventSourceArgsFromEventRecursive1']
+    tags: Union[bool, 'FindManyTagArgsFromEventRecursive1']
+    savedBy: Union[bool, 'FindManySavedEventArgsFromEventRecursive1']
+
+
+class EventIncludeFromEventRecursive1(TypedDict, total=False):
+    """Relational arguments for Event"""
+    venue: Union[bool, 'VenueArgsFromEventRecursive2']
+    source: Union[bool, 'EventSourceArgsFromEventRecursive2']
+    tags: Union[bool, 'FindManyTagArgsFromEventRecursive2']
+    savedBy: Union[bool, 'FindManySavedEventArgsFromEventRecursive2']
+
+
+class EventIncludeFromEventRecursive2(TypedDict, total=False):
+    """Relational arguments for Event"""
+    venue: Union[bool, 'VenueArgsFromEventRecursive3']
+    source: Union[bool, 'EventSourceArgsFromEventRecursive3']
+    tags: Union[bool, 'FindManyTagArgsFromEventRecursive3']
+    savedBy: Union[bool, 'FindManySavedEventArgsFromEventRecursive3']
+
+
+class EventIncludeFromEventRecursive3(TypedDict, total=False):
+    """Relational arguments for Event"""
+    venue: Union[bool, 'VenueArgsFromEventRecursive4']
+    source: Union[bool, 'EventSourceArgsFromEventRecursive4']
+    tags: Union[bool, 'FindManyTagArgsFromEventRecursive4']
+    savedBy: Union[bool, 'FindManySavedEventArgsFromEventRecursive4']
+
+
+class EventIncludeFromEventRecursive4(TypedDict, total=False):
+    """Relational arguments for Event"""
+
+    
+
+class EventArgsFromEvent(TypedDict, total=False):
+    """Arguments for Event"""
+    include: 'EventIncludeFromEventRecursive1'
+
+
+class EventArgsFromEventRecursive1(TypedDict, total=False):
+    """Arguments for Event"""
+    include: 'EventIncludeFromEventRecursive2'
+
+
+class EventArgsFromEventRecursive2(TypedDict, total=False):
+    """Arguments for Event"""
+    include: 'EventIncludeFromEventRecursive3'
+
+
+class EventArgsFromEventRecursive3(TypedDict, total=False):
+    """Arguments for Event"""
+    include: 'EventIncludeFromEventRecursive4'
+
+
+class EventArgsFromEventRecursive4(TypedDict, total=False):
+    """Arguments for Event"""
+    
+    
+
+class FindManyEventArgsFromEvent(TypedDict, total=False):
+    """Arguments for Event"""
+    take: int
+    skip: int
+    order_by: Union['EventOrderByInput', List['EventOrderByInput']]
+    where: 'EventWhereInput'
+    cursor: 'EventWhereUniqueInput'
+    distinct: List['EventScalarFieldKeys']
+    include: 'EventIncludeFromEventRecursive1'
+
+
+class FindManyEventArgsFromEventRecursive1(TypedDict, total=False):
+    """Arguments for Event"""
+    take: int
+    skip: int
+    order_by: Union['EventOrderByInput', List['EventOrderByInput']]
+    where: 'EventWhereInput'
+    cursor: 'EventWhereUniqueInput'
+    distinct: List['EventScalarFieldKeys']
+    include: 'EventIncludeFromEventRecursive2'
+
+
+class FindManyEventArgsFromEventRecursive2(TypedDict, total=False):
+    """Arguments for Event"""
+    take: int
+    skip: int
+    order_by: Union['EventOrderByInput', List['EventOrderByInput']]
+    where: 'EventWhereInput'
+    cursor: 'EventWhereUniqueInput'
+    distinct: List['EventScalarFieldKeys']
+    include: 'EventIncludeFromEventRecursive3'
+
+
+class FindManyEventArgsFromEventRecursive3(TypedDict, total=False):
+    """Arguments for Event"""
+    take: int
+    skip: int
+    order_by: Union['EventOrderByInput', List['EventOrderByInput']]
+    where: 'EventWhereInput'
+    cursor: 'EventWhereUniqueInput'
+    distinct: List['EventScalarFieldKeys']
+    include: 'EventIncludeFromEventRecursive4'
+
+
+class FindManyEventArgsFromEventRecursive4(TypedDict, total=False):
+    """Arguments for Event"""
+    take: int
+    skip: int
+    order_by: Union['EventOrderByInput', List['EventOrderByInput']]
+    where: 'EventWhereInput'
+    cursor: 'EventWhereUniqueInput'
+    distinct: List['EventScalarFieldKeys']
+    
+    
+
+class SavedEventIncludeFromEvent(TypedDict, total=False):
+    """Relational arguments for Event"""
+    user: Union[bool, 'UserArgsFromEventRecursive1']
+    event: Union[bool, 'EventArgsFromEventRecursive1']
+
+
+class SavedEventIncludeFromEventRecursive1(TypedDict, total=False):
+    """Relational arguments for Event"""
+    user: Union[bool, 'UserArgsFromEventRecursive2']
+    event: Union[bool, 'EventArgsFromEventRecursive2']
+
+
+class SavedEventIncludeFromEventRecursive2(TypedDict, total=False):
+    """Relational arguments for Event"""
+    user: Union[bool, 'UserArgsFromEventRecursive3']
+    event: Union[bool, 'EventArgsFromEventRecursive3']
+
+
+class SavedEventIncludeFromEventRecursive3(TypedDict, total=False):
+    """Relational arguments for Event"""
+    user: Union[bool, 'UserArgsFromEventRecursive4']
+    event: Union[bool, 'EventArgsFromEventRecursive4']
+
+
+class SavedEventIncludeFromEventRecursive4(TypedDict, total=False):
+    """Relational arguments for Event"""
+
+    
+
+class SavedEventArgsFromEvent(TypedDict, total=False):
+    """Arguments for Event"""
+    include: 'SavedEventIncludeFromSavedEventRecursive1'
+
+
+class SavedEventArgsFromEventRecursive1(TypedDict, total=False):
+    """Arguments for Event"""
+    include: 'SavedEventIncludeFromSavedEventRecursive2'
+
+
+class SavedEventArgsFromEventRecursive2(TypedDict, total=False):
+    """Arguments for Event"""
+    include: 'SavedEventIncludeFromSavedEventRecursive3'
+
+
+class SavedEventArgsFromEventRecursive3(TypedDict, total=False):
+    """Arguments for Event"""
+    include: 'SavedEventIncludeFromSavedEventRecursive4'
+
+
+class SavedEventArgsFromEventRecursive4(TypedDict, total=False):
+    """Arguments for Event"""
+    
+    
+
+class FindManySavedEventArgsFromEvent(TypedDict, total=False):
+    """Arguments for Event"""
+    take: int
+    skip: int
+    order_by: Union['SavedEventOrderByInput', List['SavedEventOrderByInput']]
+    where: 'SavedEventWhereInput'
+    cursor: 'SavedEventWhereUniqueInput'
+    distinct: List['SavedEventScalarFieldKeys']
+    include: 'SavedEventIncludeFromSavedEventRecursive1'
+
+
+class FindManySavedEventArgsFromEventRecursive1(TypedDict, total=False):
+    """Arguments for Event"""
+    take: int
+    skip: int
+    order_by: Union['SavedEventOrderByInput', List['SavedEventOrderByInput']]
+    where: 'SavedEventWhereInput'
+    cursor: 'SavedEventWhereUniqueInput'
+    distinct: List['SavedEventScalarFieldKeys']
+    include: 'SavedEventIncludeFromSavedEventRecursive2'
+
+
+class FindManySavedEventArgsFromEventRecursive2(TypedDict, total=False):
+    """Arguments for Event"""
+    take: int
+    skip: int
+    order_by: Union['SavedEventOrderByInput', List['SavedEventOrderByInput']]
+    where: 'SavedEventWhereInput'
+    cursor: 'SavedEventWhereUniqueInput'
+    distinct: List['SavedEventScalarFieldKeys']
+    include: 'SavedEventIncludeFromSavedEventRecursive3'
+
+
+class FindManySavedEventArgsFromEventRecursive3(TypedDict, total=False):
+    """Arguments for Event"""
+    take: int
+    skip: int
+    order_by: Union['SavedEventOrderByInput', List['SavedEventOrderByInput']]
+    where: 'SavedEventWhereInput'
+    cursor: 'SavedEventWhereUniqueInput'
+    distinct: List['SavedEventScalarFieldKeys']
+    include: 'SavedEventIncludeFromSavedEventRecursive4'
+
+
+class FindManySavedEventArgsFromEventRecursive4(TypedDict, total=False):
+    """Arguments for Event"""
+    take: int
+    skip: int
+    order_by: Union['SavedEventOrderByInput', List['SavedEventOrderByInput']]
+    where: 'SavedEventWhereInput'
+    cursor: 'SavedEventWhereUniqueInput'
+    distinct: List['SavedEventScalarFieldKeys']
+    
+
+
+FindManyEventArgs = FindManyEventArgsFromEvent
+FindFirstEventArgs = FindManyEventArgsFromEvent
+
+
+    
+
+class EventWhereInput(TypedDict, total=False):
+    """Event arguments for searching"""
+    id: Union[_int, 'types.IntFilter']
+    title: Union[_str, 'types.StringFilter']
+    description: Union[None, _str, 'types.StringFilter']
+    url: Union[_str, 'types.StringFilter']
+    imageUrl: Union[None, _str, 'types.StringFilter']
+    startTime: Union[None, datetime.datetime, 'types.DateTimeFilter']
+    endTime: Union[None, datetime.datetime, 'types.DateTimeFilter']
+    timezone: Union[None, _str, 'types.StringFilter']
+    price: Union[None, _str, 'types.StringFilter']
+    isFree: Union[None, _bool, 'types.BooleanFilter']
+    venueId: Union[None, _int, 'types.IntFilter']
+    venue: 'VenueRelationFilter'
+    sourceId: Union[None, _int, 'types.IntFilter']
+    source: 'EventSourceRelationFilter'
+    createdAt: Union[datetime.datetime, 'types.DateTimeFilter']
+    updatedAt: Union[datetime.datetime, 'types.DateTimeFilter']
+    tags: 'TagListRelationFilter'
+    savedBy: 'SavedEventListRelationFilter'
+
+    # should be noted that AND and NOT should be Union['EventWhereInputRecursive1', List['EventWhereInputRecursive1']]
+    # but this causes mypy to hang :/
+    AND: List['EventWhereInputRecursive1']
+    OR: List['EventWhereInputRecursive1']
+    NOT: List['EventWhereInputRecursive1']
+
+
+class EventWhereInputRecursive1(TypedDict, total=False):
+    """Event arguments for searching"""
+    id: Union[_int, 'types.IntFilter']
+    title: Union[_str, 'types.StringFilter']
+    description: Union[None, _str, 'types.StringFilter']
+    url: Union[_str, 'types.StringFilter']
+    imageUrl: Union[None, _str, 'types.StringFilter']
+    startTime: Union[None, datetime.datetime, 'types.DateTimeFilter']
+    endTime: Union[None, datetime.datetime, 'types.DateTimeFilter']
+    timezone: Union[None, _str, 'types.StringFilter']
+    price: Union[None, _str, 'types.StringFilter']
+    isFree: Union[None, _bool, 'types.BooleanFilter']
+    venueId: Union[None, _int, 'types.IntFilter']
+    venue: 'VenueRelationFilter'
+    sourceId: Union[None, _int, 'types.IntFilter']
+    source: 'EventSourceRelationFilter'
+    createdAt: Union[datetime.datetime, 'types.DateTimeFilter']
+    updatedAt: Union[datetime.datetime, 'types.DateTimeFilter']
+    tags: 'TagListRelationFilter'
+    savedBy: 'SavedEventListRelationFilter'
+
+    # should be noted that AND and NOT should be Union['EventWhereInputRecursive2', List['EventWhereInputRecursive2']]
+    # but this causes mypy to hang :/
+    AND: List['EventWhereInputRecursive2']
+    OR: List['EventWhereInputRecursive2']
+    NOT: List['EventWhereInputRecursive2']
+
+
+class EventWhereInputRecursive2(TypedDict, total=False):
+    """Event arguments for searching"""
+    id: Union[_int, 'types.IntFilter']
+    title: Union[_str, 'types.StringFilter']
+    description: Union[None, _str, 'types.StringFilter']
+    url: Union[_str, 'types.StringFilter']
+    imageUrl: Union[None, _str, 'types.StringFilter']
+    startTime: Union[None, datetime.datetime, 'types.DateTimeFilter']
+    endTime: Union[None, datetime.datetime, 'types.DateTimeFilter']
+    timezone: Union[None, _str, 'types.StringFilter']
+    price: Union[None, _str, 'types.StringFilter']
+    isFree: Union[None, _bool, 'types.BooleanFilter']
+    venueId: Union[None, _int, 'types.IntFilter']
+    venue: 'VenueRelationFilter'
+    sourceId: Union[None, _int, 'types.IntFilter']
+    source: 'EventSourceRelationFilter'
+    createdAt: Union[datetime.datetime, 'types.DateTimeFilter']
+    updatedAt: Union[datetime.datetime, 'types.DateTimeFilter']
+    tags: 'TagListRelationFilter'
+    savedBy: 'SavedEventListRelationFilter'
+
+    # should be noted that AND and NOT should be Union['EventWhereInputRecursive3', List['EventWhereInputRecursive3']]
+    # but this causes mypy to hang :/
+    AND: List['EventWhereInputRecursive3']
+    OR: List['EventWhereInputRecursive3']
+    NOT: List['EventWhereInputRecursive3']
+
+
+class EventWhereInputRecursive3(TypedDict, total=False):
+    """Event arguments for searching"""
+    id: Union[_int, 'types.IntFilter']
+    title: Union[_str, 'types.StringFilter']
+    description: Union[None, _str, 'types.StringFilter']
+    url: Union[_str, 'types.StringFilter']
+    imageUrl: Union[None, _str, 'types.StringFilter']
+    startTime: Union[None, datetime.datetime, 'types.DateTimeFilter']
+    endTime: Union[None, datetime.datetime, 'types.DateTimeFilter']
+    timezone: Union[None, _str, 'types.StringFilter']
+    price: Union[None, _str, 'types.StringFilter']
+    isFree: Union[None, _bool, 'types.BooleanFilter']
+    venueId: Union[None, _int, 'types.IntFilter']
+    venue: 'VenueRelationFilter'
+    sourceId: Union[None, _int, 'types.IntFilter']
+    source: 'EventSourceRelationFilter'
+    createdAt: Union[datetime.datetime, 'types.DateTimeFilter']
+    updatedAt: Union[datetime.datetime, 'types.DateTimeFilter']
+    tags: 'TagListRelationFilter'
+    savedBy: 'SavedEventListRelationFilter'
+
+    # should be noted that AND and NOT should be Union['EventWhereInputRecursive4', List['EventWhereInputRecursive4']]
+    # but this causes mypy to hang :/
+    AND: List['EventWhereInputRecursive4']
+    OR: List['EventWhereInputRecursive4']
+    NOT: List['EventWhereInputRecursive4']
+
+
+class EventWhereInputRecursive4(TypedDict, total=False):
+    """Event arguments for searching"""
+    id: Union[_int, 'types.IntFilter']
+    title: Union[_str, 'types.StringFilter']
+    description: Union[None, _str, 'types.StringFilter']
+    url: Union[_str, 'types.StringFilter']
+    imageUrl: Union[None, _str, 'types.StringFilter']
+    startTime: Union[None, datetime.datetime, 'types.DateTimeFilter']
+    endTime: Union[None, datetime.datetime, 'types.DateTimeFilter']
+    timezone: Union[None, _str, 'types.StringFilter']
+    price: Union[None, _str, 'types.StringFilter']
+    isFree: Union[None, _bool, 'types.BooleanFilter']
+    venueId: Union[None, _int, 'types.IntFilter']
+    venue: 'VenueRelationFilter'
+    sourceId: Union[None, _int, 'types.IntFilter']
+    source: 'EventSourceRelationFilter'
+    createdAt: Union[datetime.datetime, 'types.DateTimeFilter']
+    updatedAt: Union[datetime.datetime, 'types.DateTimeFilter']
+    tags: 'TagListRelationFilter'
+    savedBy: 'SavedEventListRelationFilter'
+
+
+
+# aggregate Event types
+
+
+    
+
+class EventScalarWhereWithAggregatesInput(TypedDict, total=False):
+    """Event arguments for searching"""
+    id: Union[_int, 'types.IntWithAggregatesFilter']
+    title: Union[_str, 'types.StringWithAggregatesFilter']
+    description: Union[_str, 'types.StringWithAggregatesFilter']
+    url: Union[_str, 'types.StringWithAggregatesFilter']
+    imageUrl: Union[_str, 'types.StringWithAggregatesFilter']
+    startTime: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+    endTime: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+    timezone: Union[_str, 'types.StringWithAggregatesFilter']
+    price: Union[_str, 'types.StringWithAggregatesFilter']
+    isFree: Union[_bool, 'types.BooleanWithAggregatesFilter']
+    venueId: Union[_int, 'types.IntWithAggregatesFilter']
+    sourceId: Union[_int, 'types.IntWithAggregatesFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+    updatedAt: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+
+    AND: List['EventScalarWhereWithAggregatesInputRecursive1']
+    OR: List['EventScalarWhereWithAggregatesInputRecursive1']
+    NOT: List['EventScalarWhereWithAggregatesInputRecursive1']
+
+
+class EventScalarWhereWithAggregatesInputRecursive1(TypedDict, total=False):
+    """Event arguments for searching"""
+    id: Union[_int, 'types.IntWithAggregatesFilter']
+    title: Union[_str, 'types.StringWithAggregatesFilter']
+    description: Union[_str, 'types.StringWithAggregatesFilter']
+    url: Union[_str, 'types.StringWithAggregatesFilter']
+    imageUrl: Union[_str, 'types.StringWithAggregatesFilter']
+    startTime: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+    endTime: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+    timezone: Union[_str, 'types.StringWithAggregatesFilter']
+    price: Union[_str, 'types.StringWithAggregatesFilter']
+    isFree: Union[_bool, 'types.BooleanWithAggregatesFilter']
+    venueId: Union[_int, 'types.IntWithAggregatesFilter']
+    sourceId: Union[_int, 'types.IntWithAggregatesFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+    updatedAt: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+
+    AND: List['EventScalarWhereWithAggregatesInputRecursive2']
+    OR: List['EventScalarWhereWithAggregatesInputRecursive2']
+    NOT: List['EventScalarWhereWithAggregatesInputRecursive2']
+
+
+class EventScalarWhereWithAggregatesInputRecursive2(TypedDict, total=False):
+    """Event arguments for searching"""
+    id: Union[_int, 'types.IntWithAggregatesFilter']
+    title: Union[_str, 'types.StringWithAggregatesFilter']
+    description: Union[_str, 'types.StringWithAggregatesFilter']
+    url: Union[_str, 'types.StringWithAggregatesFilter']
+    imageUrl: Union[_str, 'types.StringWithAggregatesFilter']
+    startTime: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+    endTime: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+    timezone: Union[_str, 'types.StringWithAggregatesFilter']
+    price: Union[_str, 'types.StringWithAggregatesFilter']
+    isFree: Union[_bool, 'types.BooleanWithAggregatesFilter']
+    venueId: Union[_int, 'types.IntWithAggregatesFilter']
+    sourceId: Union[_int, 'types.IntWithAggregatesFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+    updatedAt: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+
+    AND: List['EventScalarWhereWithAggregatesInputRecursive3']
+    OR: List['EventScalarWhereWithAggregatesInputRecursive3']
+    NOT: List['EventScalarWhereWithAggregatesInputRecursive3']
+
+
+class EventScalarWhereWithAggregatesInputRecursive3(TypedDict, total=False):
+    """Event arguments for searching"""
+    id: Union[_int, 'types.IntWithAggregatesFilter']
+    title: Union[_str, 'types.StringWithAggregatesFilter']
+    description: Union[_str, 'types.StringWithAggregatesFilter']
+    url: Union[_str, 'types.StringWithAggregatesFilter']
+    imageUrl: Union[_str, 'types.StringWithAggregatesFilter']
+    startTime: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+    endTime: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+    timezone: Union[_str, 'types.StringWithAggregatesFilter']
+    price: Union[_str, 'types.StringWithAggregatesFilter']
+    isFree: Union[_bool, 'types.BooleanWithAggregatesFilter']
+    venueId: Union[_int, 'types.IntWithAggregatesFilter']
+    sourceId: Union[_int, 'types.IntWithAggregatesFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+    updatedAt: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+
+    AND: List['EventScalarWhereWithAggregatesInputRecursive4']
+    OR: List['EventScalarWhereWithAggregatesInputRecursive4']
+    NOT: List['EventScalarWhereWithAggregatesInputRecursive4']
+
+
+class EventScalarWhereWithAggregatesInputRecursive4(TypedDict, total=False):
+    """Event arguments for searching"""
+    id: Union[_int, 'types.IntWithAggregatesFilter']
+    title: Union[_str, 'types.StringWithAggregatesFilter']
+    description: Union[_str, 'types.StringWithAggregatesFilter']
+    url: Union[_str, 'types.StringWithAggregatesFilter']
+    imageUrl: Union[_str, 'types.StringWithAggregatesFilter']
+    startTime: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+    endTime: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+    timezone: Union[_str, 'types.StringWithAggregatesFilter']
+    price: Union[_str, 'types.StringWithAggregatesFilter']
+    isFree: Union[_bool, 'types.BooleanWithAggregatesFilter']
+    venueId: Union[_int, 'types.IntWithAggregatesFilter']
+    sourceId: Union[_int, 'types.IntWithAggregatesFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+    updatedAt: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+
+
+
+class EventGroupByOutput(TypedDict, total=False):
+    id: _int
+    title: _str
+    description: _str
+    url: _str
+    imageUrl: _str
+    startTime: datetime.datetime
+    endTime: datetime.datetime
+    timezone: _str
+    price: _str
+    isFree: _bool
+    venueId: _int
+    sourceId: _int
+    createdAt: datetime.datetime
+    updatedAt: datetime.datetime
+    _sum: 'EventSumAggregateOutput'
+    _avg: 'EventAvgAggregateOutput'
+    _min: 'EventMinAggregateOutput'
+    _max: 'EventMaxAggregateOutput'
+    _count: 'EventCountAggregateOutput'
+
+
+class EventAvgAggregateOutput(TypedDict, total=False):
+    """Event output for aggregating averages"""
+    id: float
+    venueId: float
+    sourceId: float
+
+
+class EventSumAggregateOutput(TypedDict, total=False):
+    """Event output for aggregating sums"""
+    id: _int
+    venueId: _int
+    sourceId: _int
+
+
+class EventScalarAggregateOutput(TypedDict, total=False):
+    """Event output including scalar fields"""
+    id: _int
+    title: _str
+    description: _str
+    url: _str
+    imageUrl: _str
+    startTime: datetime.datetime
+    endTime: datetime.datetime
+    timezone: _str
+    price: _str
+    isFree: _bool
+    venueId: _int
+    sourceId: _int
+    createdAt: datetime.datetime
+    updatedAt: datetime.datetime
+
+
+EventMinAggregateOutput = EventScalarAggregateOutput
+EventMaxAggregateOutput = EventScalarAggregateOutput
+
+
+class EventMaxAggregateInput(TypedDict, total=False):
+    """Event input for aggregating by max"""
+    id: bool
+    title: bool
+    description: bool
+    url: bool
+    imageUrl: bool
+    startTime: bool
+    endTime: bool
+    timezone: bool
+    price: bool
+    isFree: bool
+    venueId: bool
+    sourceId: bool
+    createdAt: bool
+    updatedAt: bool
+
+
+class EventMinAggregateInput(TypedDict, total=False):
+    """Event input for aggregating by min"""
+    id: bool
+    title: bool
+    description: bool
+    url: bool
+    imageUrl: bool
+    startTime: bool
+    endTime: bool
+    timezone: bool
+    price: bool
+    isFree: bool
+    venueId: bool
+    sourceId: bool
+    createdAt: bool
+    updatedAt: bool
+
+
+class EventNumberAggregateInput(TypedDict, total=False):
+    """Event input for aggregating numbers"""
+    id: bool
+    venueId: bool
+    sourceId: bool
+
+
+EventAvgAggregateInput = EventNumberAggregateInput
+EventSumAggregateInput = EventNumberAggregateInput
+
+
+EventCountAggregateInput = TypedDict(
+    'EventCountAggregateInput',
+    {
+        'id': bool,
+        'title': bool,
+        'description': bool,
+        'url': bool,
+        'imageUrl': bool,
+        'startTime': bool,
+        'endTime': bool,
+        'timezone': bool,
+        'price': bool,
+        'isFree': bool,
+        'venueId': bool,
+        'sourceId': bool,
+        'createdAt': bool,
+        'updatedAt': bool,
+        '_all': bool,
+    },
+    total=False,
+)
+
+EventCountAggregateOutput = TypedDict(
+    'EventCountAggregateOutput',
+    {
+        'id': int,
+        'title': int,
+        'description': int,
+        'url': int,
+        'imageUrl': int,
+        'startTime': int,
+        'endTime': int,
+        'timezone': int,
+        'price': int,
+        'isFree': int,
+        'venueId': int,
+        'sourceId': int,
+        'createdAt': int,
+        'updatedAt': int,
+        '_all': int,
+    },
+    total=False,
+)
+
+
+EventKeys = Literal[
+    'id',
+    'title',
+    'description',
+    'url',
+    'imageUrl',
+    'startTime',
+    'endTime',
+    'timezone',
+    'price',
+    'isFree',
+    'venueId',
+    'venue',
+    'sourceId',
+    'source',
+    'createdAt',
+    'updatedAt',
+    'tags',
+    'savedBy',
+]
+EventScalarFieldKeys = Literal[
+    'id',
+    'title',
+    'description',
+    'url',
+    'imageUrl',
+    'startTime',
+    'endTime',
+    'timezone',
+    'price',
+    'isFree',
+    'venueId',
+    'sourceId',
+    'createdAt',
+    'updatedAt',
+]
+EventScalarFieldKeysT = TypeVar('EventScalarFieldKeysT', bound=EventScalarFieldKeys)
+
+EventRelationalFieldKeys = Literal[
+        'venue',
+        'source',
+        'tags',
+        'savedBy',
+    ]
+
+# SavedEvent types
+
+class SavedEventOptionalCreateInput(TypedDict, total=False):
+    """Optional arguments to the SavedEvent create method"""
+    id: _int
+    userId: _int
+    eventId: _int
+    createdAt: datetime.datetime
+    user: 'UserCreateNestedWithoutRelationsInput'
+    event: 'EventCreateNestedWithoutRelationsInput'
+
+
+class SavedEventCreateInput(SavedEventOptionalCreateInput):
+    """Required arguments to the SavedEvent create method"""
+
+
+# TODO: remove this in favour of without explicit relations
+# e.g. PostCreateWithoutAuthorInput
+
+class SavedEventOptionalCreateWithoutRelationsInput(TypedDict, total=False):
+    """Optional arguments to the SavedEvent create method, without relations"""
+    id: _int
+    userId: _int
+    eventId: _int
+    createdAt: datetime.datetime
+
+
+class SavedEventCreateWithoutRelationsInput(SavedEventOptionalCreateWithoutRelationsInput):
+    """Required arguments to the SavedEvent create method, without relations"""
+
+class SavedEventConnectOrCreateWithoutRelationsInput(TypedDict):
+    create: 'SavedEventCreateWithoutRelationsInput'
+    where: 'SavedEventWhereUniqueInput'
+
+class SavedEventCreateNestedWithoutRelationsInput(TypedDict, total=False):
+    create: 'SavedEventCreateWithoutRelationsInput'
+    connect: 'SavedEventWhereUniqueInput'
+    connect_or_create: 'SavedEventConnectOrCreateWithoutRelationsInput'
+
+
+class SavedEventCreateManyNestedWithoutRelationsInput(TypedDict, total=False):
+    create: Union['SavedEventCreateWithoutRelationsInput', List['SavedEventCreateWithoutRelationsInput']]
+    connect: Union['SavedEventWhereUniqueInput', List['SavedEventWhereUniqueInput']]
+    connect_or_create: Union['SavedEventConnectOrCreateWithoutRelationsInput', List['SavedEventConnectOrCreateWithoutRelationsInput']]
+
+_SavedEventWhereUnique_id_Input = TypedDict(
+    '_SavedEventWhereUnique_id_Input',
+    {
+        'id': '_int',
+    },
+    total=True
+)
+
+_SavedEventCompounduserId_eventIdKeyInner = TypedDict(
+    '_SavedEventCompounduserId_eventIdKeyInner',
+    {
+        'userId': '_int',
+        'eventId': '_int',
+    },
+    total=True
+)
+
+_SavedEventCompounduserId_eventIdKey = TypedDict(
+    '_SavedEventCompounduserId_eventIdKey',
+    {
+        'userId_eventId': '_SavedEventCompounduserId_eventIdKeyInner',
+    },
+    total=True
+)
+
+SavedEventWhereUniqueInput = Union[
+    '_SavedEventWhereUnique_id_Input',
+    '_SavedEventCompounduserId_eventIdKey',
+]
+
+
+class SavedEventUpdateInput(TypedDict, total=False):
+    """Optional arguments for updating a record"""
+    id: Union[AtomicIntInput, _int]
+    createdAt: datetime.datetime
+    user: 'UserUpdateOneWithoutRelationsInput'
+    event: 'EventUpdateOneWithoutRelationsInput'
+
+
+class SavedEventUpdateManyMutationInput(TypedDict, total=False):
+    """Arguments for updating many records"""
+    id: Union[AtomicIntInput, _int]
+    createdAt: datetime.datetime
+
+
+class SavedEventUpdateManyWithoutRelationsInput(TypedDict, total=False):
+    create: List['SavedEventCreateWithoutRelationsInput']
+    connect: List['SavedEventWhereUniqueInput']
+    connect_or_create: List['SavedEventConnectOrCreateWithoutRelationsInput']
+    set: List['SavedEventWhereUniqueInput']
+    disconnect: List['SavedEventWhereUniqueInput']
+    delete: List['SavedEventWhereUniqueInput']
+
+    # TODO
+    # update: List['SavedEventUpdateWithWhereUniqueWithoutRelationsInput']
+    # updateMany: List['SavedEventUpdateManyWithWhereUniqueWithoutRelationsInput']
+    # deleteMany: List['SavedEventScalarWhereInput']
+    # upsert: List['SavedEventUpserteWithWhereUniqueWithoutRelationsInput']
+
+
+class SavedEventUpdateOneWithoutRelationsInput(TypedDict, total=False):
+    create: 'SavedEventCreateWithoutRelationsInput'
+    connect: 'SavedEventWhereUniqueInput'
+    connect_or_create: 'SavedEventConnectOrCreateWithoutRelationsInput'
+    disconnect: bool
+    delete: bool
+
+    # TODO
+    # update: 'SavedEventUpdateInput'
+    # upsert: 'SavedEventUpsertWithoutRelationsInput'
+
+
+class SavedEventUpsertInput(TypedDict):
+    create: 'SavedEventCreateInput'
+    update: 'SavedEventUpdateInput'  # pyright: ignore[reportIncompatibleMethodOverride]
+
+
+_SavedEvent_id_OrderByInput = TypedDict(
+    '_SavedEvent_id_OrderByInput',
+    {
+        'id': 'SortOrder',
+    },
+    total=True
+)
+
+_SavedEvent_userId_OrderByInput = TypedDict(
+    '_SavedEvent_userId_OrderByInput',
+    {
+        'userId': 'SortOrder',
+    },
+    total=True
+)
+
+_SavedEvent_eventId_OrderByInput = TypedDict(
+    '_SavedEvent_eventId_OrderByInput',
+    {
+        'eventId': 'SortOrder',
+    },
+    total=True
+)
+
+_SavedEvent_createdAt_OrderByInput = TypedDict(
+    '_SavedEvent_createdAt_OrderByInput',
+    {
+        'createdAt': 'SortOrder',
+    },
+    total=True
+)
+
+_SavedEvent_RelevanceInner = TypedDict(
+    '_SavedEvent_RelevanceInner',
+    {
+        'fields': 'List[SavedEventScalarFieldKeys]',
+        'search': 'str',
+        'sort': 'SortOrder',
+    },
+    total=True
+)
+
+_SavedEvent_RelevanceOrderByInput = TypedDict(
+    '_SavedEvent_RelevanceOrderByInput',
+    {
+        '_relevance': '_SavedEvent_RelevanceInner',
+    },
+    total=True
+)
+
+SavedEventOrderByInput = Union[
+    '_SavedEvent_id_OrderByInput',
+    '_SavedEvent_userId_OrderByInput',
+    '_SavedEvent_eventId_OrderByInput',
+    '_SavedEvent_createdAt_OrderByInput',
+    '_SavedEvent_RelevanceOrderByInput',
+]
+
+
+
+# recursive SavedEvent types
+# TODO: cleanup these types
+
+
+# Dict[str, Any] is a mypy limitation
+# see https://github.com/RobertCraigie/prisma-client-py/issues/45
+# switch to pyright for improved types, see https://prisma-client-py.readthedocs.io/en/stable/reference/limitations/
+
+SavedEventRelationFilter = TypedDict(
+    'SavedEventRelationFilter',
+    {
+        'is': 'Dict[str, Any]',
+        'is_not': 'Dict[str, Any]',
+    },
+    total=False,
+)
+
+
+class SavedEventListRelationFilter(TypedDict, total=False):
+    some: 'Dict[str, Any]'
+    none: 'Dict[str, Any]'
+    every: 'Dict[str, Any]'
+
+
+class SavedEventInclude(TypedDict, total=False):
+    """SavedEvent relational arguments"""
+    user: Union[bool, 'UserArgsFromSavedEvent']
+    event: Union[bool, 'EventArgsFromSavedEvent']
+
+
+    
+
+class UserIncludeFromSavedEvent(TypedDict, total=False):
+    """Relational arguments for SavedEvent"""
+    savedEvents: Union[bool, 'FindManySavedEventArgsFromSavedEventRecursive1']
+
+
+class UserIncludeFromSavedEventRecursive1(TypedDict, total=False):
+    """Relational arguments for SavedEvent"""
+    savedEvents: Union[bool, 'FindManySavedEventArgsFromSavedEventRecursive2']
+
+
+class UserIncludeFromSavedEventRecursive2(TypedDict, total=False):
+    """Relational arguments for SavedEvent"""
+    savedEvents: Union[bool, 'FindManySavedEventArgsFromSavedEventRecursive3']
+
+
+class UserIncludeFromSavedEventRecursive3(TypedDict, total=False):
+    """Relational arguments for SavedEvent"""
+    savedEvents: Union[bool, 'FindManySavedEventArgsFromSavedEventRecursive4']
+
+
+class UserIncludeFromSavedEventRecursive4(TypedDict, total=False):
+    """Relational arguments for SavedEvent"""
+
+    
+
+class UserArgsFromSavedEvent(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    include: 'UserIncludeFromUserRecursive1'
+
+
+class UserArgsFromSavedEventRecursive1(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    include: 'UserIncludeFromUserRecursive2'
+
+
+class UserArgsFromSavedEventRecursive2(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    include: 'UserIncludeFromUserRecursive3'
+
+
+class UserArgsFromSavedEventRecursive3(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    include: 'UserIncludeFromUserRecursive4'
+
+
+class UserArgsFromSavedEventRecursive4(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    
+    
+
+class FindManyUserArgsFromSavedEvent(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    take: int
+    skip: int
+    order_by: Union['UserOrderByInput', List['UserOrderByInput']]
+    where: 'UserWhereInput'
+    cursor: 'UserWhereUniqueInput'
+    distinct: List['UserScalarFieldKeys']
+    include: 'UserIncludeFromUserRecursive1'
+
+
+class FindManyUserArgsFromSavedEventRecursive1(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    take: int
+    skip: int
+    order_by: Union['UserOrderByInput', List['UserOrderByInput']]
+    where: 'UserWhereInput'
+    cursor: 'UserWhereUniqueInput'
+    distinct: List['UserScalarFieldKeys']
+    include: 'UserIncludeFromUserRecursive2'
+
+
+class FindManyUserArgsFromSavedEventRecursive2(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    take: int
+    skip: int
+    order_by: Union['UserOrderByInput', List['UserOrderByInput']]
+    where: 'UserWhereInput'
+    cursor: 'UserWhereUniqueInput'
+    distinct: List['UserScalarFieldKeys']
+    include: 'UserIncludeFromUserRecursive3'
+
+
+class FindManyUserArgsFromSavedEventRecursive3(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    take: int
+    skip: int
+    order_by: Union['UserOrderByInput', List['UserOrderByInput']]
+    where: 'UserWhereInput'
+    cursor: 'UserWhereUniqueInput'
+    distinct: List['UserScalarFieldKeys']
+    include: 'UserIncludeFromUserRecursive4'
+
+
+class FindManyUserArgsFromSavedEventRecursive4(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    take: int
+    skip: int
+    order_by: Union['UserOrderByInput', List['UserOrderByInput']]
+    where: 'UserWhereInput'
+    cursor: 'UserWhereUniqueInput'
+    distinct: List['UserScalarFieldKeys']
+    
+    
+
+class VenueIncludeFromSavedEvent(TypedDict, total=False):
+    """Relational arguments for SavedEvent"""
+    events: Union[bool, 'FindManyEventArgsFromSavedEventRecursive1']
+
+
+class VenueIncludeFromSavedEventRecursive1(TypedDict, total=False):
+    """Relational arguments for SavedEvent"""
+    events: Union[bool, 'FindManyEventArgsFromSavedEventRecursive2']
+
+
+class VenueIncludeFromSavedEventRecursive2(TypedDict, total=False):
+    """Relational arguments for SavedEvent"""
+    events: Union[bool, 'FindManyEventArgsFromSavedEventRecursive3']
+
+
+class VenueIncludeFromSavedEventRecursive3(TypedDict, total=False):
+    """Relational arguments for SavedEvent"""
+    events: Union[bool, 'FindManyEventArgsFromSavedEventRecursive4']
+
+
+class VenueIncludeFromSavedEventRecursive4(TypedDict, total=False):
+    """Relational arguments for SavedEvent"""
+
+    
+
+class VenueArgsFromSavedEvent(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    include: 'VenueIncludeFromVenueRecursive1'
+
+
+class VenueArgsFromSavedEventRecursive1(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    include: 'VenueIncludeFromVenueRecursive2'
+
+
+class VenueArgsFromSavedEventRecursive2(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    include: 'VenueIncludeFromVenueRecursive3'
+
+
+class VenueArgsFromSavedEventRecursive3(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    include: 'VenueIncludeFromVenueRecursive4'
+
+
+class VenueArgsFromSavedEventRecursive4(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    
+    
+
+class FindManyVenueArgsFromSavedEvent(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    take: int
+    skip: int
+    order_by: Union['VenueOrderByInput', List['VenueOrderByInput']]
+    where: 'VenueWhereInput'
+    cursor: 'VenueWhereUniqueInput'
+    distinct: List['VenueScalarFieldKeys']
+    include: 'VenueIncludeFromVenueRecursive1'
+
+
+class FindManyVenueArgsFromSavedEventRecursive1(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    take: int
+    skip: int
+    order_by: Union['VenueOrderByInput', List['VenueOrderByInput']]
+    where: 'VenueWhereInput'
+    cursor: 'VenueWhereUniqueInput'
+    distinct: List['VenueScalarFieldKeys']
+    include: 'VenueIncludeFromVenueRecursive2'
+
+
+class FindManyVenueArgsFromSavedEventRecursive2(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    take: int
+    skip: int
+    order_by: Union['VenueOrderByInput', List['VenueOrderByInput']]
+    where: 'VenueWhereInput'
+    cursor: 'VenueWhereUniqueInput'
+    distinct: List['VenueScalarFieldKeys']
+    include: 'VenueIncludeFromVenueRecursive3'
+
+
+class FindManyVenueArgsFromSavedEventRecursive3(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    take: int
+    skip: int
+    order_by: Union['VenueOrderByInput', List['VenueOrderByInput']]
+    where: 'VenueWhereInput'
+    cursor: 'VenueWhereUniqueInput'
+    distinct: List['VenueScalarFieldKeys']
+    include: 'VenueIncludeFromVenueRecursive4'
+
+
+class FindManyVenueArgsFromSavedEventRecursive4(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    take: int
+    skip: int
+    order_by: Union['VenueOrderByInput', List['VenueOrderByInput']]
+    where: 'VenueWhereInput'
+    cursor: 'VenueWhereUniqueInput'
+    distinct: List['VenueScalarFieldKeys']
+    
+    
+
+class EventSourceIncludeFromSavedEvent(TypedDict, total=False):
+    """Relational arguments for SavedEvent"""
+    events: Union[bool, 'FindManyEventArgsFromSavedEventRecursive1']
+
+
+class EventSourceIncludeFromSavedEventRecursive1(TypedDict, total=False):
+    """Relational arguments for SavedEvent"""
+    events: Union[bool, 'FindManyEventArgsFromSavedEventRecursive2']
+
+
+class EventSourceIncludeFromSavedEventRecursive2(TypedDict, total=False):
+    """Relational arguments for SavedEvent"""
+    events: Union[bool, 'FindManyEventArgsFromSavedEventRecursive3']
+
+
+class EventSourceIncludeFromSavedEventRecursive3(TypedDict, total=False):
+    """Relational arguments for SavedEvent"""
+    events: Union[bool, 'FindManyEventArgsFromSavedEventRecursive4']
+
+
+class EventSourceIncludeFromSavedEventRecursive4(TypedDict, total=False):
+    """Relational arguments for SavedEvent"""
+
+    
+
+class EventSourceArgsFromSavedEvent(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    include: 'EventSourceIncludeFromEventSourceRecursive1'
+
+
+class EventSourceArgsFromSavedEventRecursive1(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    include: 'EventSourceIncludeFromEventSourceRecursive2'
+
+
+class EventSourceArgsFromSavedEventRecursive2(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    include: 'EventSourceIncludeFromEventSourceRecursive3'
+
+
+class EventSourceArgsFromSavedEventRecursive3(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    include: 'EventSourceIncludeFromEventSourceRecursive4'
+
+
+class EventSourceArgsFromSavedEventRecursive4(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    
+    
+
+class FindManyEventSourceArgsFromSavedEvent(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    take: int
+    skip: int
+    order_by: Union['EventSourceOrderByInput', List['EventSourceOrderByInput']]
+    where: 'EventSourceWhereInput'
+    cursor: 'EventSourceWhereUniqueInput'
+    distinct: List['EventSourceScalarFieldKeys']
+    include: 'EventSourceIncludeFromEventSourceRecursive1'
+
+
+class FindManyEventSourceArgsFromSavedEventRecursive1(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    take: int
+    skip: int
+    order_by: Union['EventSourceOrderByInput', List['EventSourceOrderByInput']]
+    where: 'EventSourceWhereInput'
+    cursor: 'EventSourceWhereUniqueInput'
+    distinct: List['EventSourceScalarFieldKeys']
+    include: 'EventSourceIncludeFromEventSourceRecursive2'
+
+
+class FindManyEventSourceArgsFromSavedEventRecursive2(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    take: int
+    skip: int
+    order_by: Union['EventSourceOrderByInput', List['EventSourceOrderByInput']]
+    where: 'EventSourceWhereInput'
+    cursor: 'EventSourceWhereUniqueInput'
+    distinct: List['EventSourceScalarFieldKeys']
+    include: 'EventSourceIncludeFromEventSourceRecursive3'
+
+
+class FindManyEventSourceArgsFromSavedEventRecursive3(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    take: int
+    skip: int
+    order_by: Union['EventSourceOrderByInput', List['EventSourceOrderByInput']]
+    where: 'EventSourceWhereInput'
+    cursor: 'EventSourceWhereUniqueInput'
+    distinct: List['EventSourceScalarFieldKeys']
+    include: 'EventSourceIncludeFromEventSourceRecursive4'
+
+
+class FindManyEventSourceArgsFromSavedEventRecursive4(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    take: int
+    skip: int
+    order_by: Union['EventSourceOrderByInput', List['EventSourceOrderByInput']]
+    where: 'EventSourceWhereInput'
+    cursor: 'EventSourceWhereUniqueInput'
+    distinct: List['EventSourceScalarFieldKeys']
+    
+    
+
+class TagIncludeFromSavedEvent(TypedDict, total=False):
+    """Relational arguments for SavedEvent"""
+    events: Union[bool, 'FindManyEventArgsFromSavedEventRecursive1']
+
+
+class TagIncludeFromSavedEventRecursive1(TypedDict, total=False):
+    """Relational arguments for SavedEvent"""
+    events: Union[bool, 'FindManyEventArgsFromSavedEventRecursive2']
+
+
+class TagIncludeFromSavedEventRecursive2(TypedDict, total=False):
+    """Relational arguments for SavedEvent"""
+    events: Union[bool, 'FindManyEventArgsFromSavedEventRecursive3']
+
+
+class TagIncludeFromSavedEventRecursive3(TypedDict, total=False):
+    """Relational arguments for SavedEvent"""
+    events: Union[bool, 'FindManyEventArgsFromSavedEventRecursive4']
+
+
+class TagIncludeFromSavedEventRecursive4(TypedDict, total=False):
+    """Relational arguments for SavedEvent"""
+
+    
+
+class TagArgsFromSavedEvent(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    include: 'TagIncludeFromTagRecursive1'
+
+
+class TagArgsFromSavedEventRecursive1(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    include: 'TagIncludeFromTagRecursive2'
+
+
+class TagArgsFromSavedEventRecursive2(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    include: 'TagIncludeFromTagRecursive3'
+
+
+class TagArgsFromSavedEventRecursive3(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    include: 'TagIncludeFromTagRecursive4'
+
+
+class TagArgsFromSavedEventRecursive4(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    
+    
+
+class FindManyTagArgsFromSavedEvent(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    take: int
+    skip: int
+    order_by: Union['TagOrderByInput', List['TagOrderByInput']]
+    where: 'TagWhereInput'
+    cursor: 'TagWhereUniqueInput'
+    distinct: List['TagScalarFieldKeys']
+    include: 'TagIncludeFromTagRecursive1'
+
+
+class FindManyTagArgsFromSavedEventRecursive1(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    take: int
+    skip: int
+    order_by: Union['TagOrderByInput', List['TagOrderByInput']]
+    where: 'TagWhereInput'
+    cursor: 'TagWhereUniqueInput'
+    distinct: List['TagScalarFieldKeys']
+    include: 'TagIncludeFromTagRecursive2'
+
+
+class FindManyTagArgsFromSavedEventRecursive2(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    take: int
+    skip: int
+    order_by: Union['TagOrderByInput', List['TagOrderByInput']]
+    where: 'TagWhereInput'
+    cursor: 'TagWhereUniqueInput'
+    distinct: List['TagScalarFieldKeys']
+    include: 'TagIncludeFromTagRecursive3'
+
+
+class FindManyTagArgsFromSavedEventRecursive3(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    take: int
+    skip: int
+    order_by: Union['TagOrderByInput', List['TagOrderByInput']]
+    where: 'TagWhereInput'
+    cursor: 'TagWhereUniqueInput'
+    distinct: List['TagScalarFieldKeys']
+    include: 'TagIncludeFromTagRecursive4'
+
+
+class FindManyTagArgsFromSavedEventRecursive4(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    take: int
+    skip: int
+    order_by: Union['TagOrderByInput', List['TagOrderByInput']]
+    where: 'TagWhereInput'
+    cursor: 'TagWhereUniqueInput'
+    distinct: List['TagScalarFieldKeys']
+    
+    
+
+class EventIncludeFromSavedEvent(TypedDict, total=False):
+    """Relational arguments for SavedEvent"""
+    venue: Union[bool, 'VenueArgsFromSavedEventRecursive1']
+    source: Union[bool, 'EventSourceArgsFromSavedEventRecursive1']
+    tags: Union[bool, 'FindManyTagArgsFromSavedEventRecursive1']
+    savedBy: Union[bool, 'FindManySavedEventArgsFromSavedEventRecursive1']
+
+
+class EventIncludeFromSavedEventRecursive1(TypedDict, total=False):
+    """Relational arguments for SavedEvent"""
+    venue: Union[bool, 'VenueArgsFromSavedEventRecursive2']
+    source: Union[bool, 'EventSourceArgsFromSavedEventRecursive2']
+    tags: Union[bool, 'FindManyTagArgsFromSavedEventRecursive2']
+    savedBy: Union[bool, 'FindManySavedEventArgsFromSavedEventRecursive2']
+
+
+class EventIncludeFromSavedEventRecursive2(TypedDict, total=False):
+    """Relational arguments for SavedEvent"""
+    venue: Union[bool, 'VenueArgsFromSavedEventRecursive3']
+    source: Union[bool, 'EventSourceArgsFromSavedEventRecursive3']
+    tags: Union[bool, 'FindManyTagArgsFromSavedEventRecursive3']
+    savedBy: Union[bool, 'FindManySavedEventArgsFromSavedEventRecursive3']
+
+
+class EventIncludeFromSavedEventRecursive3(TypedDict, total=False):
+    """Relational arguments for SavedEvent"""
+    venue: Union[bool, 'VenueArgsFromSavedEventRecursive4']
+    source: Union[bool, 'EventSourceArgsFromSavedEventRecursive4']
+    tags: Union[bool, 'FindManyTagArgsFromSavedEventRecursive4']
+    savedBy: Union[bool, 'FindManySavedEventArgsFromSavedEventRecursive4']
+
+
+class EventIncludeFromSavedEventRecursive4(TypedDict, total=False):
+    """Relational arguments for SavedEvent"""
+
+    
+
+class EventArgsFromSavedEvent(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    include: 'EventIncludeFromEventRecursive1'
+
+
+class EventArgsFromSavedEventRecursive1(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    include: 'EventIncludeFromEventRecursive2'
+
+
+class EventArgsFromSavedEventRecursive2(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    include: 'EventIncludeFromEventRecursive3'
+
+
+class EventArgsFromSavedEventRecursive3(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    include: 'EventIncludeFromEventRecursive4'
+
+
+class EventArgsFromSavedEventRecursive4(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    
+    
+
+class FindManyEventArgsFromSavedEvent(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    take: int
+    skip: int
+    order_by: Union['EventOrderByInput', List['EventOrderByInput']]
+    where: 'EventWhereInput'
+    cursor: 'EventWhereUniqueInput'
+    distinct: List['EventScalarFieldKeys']
+    include: 'EventIncludeFromEventRecursive1'
+
+
+class FindManyEventArgsFromSavedEventRecursive1(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    take: int
+    skip: int
+    order_by: Union['EventOrderByInput', List['EventOrderByInput']]
+    where: 'EventWhereInput'
+    cursor: 'EventWhereUniqueInput'
+    distinct: List['EventScalarFieldKeys']
+    include: 'EventIncludeFromEventRecursive2'
+
+
+class FindManyEventArgsFromSavedEventRecursive2(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    take: int
+    skip: int
+    order_by: Union['EventOrderByInput', List['EventOrderByInput']]
+    where: 'EventWhereInput'
+    cursor: 'EventWhereUniqueInput'
+    distinct: List['EventScalarFieldKeys']
+    include: 'EventIncludeFromEventRecursive3'
+
+
+class FindManyEventArgsFromSavedEventRecursive3(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    take: int
+    skip: int
+    order_by: Union['EventOrderByInput', List['EventOrderByInput']]
+    where: 'EventWhereInput'
+    cursor: 'EventWhereUniqueInput'
+    distinct: List['EventScalarFieldKeys']
+    include: 'EventIncludeFromEventRecursive4'
+
+
+class FindManyEventArgsFromSavedEventRecursive4(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    take: int
+    skip: int
+    order_by: Union['EventOrderByInput', List['EventOrderByInput']]
+    where: 'EventWhereInput'
+    cursor: 'EventWhereUniqueInput'
+    distinct: List['EventScalarFieldKeys']
+    
+    
+
+class SavedEventIncludeFromSavedEvent(TypedDict, total=False):
+    """Relational arguments for SavedEvent"""
+    user: Union[bool, 'UserArgsFromSavedEventRecursive1']
+    event: Union[bool, 'EventArgsFromSavedEventRecursive1']
+
+
+class SavedEventIncludeFromSavedEventRecursive1(TypedDict, total=False):
+    """Relational arguments for SavedEvent"""
+    user: Union[bool, 'UserArgsFromSavedEventRecursive2']
+    event: Union[bool, 'EventArgsFromSavedEventRecursive2']
+
+
+class SavedEventIncludeFromSavedEventRecursive2(TypedDict, total=False):
+    """Relational arguments for SavedEvent"""
+    user: Union[bool, 'UserArgsFromSavedEventRecursive3']
+    event: Union[bool, 'EventArgsFromSavedEventRecursive3']
+
+
+class SavedEventIncludeFromSavedEventRecursive3(TypedDict, total=False):
+    """Relational arguments for SavedEvent"""
+    user: Union[bool, 'UserArgsFromSavedEventRecursive4']
+    event: Union[bool, 'EventArgsFromSavedEventRecursive4']
+
+
+class SavedEventIncludeFromSavedEventRecursive4(TypedDict, total=False):
+    """Relational arguments for SavedEvent"""
+
+    
+
+class SavedEventArgsFromSavedEvent(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    include: 'SavedEventIncludeFromSavedEventRecursive1'
+
+
+class SavedEventArgsFromSavedEventRecursive1(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    include: 'SavedEventIncludeFromSavedEventRecursive2'
+
+
+class SavedEventArgsFromSavedEventRecursive2(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    include: 'SavedEventIncludeFromSavedEventRecursive3'
+
+
+class SavedEventArgsFromSavedEventRecursive3(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    include: 'SavedEventIncludeFromSavedEventRecursive4'
+
+
+class SavedEventArgsFromSavedEventRecursive4(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    
+    
+
+class FindManySavedEventArgsFromSavedEvent(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    take: int
+    skip: int
+    order_by: Union['SavedEventOrderByInput', List['SavedEventOrderByInput']]
+    where: 'SavedEventWhereInput'
+    cursor: 'SavedEventWhereUniqueInput'
+    distinct: List['SavedEventScalarFieldKeys']
+    include: 'SavedEventIncludeFromSavedEventRecursive1'
+
+
+class FindManySavedEventArgsFromSavedEventRecursive1(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    take: int
+    skip: int
+    order_by: Union['SavedEventOrderByInput', List['SavedEventOrderByInput']]
+    where: 'SavedEventWhereInput'
+    cursor: 'SavedEventWhereUniqueInput'
+    distinct: List['SavedEventScalarFieldKeys']
+    include: 'SavedEventIncludeFromSavedEventRecursive2'
+
+
+class FindManySavedEventArgsFromSavedEventRecursive2(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    take: int
+    skip: int
+    order_by: Union['SavedEventOrderByInput', List['SavedEventOrderByInput']]
+    where: 'SavedEventWhereInput'
+    cursor: 'SavedEventWhereUniqueInput'
+    distinct: List['SavedEventScalarFieldKeys']
+    include: 'SavedEventIncludeFromSavedEventRecursive3'
+
+
+class FindManySavedEventArgsFromSavedEventRecursive3(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    take: int
+    skip: int
+    order_by: Union['SavedEventOrderByInput', List['SavedEventOrderByInput']]
+    where: 'SavedEventWhereInput'
+    cursor: 'SavedEventWhereUniqueInput'
+    distinct: List['SavedEventScalarFieldKeys']
+    include: 'SavedEventIncludeFromSavedEventRecursive4'
+
+
+class FindManySavedEventArgsFromSavedEventRecursive4(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    take: int
+    skip: int
+    order_by: Union['SavedEventOrderByInput', List['SavedEventOrderByInput']]
+    where: 'SavedEventWhereInput'
+    cursor: 'SavedEventWhereUniqueInput'
+    distinct: List['SavedEventScalarFieldKeys']
+    
+
+
+FindManySavedEventArgs = FindManySavedEventArgsFromSavedEvent
+FindFirstSavedEventArgs = FindManySavedEventArgsFromSavedEvent
+
+
+    
+
+class SavedEventWhereInput(TypedDict, total=False):
+    """SavedEvent arguments for searching"""
+    id: Union[_int, 'types.IntFilter']
+    userId: Union[_int, 'types.IntFilter']
+    eventId: Union[_int, 'types.IntFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeFilter']
+    user: 'UserRelationFilter'
+    event: 'EventRelationFilter'
+
+    # should be noted that AND and NOT should be Union['SavedEventWhereInputRecursive1', List['SavedEventWhereInputRecursive1']]
+    # but this causes mypy to hang :/
+    AND: List['SavedEventWhereInputRecursive1']
+    OR: List['SavedEventWhereInputRecursive1']
+    NOT: List['SavedEventWhereInputRecursive1']
+
+
+class SavedEventWhereInputRecursive1(TypedDict, total=False):
+    """SavedEvent arguments for searching"""
+    id: Union[_int, 'types.IntFilter']
+    userId: Union[_int, 'types.IntFilter']
+    eventId: Union[_int, 'types.IntFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeFilter']
+    user: 'UserRelationFilter'
+    event: 'EventRelationFilter'
+
+    # should be noted that AND and NOT should be Union['SavedEventWhereInputRecursive2', List['SavedEventWhereInputRecursive2']]
+    # but this causes mypy to hang :/
+    AND: List['SavedEventWhereInputRecursive2']
+    OR: List['SavedEventWhereInputRecursive2']
+    NOT: List['SavedEventWhereInputRecursive2']
+
+
+class SavedEventWhereInputRecursive2(TypedDict, total=False):
+    """SavedEvent arguments for searching"""
+    id: Union[_int, 'types.IntFilter']
+    userId: Union[_int, 'types.IntFilter']
+    eventId: Union[_int, 'types.IntFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeFilter']
+    user: 'UserRelationFilter'
+    event: 'EventRelationFilter'
+
+    # should be noted that AND and NOT should be Union['SavedEventWhereInputRecursive3', List['SavedEventWhereInputRecursive3']]
+    # but this causes mypy to hang :/
+    AND: List['SavedEventWhereInputRecursive3']
+    OR: List['SavedEventWhereInputRecursive3']
+    NOT: List['SavedEventWhereInputRecursive3']
+
+
+class SavedEventWhereInputRecursive3(TypedDict, total=False):
+    """SavedEvent arguments for searching"""
+    id: Union[_int, 'types.IntFilter']
+    userId: Union[_int, 'types.IntFilter']
+    eventId: Union[_int, 'types.IntFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeFilter']
+    user: 'UserRelationFilter'
+    event: 'EventRelationFilter'
+
+    # should be noted that AND and NOT should be Union['SavedEventWhereInputRecursive4', List['SavedEventWhereInputRecursive4']]
+    # but this causes mypy to hang :/
+    AND: List['SavedEventWhereInputRecursive4']
+    OR: List['SavedEventWhereInputRecursive4']
+    NOT: List['SavedEventWhereInputRecursive4']
+
+
+class SavedEventWhereInputRecursive4(TypedDict, total=False):
+    """SavedEvent arguments for searching"""
+    id: Union[_int, 'types.IntFilter']
+    userId: Union[_int, 'types.IntFilter']
+    eventId: Union[_int, 'types.IntFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeFilter']
+    user: 'UserRelationFilter'
+    event: 'EventRelationFilter'
+
+
+
+# aggregate SavedEvent types
+
+
+    
+
+class SavedEventScalarWhereWithAggregatesInput(TypedDict, total=False):
+    """SavedEvent arguments for searching"""
+    id: Union[_int, 'types.IntWithAggregatesFilter']
+    userId: Union[_int, 'types.IntWithAggregatesFilter']
+    eventId: Union[_int, 'types.IntWithAggregatesFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+
+    AND: List['SavedEventScalarWhereWithAggregatesInputRecursive1']
+    OR: List['SavedEventScalarWhereWithAggregatesInputRecursive1']
+    NOT: List['SavedEventScalarWhereWithAggregatesInputRecursive1']
+
+
+class SavedEventScalarWhereWithAggregatesInputRecursive1(TypedDict, total=False):
+    """SavedEvent arguments for searching"""
+    id: Union[_int, 'types.IntWithAggregatesFilter']
+    userId: Union[_int, 'types.IntWithAggregatesFilter']
+    eventId: Union[_int, 'types.IntWithAggregatesFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+
+    AND: List['SavedEventScalarWhereWithAggregatesInputRecursive2']
+    OR: List['SavedEventScalarWhereWithAggregatesInputRecursive2']
+    NOT: List['SavedEventScalarWhereWithAggregatesInputRecursive2']
+
+
+class SavedEventScalarWhereWithAggregatesInputRecursive2(TypedDict, total=False):
+    """SavedEvent arguments for searching"""
+    id: Union[_int, 'types.IntWithAggregatesFilter']
+    userId: Union[_int, 'types.IntWithAggregatesFilter']
+    eventId: Union[_int, 'types.IntWithAggregatesFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+
+    AND: List['SavedEventScalarWhereWithAggregatesInputRecursive3']
+    OR: List['SavedEventScalarWhereWithAggregatesInputRecursive3']
+    NOT: List['SavedEventScalarWhereWithAggregatesInputRecursive3']
+
+
+class SavedEventScalarWhereWithAggregatesInputRecursive3(TypedDict, total=False):
+    """SavedEvent arguments for searching"""
+    id: Union[_int, 'types.IntWithAggregatesFilter']
+    userId: Union[_int, 'types.IntWithAggregatesFilter']
+    eventId: Union[_int, 'types.IntWithAggregatesFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+
+    AND: List['SavedEventScalarWhereWithAggregatesInputRecursive4']
+    OR: List['SavedEventScalarWhereWithAggregatesInputRecursive4']
+    NOT: List['SavedEventScalarWhereWithAggregatesInputRecursive4']
+
+
+class SavedEventScalarWhereWithAggregatesInputRecursive4(TypedDict, total=False):
+    """SavedEvent arguments for searching"""
+    id: Union[_int, 'types.IntWithAggregatesFilter']
+    userId: Union[_int, 'types.IntWithAggregatesFilter']
+    eventId: Union[_int, 'types.IntWithAggregatesFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+
+
+
+class SavedEventGroupByOutput(TypedDict, total=False):
+    id: _int
+    userId: _int
+    eventId: _int
+    createdAt: datetime.datetime
+    _sum: 'SavedEventSumAggregateOutput'
+    _avg: 'SavedEventAvgAggregateOutput'
+    _min: 'SavedEventMinAggregateOutput'
+    _max: 'SavedEventMaxAggregateOutput'
+    _count: 'SavedEventCountAggregateOutput'
+
+
+class SavedEventAvgAggregateOutput(TypedDict, total=False):
+    """SavedEvent output for aggregating averages"""
+    id: float
+    userId: float
+    eventId: float
+
+
+class SavedEventSumAggregateOutput(TypedDict, total=False):
+    """SavedEvent output for aggregating sums"""
+    id: _int
+    userId: _int
+    eventId: _int
+
+
+class SavedEventScalarAggregateOutput(TypedDict, total=False):
+    """SavedEvent output including scalar fields"""
+    id: _int
+    userId: _int
+    eventId: _int
+    createdAt: datetime.datetime
+
+
+SavedEventMinAggregateOutput = SavedEventScalarAggregateOutput
+SavedEventMaxAggregateOutput = SavedEventScalarAggregateOutput
+
+
+class SavedEventMaxAggregateInput(TypedDict, total=False):
+    """SavedEvent input for aggregating by max"""
+    id: bool
+    userId: bool
+    eventId: bool
+    createdAt: bool
+
+
+class SavedEventMinAggregateInput(TypedDict, total=False):
+    """SavedEvent input for aggregating by min"""
+    id: bool
+    userId: bool
+    eventId: bool
+    createdAt: bool
+
+
+class SavedEventNumberAggregateInput(TypedDict, total=False):
+    """SavedEvent input for aggregating numbers"""
+    id: bool
+    userId: bool
+    eventId: bool
+
+
+SavedEventAvgAggregateInput = SavedEventNumberAggregateInput
+SavedEventSumAggregateInput = SavedEventNumberAggregateInput
+
+
+SavedEventCountAggregateInput = TypedDict(
+    'SavedEventCountAggregateInput',
+    {
+        'id': bool,
+        'userId': bool,
+        'eventId': bool,
+        'createdAt': bool,
+        '_all': bool,
+    },
+    total=False,
+)
+
+SavedEventCountAggregateOutput = TypedDict(
+    'SavedEventCountAggregateOutput',
+    {
+        'id': int,
+        'userId': int,
+        'eventId': int,
+        'createdAt': int,
+        '_all': int,
+    },
+    total=False,
+)
+
+
+SavedEventKeys = Literal[
+    'id',
+    'userId',
+    'eventId',
+    'createdAt',
+    'user',
+    'event',
+]
+SavedEventScalarFieldKeys = Literal[
+    'id',
+    'userId',
+    'eventId',
+    'createdAt',
+]
+SavedEventScalarFieldKeysT = TypeVar('SavedEventScalarFieldKeysT', bound=SavedEventScalarFieldKeys)
+
+SavedEventRelationalFieldKeys = Literal[
+        'user',
+        'event',
+    ]
 
 
 

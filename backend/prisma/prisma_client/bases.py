@@ -84,3 +84,53 @@ class BaseUser(_PrismaModel):
         return actions.UserActions[_PrismaModelT](client or get_client(), cls)
 
 
+class BaseVenue(_PrismaModel):
+    __prisma_model__: ClassVar[Literal['Venue']] = 'Venue'  # pyright: ignore[reportIncompatibleVariableOverride]
+
+    @classmethod
+    def prisma(cls: Type[_PrismaModelT], client: Optional['Prisma'] = None) -> 'actions.VenueActions[_PrismaModelT]':
+        from .client import get_client
+
+        return actions.VenueActions[_PrismaModelT](client or get_client(), cls)
+
+
+class BaseEventSource(_PrismaModel):
+    __prisma_model__: ClassVar[Literal['EventSource']] = 'EventSource'  # pyright: ignore[reportIncompatibleVariableOverride]
+
+    @classmethod
+    def prisma(cls: Type[_PrismaModelT], client: Optional['Prisma'] = None) -> 'actions.EventSourceActions[_PrismaModelT]':
+        from .client import get_client
+
+        return actions.EventSourceActions[_PrismaModelT](client or get_client(), cls)
+
+
+class BaseTag(_PrismaModel):
+    __prisma_model__: ClassVar[Literal['Tag']] = 'Tag'  # pyright: ignore[reportIncompatibleVariableOverride]
+
+    @classmethod
+    def prisma(cls: Type[_PrismaModelT], client: Optional['Prisma'] = None) -> 'actions.TagActions[_PrismaModelT]':
+        from .client import get_client
+
+        return actions.TagActions[_PrismaModelT](client or get_client(), cls)
+
+
+class BaseEvent(_PrismaModel):
+    __prisma_model__: ClassVar[Literal['Event']] = 'Event'  # pyright: ignore[reportIncompatibleVariableOverride]
+
+    @classmethod
+    def prisma(cls: Type[_PrismaModelT], client: Optional['Prisma'] = None) -> 'actions.EventActions[_PrismaModelT]':
+        from .client import get_client
+
+        return actions.EventActions[_PrismaModelT](client or get_client(), cls)
+
+
+class BaseSavedEvent(_PrismaModel):
+    __prisma_model__: ClassVar[Literal['SavedEvent']] = 'SavedEvent'  # pyright: ignore[reportIncompatibleVariableOverride]
+
+    @classmethod
+    def prisma(cls: Type[_PrismaModelT], client: Optional['Prisma'] = None) -> 'actions.SavedEventActions[_PrismaModelT]':
+        from .client import get_client
+
+        return actions.SavedEventActions[_PrismaModelT](client or get_client(), cls)
+
+

@@ -64,6 +64,7 @@ class User(bases.BaseUser):
     email: _str
     passwordHash: _str
     createdAt: datetime.datetime
+    savedEvents: Optional[List['models.SavedEvent']] = None
 
     # take *args and **kwargs so that other metaclasses can define arguments
     def __init_subclass__(
@@ -145,9 +146,33 @@ class User(bases.BaseUser):
                 for field in optional:
                     fields[field]['optional'] = True
 
+            if exclude_relational_fields:
+                fields = {
+                    key: data
+                    for key, data in fields.items()
+                    if key not in _User_relational_fields
+                }
 
             if relations:
-                raise ValueError('Model: "User" has no relational fields.')
+                for field, type_ in relations.items():
+                    if field not in _User_relational_fields:
+                        raise errors.UnknownRelationalFieldError('User', field)
+
+                    # TODO: this method of validating types is not ideal
+                    # as it means we cannot two create partial types that
+                    # reference each other
+                    if type_ not in _created_partial_types:
+                        raise ValueError(
+                            f'Unknown partial type: "{type_}". '
+                            f'Did you remember to generate the {type_} type before this one?'
+                        )
+
+                    # TODO: support non prisma.partials models
+                    info = fields[field]
+                    if info['is_list']:
+                        info['type'] = f'List[\'partials.{type_}\']'
+                    else:
+                        info['type'] = f'\'partials.{type_}\''
         except KeyError as exc:
             raise ValueError(
                 f'{exc.args[0]} is not a valid User / {name} field.'
@@ -164,8 +189,687 @@ class User(bases.BaseUser):
         _created_partial_types.add(name)
 
 
+class Venue(bases.BaseVenue):
+    """Represents a Venue record"""
 
-_User_relational_fields: Set[str] = set()  # pyright: ignore[reportUnusedVariable]
+    id: _int
+    name: Optional[_str] = None
+    street: Optional[_str] = None
+    city: Optional[_str] = None
+    state: Optional[_str] = None
+    country: Optional[_str] = None
+    lat: Optional[_float] = None
+    lng: Optional[_float] = None
+    createdAt: datetime.datetime
+    events: Optional[List['models.Event']] = None
+
+    # take *args and **kwargs so that other metaclasses can define arguments
+    def __init_subclass__(
+        cls,
+        *args: Any,
+        warn_subclass: Optional[bool] = None,
+        **kwargs: Any,
+    ) -> None:
+        super().__init_subclass__()
+        if warn_subclass is not None:
+            warnings.warn(
+                'The `warn_subclass` argument is deprecated as it is no longer necessary and will be removed in the next release',
+                DeprecationWarning,
+                stacklevel=3,
+            )
+
+
+    @staticmethod
+    def create_partial(
+        name: str,
+        include: Optional[Iterable['types.VenueKeys']] = None,
+        exclude: Optional[Iterable['types.VenueKeys']] = None,
+        required: Optional[Iterable['types.VenueKeys']] = None,
+        optional: Optional[Iterable['types.VenueKeys']] = None,
+        relations: Optional[Mapping['types.VenueRelationalFieldKeys', str]] = None,
+        exclude_relational_fields: bool = False,
+    ) -> None:
+        if not os.environ.get('PRISMA_GENERATOR_INVOCATION'):
+            raise RuntimeError(
+                'Attempted to create a partial type outside of client generation.'
+            )
+
+        if name in _created_partial_types:
+            raise ValueError(f'Partial type "{name}" has already been created.')
+
+        if include is not None:
+            if exclude is not None:
+                raise TypeError('Exclude and include are mutually exclusive.')
+            if exclude_relational_fields is True:
+                raise TypeError('Include and exclude_relational_fields=True are mutually exclusive.')
+
+        if required and optional:
+            shared = set(required) & set(optional)
+            if shared:
+                raise ValueError(f'Cannot make the same field(s) required and optional {shared}')
+
+        if exclude_relational_fields and relations:
+            raise ValueError(
+                'exclude_relational_fields and relations are mutually exclusive'
+            )
+
+        fields: Dict['types.VenueKeys', PartialModelField] = OrderedDict()
+
+        try:
+            if include:
+                for field in include:
+                    fields[field] = _Venue_fields[field].copy()
+            elif exclude:
+                for field in exclude:
+                    if field not in _Venue_fields:
+                        raise KeyError(field)
+
+                fields = {
+                    key: data.copy()
+                    for key, data in _Venue_fields.items()
+                    if key not in exclude
+                }
+            else:
+                fields = {
+                    key: data.copy()
+                    for key, data in _Venue_fields.items()
+                }
+
+            if required:
+                for field in required:
+                    fields[field]['optional'] = False
+
+            if optional:
+                for field in optional:
+                    fields[field]['optional'] = True
+
+            if exclude_relational_fields:
+                fields = {
+                    key: data
+                    for key, data in fields.items()
+                    if key not in _Venue_relational_fields
+                }
+
+            if relations:
+                for field, type_ in relations.items():
+                    if field not in _Venue_relational_fields:
+                        raise errors.UnknownRelationalFieldError('Venue', field)
+
+                    # TODO: this method of validating types is not ideal
+                    # as it means we cannot two create partial types that
+                    # reference each other
+                    if type_ not in _created_partial_types:
+                        raise ValueError(
+                            f'Unknown partial type: "{type_}". '
+                            f'Did you remember to generate the {type_} type before this one?'
+                        )
+
+                    # TODO: support non prisma.partials models
+                    info = fields[field]
+                    if info['is_list']:
+                        info['type'] = f'List[\'partials.{type_}\']'
+                    else:
+                        info['type'] = f'\'partials.{type_}\''
+        except KeyError as exc:
+            raise ValueError(
+                f'{exc.args[0]} is not a valid Venue / {name} field.'
+            ) from None
+
+        models = partial_models_ctx.get()
+        models.append(
+            {
+                'name': name,
+                'fields': cast(Mapping[str, PartialModelField], fields),
+                'from_model': 'Venue',
+            }
+        )
+        _created_partial_types.add(name)
+
+
+class EventSource(bases.BaseEventSource):
+    """Represents a EventSource record"""
+
+    id: _int
+    domain: _str
+    label: Optional[_str] = None
+    createdAt: datetime.datetime
+    events: Optional[List['models.Event']] = None
+
+    # take *args and **kwargs so that other metaclasses can define arguments
+    def __init_subclass__(
+        cls,
+        *args: Any,
+        warn_subclass: Optional[bool] = None,
+        **kwargs: Any,
+    ) -> None:
+        super().__init_subclass__()
+        if warn_subclass is not None:
+            warnings.warn(
+                'The `warn_subclass` argument is deprecated as it is no longer necessary and will be removed in the next release',
+                DeprecationWarning,
+                stacklevel=3,
+            )
+
+
+    @staticmethod
+    def create_partial(
+        name: str,
+        include: Optional[Iterable['types.EventSourceKeys']] = None,
+        exclude: Optional[Iterable['types.EventSourceKeys']] = None,
+        required: Optional[Iterable['types.EventSourceKeys']] = None,
+        optional: Optional[Iterable['types.EventSourceKeys']] = None,
+        relations: Optional[Mapping['types.EventSourceRelationalFieldKeys', str]] = None,
+        exclude_relational_fields: bool = False,
+    ) -> None:
+        if not os.environ.get('PRISMA_GENERATOR_INVOCATION'):
+            raise RuntimeError(
+                'Attempted to create a partial type outside of client generation.'
+            )
+
+        if name in _created_partial_types:
+            raise ValueError(f'Partial type "{name}" has already been created.')
+
+        if include is not None:
+            if exclude is not None:
+                raise TypeError('Exclude and include are mutually exclusive.')
+            if exclude_relational_fields is True:
+                raise TypeError('Include and exclude_relational_fields=True are mutually exclusive.')
+
+        if required and optional:
+            shared = set(required) & set(optional)
+            if shared:
+                raise ValueError(f'Cannot make the same field(s) required and optional {shared}')
+
+        if exclude_relational_fields and relations:
+            raise ValueError(
+                'exclude_relational_fields and relations are mutually exclusive'
+            )
+
+        fields: Dict['types.EventSourceKeys', PartialModelField] = OrderedDict()
+
+        try:
+            if include:
+                for field in include:
+                    fields[field] = _EventSource_fields[field].copy()
+            elif exclude:
+                for field in exclude:
+                    if field not in _EventSource_fields:
+                        raise KeyError(field)
+
+                fields = {
+                    key: data.copy()
+                    for key, data in _EventSource_fields.items()
+                    if key not in exclude
+                }
+            else:
+                fields = {
+                    key: data.copy()
+                    for key, data in _EventSource_fields.items()
+                }
+
+            if required:
+                for field in required:
+                    fields[field]['optional'] = False
+
+            if optional:
+                for field in optional:
+                    fields[field]['optional'] = True
+
+            if exclude_relational_fields:
+                fields = {
+                    key: data
+                    for key, data in fields.items()
+                    if key not in _EventSource_relational_fields
+                }
+
+            if relations:
+                for field, type_ in relations.items():
+                    if field not in _EventSource_relational_fields:
+                        raise errors.UnknownRelationalFieldError('EventSource', field)
+
+                    # TODO: this method of validating types is not ideal
+                    # as it means we cannot two create partial types that
+                    # reference each other
+                    if type_ not in _created_partial_types:
+                        raise ValueError(
+                            f'Unknown partial type: "{type_}". '
+                            f'Did you remember to generate the {type_} type before this one?'
+                        )
+
+                    # TODO: support non prisma.partials models
+                    info = fields[field]
+                    if info['is_list']:
+                        info['type'] = f'List[\'partials.{type_}\']'
+                    else:
+                        info['type'] = f'\'partials.{type_}\''
+        except KeyError as exc:
+            raise ValueError(
+                f'{exc.args[0]} is not a valid EventSource / {name} field.'
+            ) from None
+
+        models = partial_models_ctx.get()
+        models.append(
+            {
+                'name': name,
+                'fields': cast(Mapping[str, PartialModelField], fields),
+                'from_model': 'EventSource',
+            }
+        )
+        _created_partial_types.add(name)
+
+
+class Tag(bases.BaseTag):
+    """Represents a Tag record"""
+
+    id: _int
+    name: _str
+    events: Optional[List['models.Event']] = None
+
+    # take *args and **kwargs so that other metaclasses can define arguments
+    def __init_subclass__(
+        cls,
+        *args: Any,
+        warn_subclass: Optional[bool] = None,
+        **kwargs: Any,
+    ) -> None:
+        super().__init_subclass__()
+        if warn_subclass is not None:
+            warnings.warn(
+                'The `warn_subclass` argument is deprecated as it is no longer necessary and will be removed in the next release',
+                DeprecationWarning,
+                stacklevel=3,
+            )
+
+
+    @staticmethod
+    def create_partial(
+        name: str,
+        include: Optional[Iterable['types.TagKeys']] = None,
+        exclude: Optional[Iterable['types.TagKeys']] = None,
+        required: Optional[Iterable['types.TagKeys']] = None,
+        optional: Optional[Iterable['types.TagKeys']] = None,
+        relations: Optional[Mapping['types.TagRelationalFieldKeys', str]] = None,
+        exclude_relational_fields: bool = False,
+    ) -> None:
+        if not os.environ.get('PRISMA_GENERATOR_INVOCATION'):
+            raise RuntimeError(
+                'Attempted to create a partial type outside of client generation.'
+            )
+
+        if name in _created_partial_types:
+            raise ValueError(f'Partial type "{name}" has already been created.')
+
+        if include is not None:
+            if exclude is not None:
+                raise TypeError('Exclude and include are mutually exclusive.')
+            if exclude_relational_fields is True:
+                raise TypeError('Include and exclude_relational_fields=True are mutually exclusive.')
+
+        if required and optional:
+            shared = set(required) & set(optional)
+            if shared:
+                raise ValueError(f'Cannot make the same field(s) required and optional {shared}')
+
+        if exclude_relational_fields and relations:
+            raise ValueError(
+                'exclude_relational_fields and relations are mutually exclusive'
+            )
+
+        fields: Dict['types.TagKeys', PartialModelField] = OrderedDict()
+
+        try:
+            if include:
+                for field in include:
+                    fields[field] = _Tag_fields[field].copy()
+            elif exclude:
+                for field in exclude:
+                    if field not in _Tag_fields:
+                        raise KeyError(field)
+
+                fields = {
+                    key: data.copy()
+                    for key, data in _Tag_fields.items()
+                    if key not in exclude
+                }
+            else:
+                fields = {
+                    key: data.copy()
+                    for key, data in _Tag_fields.items()
+                }
+
+            if required:
+                for field in required:
+                    fields[field]['optional'] = False
+
+            if optional:
+                for field in optional:
+                    fields[field]['optional'] = True
+
+            if exclude_relational_fields:
+                fields = {
+                    key: data
+                    for key, data in fields.items()
+                    if key not in _Tag_relational_fields
+                }
+
+            if relations:
+                for field, type_ in relations.items():
+                    if field not in _Tag_relational_fields:
+                        raise errors.UnknownRelationalFieldError('Tag', field)
+
+                    # TODO: this method of validating types is not ideal
+                    # as it means we cannot two create partial types that
+                    # reference each other
+                    if type_ not in _created_partial_types:
+                        raise ValueError(
+                            f'Unknown partial type: "{type_}". '
+                            f'Did you remember to generate the {type_} type before this one?'
+                        )
+
+                    # TODO: support non prisma.partials models
+                    info = fields[field]
+                    if info['is_list']:
+                        info['type'] = f'List[\'partials.{type_}\']'
+                    else:
+                        info['type'] = f'\'partials.{type_}\''
+        except KeyError as exc:
+            raise ValueError(
+                f'{exc.args[0]} is not a valid Tag / {name} field.'
+            ) from None
+
+        models = partial_models_ctx.get()
+        models.append(
+            {
+                'name': name,
+                'fields': cast(Mapping[str, PartialModelField], fields),
+                'from_model': 'Tag',
+            }
+        )
+        _created_partial_types.add(name)
+
+
+class Event(bases.BaseEvent):
+    """Represents a Event record"""
+
+    id: _int
+    title: _str
+    description: Optional[_str] = None
+    url: _str
+    imageUrl: Optional[_str] = None
+    startTime: Optional[datetime.datetime] = None
+    endTime: Optional[datetime.datetime] = None
+    timezone: Optional[_str] = None
+    price: Optional[_str] = None
+    isFree: Optional[_bool] = None
+    venueId: Optional[_int] = None
+    venue: Optional['models.Venue'] = None
+    sourceId: Optional[_int] = None
+    source: Optional['models.EventSource'] = None
+    createdAt: datetime.datetime
+    updatedAt: datetime.datetime
+    tags: Optional[List['models.Tag']] = None
+    savedBy: Optional[List['models.SavedEvent']] = None
+
+    # take *args and **kwargs so that other metaclasses can define arguments
+    def __init_subclass__(
+        cls,
+        *args: Any,
+        warn_subclass: Optional[bool] = None,
+        **kwargs: Any,
+    ) -> None:
+        super().__init_subclass__()
+        if warn_subclass is not None:
+            warnings.warn(
+                'The `warn_subclass` argument is deprecated as it is no longer necessary and will be removed in the next release',
+                DeprecationWarning,
+                stacklevel=3,
+            )
+
+
+    @staticmethod
+    def create_partial(
+        name: str,
+        include: Optional[Iterable['types.EventKeys']] = None,
+        exclude: Optional[Iterable['types.EventKeys']] = None,
+        required: Optional[Iterable['types.EventKeys']] = None,
+        optional: Optional[Iterable['types.EventKeys']] = None,
+        relations: Optional[Mapping['types.EventRelationalFieldKeys', str]] = None,
+        exclude_relational_fields: bool = False,
+    ) -> None:
+        if not os.environ.get('PRISMA_GENERATOR_INVOCATION'):
+            raise RuntimeError(
+                'Attempted to create a partial type outside of client generation.'
+            )
+
+        if name in _created_partial_types:
+            raise ValueError(f'Partial type "{name}" has already been created.')
+
+        if include is not None:
+            if exclude is not None:
+                raise TypeError('Exclude and include are mutually exclusive.')
+            if exclude_relational_fields is True:
+                raise TypeError('Include and exclude_relational_fields=True are mutually exclusive.')
+
+        if required and optional:
+            shared = set(required) & set(optional)
+            if shared:
+                raise ValueError(f'Cannot make the same field(s) required and optional {shared}')
+
+        if exclude_relational_fields and relations:
+            raise ValueError(
+                'exclude_relational_fields and relations are mutually exclusive'
+            )
+
+        fields: Dict['types.EventKeys', PartialModelField] = OrderedDict()
+
+        try:
+            if include:
+                for field in include:
+                    fields[field] = _Event_fields[field].copy()
+            elif exclude:
+                for field in exclude:
+                    if field not in _Event_fields:
+                        raise KeyError(field)
+
+                fields = {
+                    key: data.copy()
+                    for key, data in _Event_fields.items()
+                    if key not in exclude
+                }
+            else:
+                fields = {
+                    key: data.copy()
+                    for key, data in _Event_fields.items()
+                }
+
+            if required:
+                for field in required:
+                    fields[field]['optional'] = False
+
+            if optional:
+                for field in optional:
+                    fields[field]['optional'] = True
+
+            if exclude_relational_fields:
+                fields = {
+                    key: data
+                    for key, data in fields.items()
+                    if key not in _Event_relational_fields
+                }
+
+            if relations:
+                for field, type_ in relations.items():
+                    if field not in _Event_relational_fields:
+                        raise errors.UnknownRelationalFieldError('Event', field)
+
+                    # TODO: this method of validating types is not ideal
+                    # as it means we cannot two create partial types that
+                    # reference each other
+                    if type_ not in _created_partial_types:
+                        raise ValueError(
+                            f'Unknown partial type: "{type_}". '
+                            f'Did you remember to generate the {type_} type before this one?'
+                        )
+
+                    # TODO: support non prisma.partials models
+                    info = fields[field]
+                    if info['is_list']:
+                        info['type'] = f'List[\'partials.{type_}\']'
+                    else:
+                        info['type'] = f'\'partials.{type_}\''
+        except KeyError as exc:
+            raise ValueError(
+                f'{exc.args[0]} is not a valid Event / {name} field.'
+            ) from None
+
+        models = partial_models_ctx.get()
+        models.append(
+            {
+                'name': name,
+                'fields': cast(Mapping[str, PartialModelField], fields),
+                'from_model': 'Event',
+            }
+        )
+        _created_partial_types.add(name)
+
+
+class SavedEvent(bases.BaseSavedEvent):
+    """Represents a SavedEvent record"""
+
+    id: _int
+    userId: _int
+    eventId: _int
+    createdAt: datetime.datetime
+    user: Optional['models.User'] = None
+    event: Optional['models.Event'] = None
+
+    # take *args and **kwargs so that other metaclasses can define arguments
+    def __init_subclass__(
+        cls,
+        *args: Any,
+        warn_subclass: Optional[bool] = None,
+        **kwargs: Any,
+    ) -> None:
+        super().__init_subclass__()
+        if warn_subclass is not None:
+            warnings.warn(
+                'The `warn_subclass` argument is deprecated as it is no longer necessary and will be removed in the next release',
+                DeprecationWarning,
+                stacklevel=3,
+            )
+
+
+    @staticmethod
+    def create_partial(
+        name: str,
+        include: Optional[Iterable['types.SavedEventKeys']] = None,
+        exclude: Optional[Iterable['types.SavedEventKeys']] = None,
+        required: Optional[Iterable['types.SavedEventKeys']] = None,
+        optional: Optional[Iterable['types.SavedEventKeys']] = None,
+        relations: Optional[Mapping['types.SavedEventRelationalFieldKeys', str]] = None,
+        exclude_relational_fields: bool = False,
+    ) -> None:
+        if not os.environ.get('PRISMA_GENERATOR_INVOCATION'):
+            raise RuntimeError(
+                'Attempted to create a partial type outside of client generation.'
+            )
+
+        if name in _created_partial_types:
+            raise ValueError(f'Partial type "{name}" has already been created.')
+
+        if include is not None:
+            if exclude is not None:
+                raise TypeError('Exclude and include are mutually exclusive.')
+            if exclude_relational_fields is True:
+                raise TypeError('Include and exclude_relational_fields=True are mutually exclusive.')
+
+        if required and optional:
+            shared = set(required) & set(optional)
+            if shared:
+                raise ValueError(f'Cannot make the same field(s) required and optional {shared}')
+
+        if exclude_relational_fields and relations:
+            raise ValueError(
+                'exclude_relational_fields and relations are mutually exclusive'
+            )
+
+        fields: Dict['types.SavedEventKeys', PartialModelField] = OrderedDict()
+
+        try:
+            if include:
+                for field in include:
+                    fields[field] = _SavedEvent_fields[field].copy()
+            elif exclude:
+                for field in exclude:
+                    if field not in _SavedEvent_fields:
+                        raise KeyError(field)
+
+                fields = {
+                    key: data.copy()
+                    for key, data in _SavedEvent_fields.items()
+                    if key not in exclude
+                }
+            else:
+                fields = {
+                    key: data.copy()
+                    for key, data in _SavedEvent_fields.items()
+                }
+
+            if required:
+                for field in required:
+                    fields[field]['optional'] = False
+
+            if optional:
+                for field in optional:
+                    fields[field]['optional'] = True
+
+            if exclude_relational_fields:
+                fields = {
+                    key: data
+                    for key, data in fields.items()
+                    if key not in _SavedEvent_relational_fields
+                }
+
+            if relations:
+                for field, type_ in relations.items():
+                    if field not in _SavedEvent_relational_fields:
+                        raise errors.UnknownRelationalFieldError('SavedEvent', field)
+
+                    # TODO: this method of validating types is not ideal
+                    # as it means we cannot two create partial types that
+                    # reference each other
+                    if type_ not in _created_partial_types:
+                        raise ValueError(
+                            f'Unknown partial type: "{type_}". '
+                            f'Did you remember to generate the {type_} type before this one?'
+                        )
+
+                    # TODO: support non prisma.partials models
+                    info = fields[field]
+                    if info['is_list']:
+                        info['type'] = f'List[\'partials.{type_}\']'
+                    else:
+                        info['type'] = f'\'partials.{type_}\''
+        except KeyError as exc:
+            raise ValueError(
+                f'{exc.args[0]} is not a valid SavedEvent / {name} field.'
+            ) from None
+
+        models = partial_models_ctx.get()
+        models.append(
+            {
+                'name': name,
+                'fields': cast(Mapping[str, PartialModelField], fields),
+                'from_model': 'SavedEvent',
+            }
+        )
+        _created_partial_types.add(name)
+
+
+
+_User_relational_fields: Set[str] = {
+        'savedEvents',
+    }
 _User_fields: Dict['types.UserKeys', PartialModelField] = OrderedDict(
     [
         ('id', {
@@ -208,6 +912,394 @@ _User_fields: Dict['types.UserKeys', PartialModelField] = OrderedDict(
             'is_relational': False,
             'documentation': None,
         }),
+        ('savedEvents', {
+            'name': 'savedEvents',
+            'is_list': True,
+            'optional': True,
+            'type': 'List[\'models.SavedEvent\']',
+            'is_relational': True,
+            'documentation': None,
+        }),
+    ],
+)
+
+_Venue_relational_fields: Set[str] = {
+        'events',
+    }
+_Venue_fields: Dict['types.VenueKeys', PartialModelField] = OrderedDict(
+    [
+        ('id', {
+            'name': 'id',
+            'is_list': False,
+            'optional': False,
+            'type': '_int',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('name', {
+            'name': 'name',
+            'is_list': False,
+            'optional': True,
+            'type': '_str',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('street', {
+            'name': 'street',
+            'is_list': False,
+            'optional': True,
+            'type': '_str',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('city', {
+            'name': 'city',
+            'is_list': False,
+            'optional': True,
+            'type': '_str',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('state', {
+            'name': 'state',
+            'is_list': False,
+            'optional': True,
+            'type': '_str',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('country', {
+            'name': 'country',
+            'is_list': False,
+            'optional': True,
+            'type': '_str',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('lat', {
+            'name': 'lat',
+            'is_list': False,
+            'optional': True,
+            'type': '_float',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('lng', {
+            'name': 'lng',
+            'is_list': False,
+            'optional': True,
+            'type': '_float',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('createdAt', {
+            'name': 'createdAt',
+            'is_list': False,
+            'optional': False,
+            'type': 'datetime.datetime',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('events', {
+            'name': 'events',
+            'is_list': True,
+            'optional': True,
+            'type': 'List[\'models.Event\']',
+            'is_relational': True,
+            'documentation': None,
+        }),
+    ],
+)
+
+_EventSource_relational_fields: Set[str] = {
+        'events',
+    }
+_EventSource_fields: Dict['types.EventSourceKeys', PartialModelField] = OrderedDict(
+    [
+        ('id', {
+            'name': 'id',
+            'is_list': False,
+            'optional': False,
+            'type': '_int',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('domain', {
+            'name': 'domain',
+            'is_list': False,
+            'optional': False,
+            'type': '_str',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('label', {
+            'name': 'label',
+            'is_list': False,
+            'optional': True,
+            'type': '_str',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('createdAt', {
+            'name': 'createdAt',
+            'is_list': False,
+            'optional': False,
+            'type': 'datetime.datetime',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('events', {
+            'name': 'events',
+            'is_list': True,
+            'optional': True,
+            'type': 'List[\'models.Event\']',
+            'is_relational': True,
+            'documentation': None,
+        }),
+    ],
+)
+
+_Tag_relational_fields: Set[str] = {
+        'events',
+    }
+_Tag_fields: Dict['types.TagKeys', PartialModelField] = OrderedDict(
+    [
+        ('id', {
+            'name': 'id',
+            'is_list': False,
+            'optional': False,
+            'type': '_int',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('name', {
+            'name': 'name',
+            'is_list': False,
+            'optional': False,
+            'type': '_str',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('events', {
+            'name': 'events',
+            'is_list': True,
+            'optional': True,
+            'type': 'List[\'models.Event\']',
+            'is_relational': True,
+            'documentation': None,
+        }),
+    ],
+)
+
+_Event_relational_fields: Set[str] = {
+        'venue',
+        'source',
+        'tags',
+        'savedBy',
+    }
+_Event_fields: Dict['types.EventKeys', PartialModelField] = OrderedDict(
+    [
+        ('id', {
+            'name': 'id',
+            'is_list': False,
+            'optional': False,
+            'type': '_int',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('title', {
+            'name': 'title',
+            'is_list': False,
+            'optional': False,
+            'type': '_str',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('description', {
+            'name': 'description',
+            'is_list': False,
+            'optional': True,
+            'type': '_str',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('url', {
+            'name': 'url',
+            'is_list': False,
+            'optional': False,
+            'type': '_str',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('imageUrl', {
+            'name': 'imageUrl',
+            'is_list': False,
+            'optional': True,
+            'type': '_str',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('startTime', {
+            'name': 'startTime',
+            'is_list': False,
+            'optional': True,
+            'type': 'datetime.datetime',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('endTime', {
+            'name': 'endTime',
+            'is_list': False,
+            'optional': True,
+            'type': 'datetime.datetime',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('timezone', {
+            'name': 'timezone',
+            'is_list': False,
+            'optional': True,
+            'type': '_str',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('price', {
+            'name': 'price',
+            'is_list': False,
+            'optional': True,
+            'type': '_str',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('isFree', {
+            'name': 'isFree',
+            'is_list': False,
+            'optional': True,
+            'type': '_bool',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('venueId', {
+            'name': 'venueId',
+            'is_list': False,
+            'optional': True,
+            'type': '_int',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('venue', {
+            'name': 'venue',
+            'is_list': False,
+            'optional': True,
+            'type': 'models.Venue',
+            'is_relational': True,
+            'documentation': None,
+        }),
+        ('sourceId', {
+            'name': 'sourceId',
+            'is_list': False,
+            'optional': True,
+            'type': '_int',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('source', {
+            'name': 'source',
+            'is_list': False,
+            'optional': True,
+            'type': 'models.EventSource',
+            'is_relational': True,
+            'documentation': None,
+        }),
+        ('createdAt', {
+            'name': 'createdAt',
+            'is_list': False,
+            'optional': False,
+            'type': 'datetime.datetime',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('updatedAt', {
+            'name': 'updatedAt',
+            'is_list': False,
+            'optional': False,
+            'type': 'datetime.datetime',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('tags', {
+            'name': 'tags',
+            'is_list': True,
+            'optional': True,
+            'type': 'List[\'models.Tag\']',
+            'is_relational': True,
+            'documentation': None,
+        }),
+        ('savedBy', {
+            'name': 'savedBy',
+            'is_list': True,
+            'optional': True,
+            'type': 'List[\'models.SavedEvent\']',
+            'is_relational': True,
+            'documentation': None,
+        }),
+    ],
+)
+
+_SavedEvent_relational_fields: Set[str] = {
+        'user',
+        'event',
+    }
+_SavedEvent_fields: Dict['types.SavedEventKeys', PartialModelField] = OrderedDict(
+    [
+        ('id', {
+            'name': 'id',
+            'is_list': False,
+            'optional': False,
+            'type': '_int',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('userId', {
+            'name': 'userId',
+            'is_list': False,
+            'optional': False,
+            'type': '_int',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('eventId', {
+            'name': 'eventId',
+            'is_list': False,
+            'optional': False,
+            'type': '_int',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('createdAt', {
+            'name': 'createdAt',
+            'is_list': False,
+            'optional': False,
+            'type': 'datetime.datetime',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('user', {
+            'name': 'user',
+            'is_list': False,
+            'optional': True,
+            'type': 'models.User',
+            'is_relational': True,
+            'documentation': None,
+        }),
+        ('event', {
+            'name': 'event',
+            'is_list': False,
+            'optional': True,
+            'type': 'models.Event',
+            'is_relational': True,
+            'documentation': None,
+        }),
     ],
 )
 
@@ -219,3 +1311,8 @@ from . import models, actions
 
 # required to support relationships between models
 model_rebuild(User)
+model_rebuild(Venue)
+model_rebuild(EventSource)
+model_rebuild(Tag)
+model_rebuild(Event)
+model_rebuild(SavedEvent)

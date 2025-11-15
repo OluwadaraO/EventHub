@@ -20,4 +20,63 @@ model User {
   email        String    @unique
   passwordHash String
   createdAt    DateTime  @default(now())
+  savedEvents  SavedEvent[]
+}
+
+model Venue {
+  id        Int      @id @default(autoincrement())
+  name      String?
+  street    String?
+  city      String?
+  state     String?
+  country   String?
+  lat       Float?
+  lng       Float?
+  createdAt DateTime @default(now())
+  events    Event[]
+}
+
+model EventSource {
+  id        Int      @id @default(autoincrement())
+  domain    String   @unique
+  label     String?
+  createdAt DateTime @default(now())
+  events    Event[]
+}
+
+model Tag {
+  id     Int     @id @default(autoincrement())
+  name   String  @unique
+  events Event[]      
+}
+
+model Event {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String?
+  url         String    @unique
+  imageUrl    String?
+  startTime   DateTime?
+  endTime     DateTime?
+  timezone    String?
+  price       String?
+  isFree      Boolean?  @default(false)
+  venueId   Int?
+  venue     Venue?      @relation(fields: [venueId], references: [id])
+  sourceId  Int?
+  source    EventSource? @relation(fields: [sourceId], references: [id])
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  tags      Tag[] 
+  savedBy   SavedEvent[]
+}
+
+model SavedEvent {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  eventId   Int
+  createdAt DateTime @default(now())
+  user   User  @relation(fields: [userId], references: [id])
+  event  Event @relation(fields: [eventId], references: [id])
+  @@unique([userId, eventId])
 }

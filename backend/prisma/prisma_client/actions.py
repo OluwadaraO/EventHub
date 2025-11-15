@@ -1082,6 +1082,5126 @@ class UserActions(Generic[_PrismaModelT]):
         return resp['data']['result']  # type: ignore[no-any-return]
 
 
+class VenueActions(Generic[_PrismaModelT]):
+    __slots__ = (
+        '_client',
+        '_model',
+    )
+
+    def __init__(self, client: Prisma, model: Type[_PrismaModelT]) -> None:
+        self._client = client
+        self._model = model
+
+    async def query_raw(
+        self,
+        query: LiteralString,
+        *args: Any,
+    ) -> List[_PrismaModelT]:
+        """Execute a raw SQL query
+
+        Parameters
+        ----------
+        query
+            The raw SQL query string to be executed
+        *args
+            Parameters to be passed to the SQL query, these MUST be used over
+            string formatting to avoid an SQL injection vulnerability
+
+        Returns
+        -------
+        List[prisma.models.Venue]
+            The records returned by the SQL query
+
+        Raises
+        ------
+        prisma_errors.RawQueryError
+            This could be due to invalid syntax, mismatched number of parameters or any other error
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        users = await Venue.prisma().query_raw(
+            'SELECT * FROM Venue WHERE id = $1',
+            2111915288,
+        )
+        ```
+        """
+        return await self._client.query_raw(query, *args, model=self._model)
+
+    async def query_first(
+        self,
+        query: LiteralString,
+        *args: Any,
+    ) -> Optional[_PrismaModelT]:
+        """Execute a raw SQL query, returning the first result
+
+        Parameters
+        ----------
+        query
+            The raw SQL query string to be executed
+        *args
+            Parameters to be passed to the SQL query, these MUST be used over
+            string formatting to avoid an SQL injection vulnerability
+
+        Returns
+        -------
+        prisma.models.Venue
+            The first record returned by the SQL query
+        None
+            The raw SQL query did not return any records
+
+        Raises
+        ------
+        prisma_errors.RawQueryError
+            This could be due to invalid syntax, mismatched number of parameters or any other error
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        user = await Venue.prisma().query_first(
+            'SELECT * FROM Venue WHERE name = $1',
+            'bbejhfidcb',
+        )
+        ```
+        """
+        return await self._client.query_first(query, *args, model=self._model)
+
+    async def create(
+        self,
+        data: types.VenueCreateInput,
+        include: Optional[types.VenueInclude] = None
+    ) -> _PrismaModelT:
+        """Create a new Venue record.
+
+        Parameters
+        ----------
+        data
+            Venue record data
+        include
+            Specifies which relations should be loaded on the returned Venue model
+
+        Returns
+        -------
+        prisma.models.Venue
+            The created Venue record
+
+        Raises
+        ------
+        prisma.errors.MissingRequiredValueError
+            Value is required but was not found
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # create a Venue record from just the required fields
+        venue = await Venue.prisma().create(
+            data={
+                # data to create a Venue record
+            },
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='create',
+            model=self._model,
+            arguments={
+                'data': data,
+                'include': include,
+            },
+        )
+        return model_parse(self._model, resp['data']['result'])
+
+    async def create_many(
+        self,
+        data: List[types.VenueCreateWithoutRelationsInput],
+        *,
+        skip_duplicates: Optional[bool] = None,
+    ) -> int:
+        """Create multiple Venue records at once.
+
+        This function is *not* available when using SQLite.
+
+        Parameters
+        ----------
+        data
+            List of Venue record data
+        skip_duplicates
+            Boolean flag for ignoring unique constraint errors
+
+        Returns
+        -------
+        int
+            The total number of records created
+
+        Raises
+        ------
+        prisma.errors.UnsupportedDatabaseError
+            Attempting to query when using SQLite
+        prisma.errors.UniqueViolationError
+            A unique constraint check has failed, these can be ignored with the `skip_duplicates` argument
+        prisma.errors.MissingRequiredValueError
+            Value is required but was not found
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        total = await Venue.prisma().create_many(
+            data=[
+                {
+                    # data to create a Venue record
+                },
+                {
+                    # data to create a Venue record
+                },
+            ],
+            skip_duplicates=True,
+        )
+        ```
+        """
+        if skip_duplicates and self._client._active_provider in CREATE_MANY_SKIP_DUPLICATES_UNSUPPORTED:
+            raise errors.UnsupportedDatabaseError(self._client._active_provider, 'create_many_skip_duplicates')
+
+        resp = await self._client._execute(
+            method='create_many',
+            model=self._model,
+            arguments={
+                'data': data,
+                'skipDuplicates': skip_duplicates,
+            },
+            root_selection=['count'],
+        )
+        return int(resp['data']['result']['count'])
+
+    async def delete(
+        self,
+        where: types.VenueWhereUniqueInput,
+        include: Optional[types.VenueInclude] = None
+    ) -> Optional[_PrismaModelT]:
+        """Delete a single Venue record.
+
+        Parameters
+        ----------
+        where
+            Venue filter to select the record to be deleted, must be unique
+        include
+            Specifies which relations should be loaded on the returned Venue model
+
+        Returns
+        -------
+        prisma.models.Venue
+            The deleted Venue record
+        None
+            Could not find a record to delete
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+        prisma.errors.MissingRequiredValueError
+            Value is required but was not found
+
+        Example
+        -------
+        ```py
+        venue = await Venue.prisma().delete(
+            where={
+                'id': 1644289366,
+            },
+        )
+        ```
+        """
+        try:
+            resp = await self._client._execute(
+                method='delete',
+                model=self._model,
+                arguments={
+                    'where': where,
+                    'include': include,
+                },
+            )
+        except errors.RecordNotFoundError:
+            return None
+
+        return model_parse(self._model, resp['data']['result'])
+
+    async def find_unique(
+        self,
+        where: types.VenueWhereUniqueInput,
+        include: Optional[types.VenueInclude] = None
+    ) -> Optional[_PrismaModelT]:
+        """Find a unique Venue record.
+
+        Parameters
+        ----------
+        where
+            Venue filter to find the record, must be unique
+        include
+            Specifies which relations should be loaded on the returned Venue model
+
+        Returns
+        -------
+        prisma.models.Venue
+            The found Venue record
+        None
+            No record matching the given input could be found
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+        prisma.errors.MissingRequiredValueError
+            Value is required but was not found
+
+        Example
+        -------
+        ```py
+        venue = await Venue.prisma().find_unique(
+            where={
+                'id': 1388290519,
+            },
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='find_unique',
+            model=self._model,
+            arguments={
+                'where': where,
+                'include': include,
+            },
+        )
+        result = resp['data']['result']
+        if result is None:
+            return None
+        return model_parse(self._model, result)
+
+    async def find_unique_or_raise(
+        self,
+        where: types.VenueWhereUniqueInput,
+        include: Optional[types.VenueInclude] = None
+    ) -> _PrismaModelT:
+        """Find a unique Venue record. Raises `RecordNotFoundError` if no record is found.
+
+        Parameters
+        ----------
+        where
+            Venue filter to find the record, must be unique
+        include
+            Specifies which relations should be loaded on the returned Venue model
+
+        Returns
+        -------
+        prisma.models.Venue
+            The found Venue record
+
+        Raises
+        ------
+        prisma.errors.RecordNotFoundError
+            No record was found
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+        prisma.errors.MissingRequiredValueError
+            Value is required but was not found
+
+        Example
+        -------
+        ```py
+        venue = await Venue.prisma().find_unique_or_raise(
+            where={
+                'id': 1647418052,
+            },
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='find_unique_or_raise',
+            model=self._model,
+            arguments={
+                'where': where,
+                'include': include,
+            },
+        )
+        return model_parse(self._model, resp['data']['result'])
+
+    async def find_many(
+        self,
+        take: Optional[int] = None,
+        skip: Optional[int] = None,
+        where: Optional[types.VenueWhereInput] = None,
+        cursor: Optional[types.VenueWhereUniqueInput] = None,
+        include: Optional[types.VenueInclude] = None,
+        order: Optional[Union[types.VenueOrderByInput, List[types.VenueOrderByInput]]] = None,
+        distinct: Optional[List[types.VenueScalarFieldKeys]] = None,
+    ) -> List[_PrismaModelT]:
+        """Find multiple Venue records.
+
+        An empty list is returned if no records could be found.
+
+        Parameters
+        ----------
+        take
+            Limit the maximum number of Venue records returned
+        skip
+            Ignore the first N results
+        where
+            Venue filter to select records
+        cursor
+            Specifies the position in the list to start returning results from, (typically an ID field)
+        include
+            Specifies which relations should be loaded on the returned Venue model
+        order
+            Order the returned Venue records by any field
+        distinct
+            Filter Venue records by either a single distinct field or distinct combinations of fields
+
+        Returns
+        -------
+        List[prisma.models.Venue]
+            The list of all Venue records that could be found
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # find the first 10 Venue records
+        venues = await Venue.prisma().find_many(take=10)
+
+        # find the first 5 Venue records ordered by the street field
+        venues = await Venue.prisma().find_many(
+            take=5,
+            order={
+                'street': 'desc',
+            },
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='find_many',
+            model=self._model,
+            arguments={
+                'take': take,
+                'skip': skip,
+                'where': where,
+                'order_by': order,
+                'cursor': cursor,
+                'include': include,
+                'distinct': distinct,
+            },
+        )
+        return [model_parse(self._model, r) for r in resp['data']['result']]
+
+    async def find_first(
+        self,
+        skip: Optional[int] = None,
+        where: Optional[types.VenueWhereInput] = None,
+        cursor: Optional[types.VenueWhereUniqueInput] = None,
+        include: Optional[types.VenueInclude] = None,
+        order: Optional[Union[types.VenueOrderByInput, List[types.VenueOrderByInput]]] = None,
+        distinct: Optional[List[types.VenueScalarFieldKeys]] = None,
+    ) -> Optional[_PrismaModelT]:
+        """Find a single Venue record.
+
+        Parameters
+        ----------
+        skip
+            Ignore the first N records
+        where
+            Venue filter to select the record
+        cursor
+            Specifies the position in the list to start returning results from, (typically an ID field)
+        include
+            Specifies which relations should be loaded on the returned Venue model
+        order
+            Order the returned Venue records by any field
+        distinct
+            Filter Venue records by either a single distinct field or distinct combinations of fields
+
+        Returns
+        -------
+        prisma.models.Venue
+            The first Venue record found, matching the given arguments
+        None
+            No record could be found
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # find the second Venue record ordered by the city field
+        venue = await Venue.prisma().find_first(
+            skip=1,
+            order={
+                'city': 'desc',
+            },
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='find_first',
+            model=self._model,
+            arguments={
+                'skip': skip,
+                'where': where,
+                'order_by': order,
+                'cursor': cursor,
+                'include': include,
+                'distinct': distinct,
+            },
+        )
+        result = resp['data']['result']
+        if result is None:
+            return None
+
+        return model_parse(self._model, result)
+
+    async def find_first_or_raise(
+        self,
+        skip: Optional[int] = None,
+        where: Optional[types.VenueWhereInput] = None,
+        cursor: Optional[types.VenueWhereUniqueInput] = None,
+        include: Optional[types.VenueInclude] = None,
+        order: Optional[Union[types.VenueOrderByInput, List[types.VenueOrderByInput]]] = None,
+        distinct: Optional[List[types.VenueScalarFieldKeys]] = None,
+    ) -> _PrismaModelT:
+        """Find a single Venue record. Raises `RecordNotFoundError` if no record was found.
+
+        Parameters
+        ----------
+        skip
+            Ignore the first N records
+        where
+            Venue filter to select the record
+        cursor
+            Specifies the position in the list to start returning results from, (typically an ID field)
+        include
+            Specifies which relations should be loaded on the returned Venue model
+        order
+            Order the returned Venue records by any field
+        distinct
+            Filter Venue records by either a single distinct field or distinct combinations of fields
+
+        Returns
+        -------
+        prisma.models.Venue
+            The first Venue record found, matching the given arguments
+
+        Raises
+        ------
+        prisma.errors.RecordNotFoundError
+            No record was found
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # find the second Venue record ordered by the state field
+        venue = await Venue.prisma().find_first_or_raise(
+            skip=1,
+            order={
+                'state': 'desc',
+            },
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='find_first_or_raise',
+            model=self._model,
+            arguments={
+                'skip': skip,
+                'where': where,
+                'order_by': order,
+                'cursor': cursor,
+                'include': include,
+                'distinct': distinct,
+            },
+        )
+        return model_parse(self._model, resp['data']['result'])
+
+    async def update(
+        self,
+        data: types.VenueUpdateInput,
+        where: types.VenueWhereUniqueInput,
+        include: Optional[types.VenueInclude] = None
+    ) -> Optional[_PrismaModelT]:
+        """Update a single Venue record.
+
+        Parameters
+        ----------
+        data
+            Venue record data specifying what to update
+        where
+            Venue filter to select the unique record to create / update
+        include
+            Specifies which relations should be loaded on the returned Venue model
+
+        Returns
+        -------
+        prisma.models.Venue
+            The updated Venue record
+        None
+            No record could be found
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        venue = await Venue.prisma().update(
+            where={
+                'id': 1675546029,
+            },
+            data={
+                # data to update the Venue record to
+            },
+        )
+        ```
+        """
+        try:
+            resp = await self._client._execute(
+                method='update',
+                model=self._model,
+                arguments={
+                    'data': data,
+                    'where': where,
+                    'include': include,
+                },
+            )
+        except errors.RecordNotFoundError:
+            return None
+
+        return model_parse(self._model, resp['data']['result'])
+
+    async def upsert(
+        self,
+        where: types.VenueWhereUniqueInput,
+        data: types.VenueUpsertInput,
+        include: Optional[types.VenueInclude] = None,
+    ) -> _PrismaModelT:
+        """Updates an existing record or create a new one
+
+        Parameters
+        ----------
+        where
+            Venue filter to select the unique record to create / update
+        data
+            Data specifying what fields to set on create and update
+        include
+            Specifies which relations should be loaded on the returned Venue model
+
+        Returns
+        -------
+        prisma.models.Venue
+            The created or updated Venue record
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+        prisma.errors.MissingRequiredValueError
+            Value is required but was not found
+
+        Example
+        -------
+        ```py
+        venue = await Venue.prisma().upsert(
+            where={
+                'id': 1767274722,
+            },
+            data={
+                'create': {
+                    'id': 1767274722,
+                },
+                'update': {
+                },
+            },
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='upsert',
+            model=self._model,
+            arguments={
+                'where': where,
+                'include': include,
+                'create': data.get('create'),
+                'update': data.get('update'),
+            },
+        )
+        return model_parse(self._model, resp['data']['result'])
+
+    async def update_many(
+        self,
+        data: types.VenueUpdateManyMutationInput,
+        where: types.VenueWhereInput,
+    ) -> int:
+        """Update multiple Venue records
+
+        Parameters
+        ----------
+        data
+            Venue data to update the selected Venue records to
+        where
+            Filter to select the Venue records to update
+
+        Returns
+        -------
+        int
+            The total number of Venue records that were updated
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # update all Venue records
+        total = await Venue.prisma().update_many(
+            data={
+                'country': 'dcgchcbbf'
+            },
+            where={}
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='update_many',
+            model=self._model,
+            arguments={'data': data, 'where': where,},
+            root_selection=['count'],
+        )
+        return int(resp['data']['result']['count'])
+
+    @overload
+    async def count(
+        self,
+        select: None = None,
+        take: Optional[int] = None,
+        skip: Optional[int] = None,
+        where: Optional[types.VenueWhereInput] = None,
+        cursor: Optional[types.VenueWhereUniqueInput] = None,
+    ) -> int:
+        """Count the number of Venue records present in the database
+
+        Parameters
+        ----------
+        select
+            Select the Venue fields to be counted
+        take
+            Limit the maximum result
+        skip
+            Ignore the first N records
+        where
+            Venue filter to find records
+        cursor
+            Specifies the position in the list to start counting results from, (typically an ID field)
+        order
+            This parameter is deprecated and will be removed in a future release
+
+        Returns
+        -------
+        int
+            The total number of records found, returned if `select` is not given
+
+        prisma.types.VenueCountAggregateOutput
+            Data returned when `select` is used, the fields present in this dictionary will
+            match the fields passed in the `select` argument
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # total: int
+        total = await Venue.prisma().count()
+
+        # results: prisma.types.VenueCountAggregateOutput
+        results = await Venue.prisma().count(
+            select={
+                '_all': True,
+                'lat': True,
+            },
+        )
+        ```
+        """
+
+
+    @overload
+    async def count(
+        self,
+        select: types.VenueCountAggregateInput,
+        take: Optional[int] = None,
+        skip: Optional[int] = None,
+        where: Optional[types.VenueWhereInput] = None,
+        cursor: Optional[types.VenueWhereUniqueInput] = None,
+    ) -> types.VenueCountAggregateOutput:
+        ...
+
+    async def count(
+        self,
+        select: Optional[types.VenueCountAggregateInput] = None,
+        take: Optional[int] = None,
+        skip: Optional[int] = None,
+        where: Optional[types.VenueWhereInput] = None,
+        cursor: Optional[types.VenueWhereUniqueInput] = None,
+    ) -> Union[int, types.VenueCountAggregateOutput]:
+        """Count the number of Venue records present in the database
+
+        Parameters
+        ----------
+        select
+            Select the Venue fields to be counted
+        take
+            Limit the maximum result
+        skip
+            Ignore the first N records
+        where
+            Venue filter to find records
+        cursor
+            Specifies the position in the list to start counting results from, (typically an ID field)
+        order
+            This parameter is deprecated and will be removed in a future release
+
+        Returns
+        -------
+        int
+            The total number of records found, returned if `select` is not given
+
+        prisma.types.VenueCountAggregateOutput
+            Data returned when `select` is used, the fields present in this dictionary will
+            match the fields passed in the `select` argument
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # total: int
+        total = await Venue.prisma().count()
+
+        # results: prisma.types.VenueCountAggregateOutput
+        results = await Venue.prisma().count(
+            select={
+                '_all': True,
+                'lng': True,
+            },
+        )
+        ```
+        """
+
+        # TODO: this selection building should be moved to the QueryBuilder
+        #
+        # note the distinction between checking for `not select` here and `select is None`
+        # later is to handle the case that the given select dictionary is empty, this
+        # is a limitation of our types.
+        if not select:
+            root_selection = ['_count { _all }']
+        else:
+
+            root_selection = [
+                '_count {{ {0} }}'.format(' '.join(k for k, v in select.items() if v is True))
+            ]
+
+        resp = await self._client._execute(
+            method='count',
+            model=self._model,
+            arguments={
+                'take': take,
+                'skip': skip,
+                'where': where,
+                'cursor': cursor,
+            },
+            root_selection=root_selection,
+        )
+
+        if select is None:
+            return cast(int, resp['data']['result']['_count']['_all'])
+        else:
+            return cast(types.VenueCountAggregateOutput, resp['data']['result']['_count'])
+
+    async def delete_many(
+        self,
+        where: Optional[types.VenueWhereInput] = None
+    ) -> int:
+        """Delete multiple Venue records.
+
+        Parameters
+        ----------
+        where
+            Optional Venue filter to find the records to be deleted
+
+        Returns
+        -------
+        int
+            The total number of Venue records that were deleted
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # delete all Venue records
+        total = await Venue.prisma().delete_many()
+        ```
+        """
+        resp = await self._client._execute(
+            method='delete_many',
+            model=self._model,
+            arguments={'where': where},
+            root_selection=['count'],
+        )
+        return int(resp['data']['result']['count'])
+
+    # TODO: make this easier to work with safely, currently output fields are typed as
+    #       not required, we should refactor the return type
+    # TODO: consider returning a Dict where the keys are a Tuple of the `by` selection
+    # TODO: statically type that the order argument is required when take or skip are present
+    async def group_by(
+        self,
+        by: List['types.VenueScalarFieldKeys'],
+        *,
+        where: Optional['types.VenueWhereInput'] = None,
+        take: Optional[int] = None,
+        skip: Optional[int] = None,
+        avg: Optional['types.VenueAvgAggregateInput'] = None,
+        sum: Optional['types.VenueSumAggregateInput'] = None,
+        min: Optional['types.VenueMinAggregateInput'] = None,
+        max: Optional['types.VenueMaxAggregateInput'] = None,
+        having: Optional['types.VenueScalarWhereWithAggregatesInput'] = None,
+        count: Optional[Union[bool, 'types.VenueCountAggregateInput']] = None,
+        order: Optional[Union[Mapping['types.VenueScalarFieldKeys', 'types.SortOrder'], List[Mapping['types.VenueScalarFieldKeys', 'types.SortOrder']]]] = None,
+    ) -> List['types.VenueGroupByOutput']:
+        """Group Venue records by one or more field values and perform aggregations
+        each group such as finding the average.
+
+        Parameters
+        ----------
+        by
+            List of scalar Venue fields to group records by
+        where
+            Venue filter to select records
+        take
+            Limit the maximum number of Venue records returned
+        skip
+            Ignore the first N records
+        avg
+            Adds the average of all values of the specified fields to the `_avg` field
+            in the returned data.
+        sum
+            Adds the sum of all values of the specified fields to the `_sum` field
+            in the returned data.
+        min
+            Adds the smallest available value for the specified fields to the `_min` field
+            in the returned data.
+        max
+            Adds the largest available value for the specified fields to the `_max` field
+            in the returned data.
+        count
+            Adds a count of non-fields to the `_count` field in the returned data.
+        having
+            Allows you to filter groups by an aggregate value - for example only return
+            groups having an average age less than 50.
+        order
+            Lets you order the returned list by any property that is also present in `by`.
+            Only **one** field is allowed at a time.
+
+        Returns
+        -------
+        List[prisma.types.VenueGroupByOutput]
+            A list of dictionaries representing the Venue record,
+            this will also have additional fields present if aggregation arguments
+            are used (see the above parameters)
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # group Venue records by createdAt values
+        # and count how many records are in each group
+        results = await Venue.prisma().group_by(
+            ['createdAt'],
+            count=True,
+        )
+        ```
+        """
+        if order is None:
+            if take is not None:
+                raise TypeError('Missing argument: \'order\' which is required when \'take\' is present')
+
+            if skip is not None:
+                raise TypeError('Missing argument: \'order\' which is required when \'skip\' is present')
+
+        root_selection: List[str] = [*by]
+        if avg is not None:
+            root_selection.append(_select_fields('_avg', avg))
+
+        if min is not None:
+            root_selection.append(_select_fields('_min', min))
+
+        if sum is not None:
+            root_selection.append(_select_fields('_sum', sum))
+
+        if max is not None:
+            root_selection.append(_select_fields('_max', max))
+
+        if count is not None:
+            if count is True:
+                root_selection.append('_count { _all }')
+            elif isinstance(count, dict):
+                root_selection.append(_select_fields('_count', count))
+
+        resp = await self._client._execute(
+            method='group_by',
+            model=self._model,
+            arguments={
+                'by': by,
+                'take': take,
+                'skip': skip,
+                'where': where,
+                'having': having,
+                'orderBy': order,
+            },
+            root_selection=root_selection,
+        )
+        return resp['data']['result']  # type: ignore[no-any-return]
+
+
+class EventSourceActions(Generic[_PrismaModelT]):
+    __slots__ = (
+        '_client',
+        '_model',
+    )
+
+    def __init__(self, client: Prisma, model: Type[_PrismaModelT]) -> None:
+        self._client = client
+        self._model = model
+
+    async def query_raw(
+        self,
+        query: LiteralString,
+        *args: Any,
+    ) -> List[_PrismaModelT]:
+        """Execute a raw SQL query
+
+        Parameters
+        ----------
+        query
+            The raw SQL query string to be executed
+        *args
+            Parameters to be passed to the SQL query, these MUST be used over
+            string formatting to avoid an SQL injection vulnerability
+
+        Returns
+        -------
+        List[prisma.models.EventSource]
+            The records returned by the SQL query
+
+        Raises
+        ------
+        prisma_errors.RawQueryError
+            This could be due to invalid syntax, mismatched number of parameters or any other error
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        users = await EventSource.prisma().query_raw(
+            'SELECT * FROM EventSource WHERE id = $1',
+            1343201072,
+        )
+        ```
+        """
+        return await self._client.query_raw(query, *args, model=self._model)
+
+    async def query_first(
+        self,
+        query: LiteralString,
+        *args: Any,
+    ) -> Optional[_PrismaModelT]:
+        """Execute a raw SQL query, returning the first result
+
+        Parameters
+        ----------
+        query
+            The raw SQL query string to be executed
+        *args
+            Parameters to be passed to the SQL query, these MUST be used over
+            string formatting to avoid an SQL injection vulnerability
+
+        Returns
+        -------
+        prisma.models.EventSource
+            The first record returned by the SQL query
+        None
+            The raw SQL query did not return any records
+
+        Raises
+        ------
+        prisma_errors.RawQueryError
+            This could be due to invalid syntax, mismatched number of parameters or any other error
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        user = await EventSource.prisma().query_first(
+            'SELECT * FROM EventSource WHERE domain = $1',
+            'ghfhiafcb',
+        )
+        ```
+        """
+        return await self._client.query_first(query, *args, model=self._model)
+
+    async def create(
+        self,
+        data: types.EventSourceCreateInput,
+        include: Optional[types.EventSourceInclude] = None
+    ) -> _PrismaModelT:
+        """Create a new EventSource record.
+
+        Parameters
+        ----------
+        data
+            EventSource record data
+        include
+            Specifies which relations should be loaded on the returned EventSource model
+
+        Returns
+        -------
+        prisma.models.EventSource
+            The created EventSource record
+
+        Raises
+        ------
+        prisma.errors.MissingRequiredValueError
+            Value is required but was not found
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # create a EventSource record from just the required fields
+        eventsource = await EventSource.prisma().create(
+            data={
+                # data to create a EventSource record
+                'domain': 'heejgedji',
+            },
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='create',
+            model=self._model,
+            arguments={
+                'data': data,
+                'include': include,
+            },
+        )
+        return model_parse(self._model, resp['data']['result'])
+
+    async def create_many(
+        self,
+        data: List[types.EventSourceCreateWithoutRelationsInput],
+        *,
+        skip_duplicates: Optional[bool] = None,
+    ) -> int:
+        """Create multiple EventSource records at once.
+
+        This function is *not* available when using SQLite.
+
+        Parameters
+        ----------
+        data
+            List of EventSource record data
+        skip_duplicates
+            Boolean flag for ignoring unique constraint errors
+
+        Returns
+        -------
+        int
+            The total number of records created
+
+        Raises
+        ------
+        prisma.errors.UnsupportedDatabaseError
+            Attempting to query when using SQLite
+        prisma.errors.UniqueViolationError
+            A unique constraint check has failed, these can be ignored with the `skip_duplicates` argument
+        prisma.errors.MissingRequiredValueError
+            Value is required but was not found
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        total = await EventSource.prisma().create_many(
+            data=[
+                {
+                    # data to create a EventSource record
+                    'domain': 'bjgjgibgbf',
+                },
+                {
+                    # data to create a EventSource record
+                    'domain': 'bbbgbhfjge',
+                },
+            ],
+            skip_duplicates=True,
+        )
+        ```
+        """
+        if skip_duplicates and self._client._active_provider in CREATE_MANY_SKIP_DUPLICATES_UNSUPPORTED:
+            raise errors.UnsupportedDatabaseError(self._client._active_provider, 'create_many_skip_duplicates')
+
+        resp = await self._client._execute(
+            method='create_many',
+            model=self._model,
+            arguments={
+                'data': data,
+                'skipDuplicates': skip_duplicates,
+            },
+            root_selection=['count'],
+        )
+        return int(resp['data']['result']['count'])
+
+    async def delete(
+        self,
+        where: types.EventSourceWhereUniqueInput,
+        include: Optional[types.EventSourceInclude] = None
+    ) -> Optional[_PrismaModelT]:
+        """Delete a single EventSource record.
+
+        Parameters
+        ----------
+        where
+            EventSource filter to select the record to be deleted, must be unique
+        include
+            Specifies which relations should be loaded on the returned EventSource model
+
+        Returns
+        -------
+        prisma.models.EventSource
+            The deleted EventSource record
+        None
+            Could not find a record to delete
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+        prisma.errors.MissingRequiredValueError
+            Value is required but was not found
+
+        Example
+        -------
+        ```py
+        eventsource = await EventSource.prisma().delete(
+            where={
+                'id': 861472101,
+            },
+        )
+        ```
+        """
+        try:
+            resp = await self._client._execute(
+                method='delete',
+                model=self._model,
+                arguments={
+                    'where': where,
+                    'include': include,
+                },
+            )
+        except errors.RecordNotFoundError:
+            return None
+
+        return model_parse(self._model, resp['data']['result'])
+
+    async def find_unique(
+        self,
+        where: types.EventSourceWhereUniqueInput,
+        include: Optional[types.EventSourceInclude] = None
+    ) -> Optional[_PrismaModelT]:
+        """Find a unique EventSource record.
+
+        Parameters
+        ----------
+        where
+            EventSource filter to find the record, must be unique
+        include
+            Specifies which relations should be loaded on the returned EventSource model
+
+        Returns
+        -------
+        prisma.models.EventSource
+            The found EventSource record
+        None
+            No record matching the given input could be found
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+        prisma.errors.MissingRequiredValueError
+            Value is required but was not found
+
+        Example
+        -------
+        ```py
+        eventsource = await EventSource.prisma().find_unique(
+            where={
+                'id': 1303003706,
+            },
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='find_unique',
+            model=self._model,
+            arguments={
+                'where': where,
+                'include': include,
+            },
+        )
+        result = resp['data']['result']
+        if result is None:
+            return None
+        return model_parse(self._model, result)
+
+    async def find_unique_or_raise(
+        self,
+        where: types.EventSourceWhereUniqueInput,
+        include: Optional[types.EventSourceInclude] = None
+    ) -> _PrismaModelT:
+        """Find a unique EventSource record. Raises `RecordNotFoundError` if no record is found.
+
+        Parameters
+        ----------
+        where
+            EventSource filter to find the record, must be unique
+        include
+            Specifies which relations should be loaded on the returned EventSource model
+
+        Returns
+        -------
+        prisma.models.EventSource
+            The found EventSource record
+
+        Raises
+        ------
+        prisma.errors.RecordNotFoundError
+            No record was found
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+        prisma.errors.MissingRequiredValueError
+            Value is required but was not found
+
+        Example
+        -------
+        ```py
+        eventsource = await EventSource.prisma().find_unique_or_raise(
+            where={
+                'id': 1686638315,
+            },
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='find_unique_or_raise',
+            model=self._model,
+            arguments={
+                'where': where,
+                'include': include,
+            },
+        )
+        return model_parse(self._model, resp['data']['result'])
+
+    async def find_many(
+        self,
+        take: Optional[int] = None,
+        skip: Optional[int] = None,
+        where: Optional[types.EventSourceWhereInput] = None,
+        cursor: Optional[types.EventSourceWhereUniqueInput] = None,
+        include: Optional[types.EventSourceInclude] = None,
+        order: Optional[Union[types.EventSourceOrderByInput, List[types.EventSourceOrderByInput]]] = None,
+        distinct: Optional[List[types.EventSourceScalarFieldKeys]] = None,
+    ) -> List[_PrismaModelT]:
+        """Find multiple EventSource records.
+
+        An empty list is returned if no records could be found.
+
+        Parameters
+        ----------
+        take
+            Limit the maximum number of EventSource records returned
+        skip
+            Ignore the first N results
+        where
+            EventSource filter to select records
+        cursor
+            Specifies the position in the list to start returning results from, (typically an ID field)
+        include
+            Specifies which relations should be loaded on the returned EventSource model
+        order
+            Order the returned EventSource records by any field
+        distinct
+            Filter EventSource records by either a single distinct field or distinct combinations of fields
+
+        Returns
+        -------
+        List[prisma.models.EventSource]
+            The list of all EventSource records that could be found
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # find the first 10 EventSource records
+        eventsources = await EventSource.prisma().find_many(take=10)
+
+        # find the first 5 EventSource records ordered by the label field
+        eventsources = await EventSource.prisma().find_many(
+            take=5,
+            order={
+                'label': 'desc',
+            },
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='find_many',
+            model=self._model,
+            arguments={
+                'take': take,
+                'skip': skip,
+                'where': where,
+                'order_by': order,
+                'cursor': cursor,
+                'include': include,
+                'distinct': distinct,
+            },
+        )
+        return [model_parse(self._model, r) for r in resp['data']['result']]
+
+    async def find_first(
+        self,
+        skip: Optional[int] = None,
+        where: Optional[types.EventSourceWhereInput] = None,
+        cursor: Optional[types.EventSourceWhereUniqueInput] = None,
+        include: Optional[types.EventSourceInclude] = None,
+        order: Optional[Union[types.EventSourceOrderByInput, List[types.EventSourceOrderByInput]]] = None,
+        distinct: Optional[List[types.EventSourceScalarFieldKeys]] = None,
+    ) -> Optional[_PrismaModelT]:
+        """Find a single EventSource record.
+
+        Parameters
+        ----------
+        skip
+            Ignore the first N records
+        where
+            EventSource filter to select the record
+        cursor
+            Specifies the position in the list to start returning results from, (typically an ID field)
+        include
+            Specifies which relations should be loaded on the returned EventSource model
+        order
+            Order the returned EventSource records by any field
+        distinct
+            Filter EventSource records by either a single distinct field or distinct combinations of fields
+
+        Returns
+        -------
+        prisma.models.EventSource
+            The first EventSource record found, matching the given arguments
+        None
+            No record could be found
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # find the second EventSource record ordered by the createdAt field
+        eventsource = await EventSource.prisma().find_first(
+            skip=1,
+            order={
+                'createdAt': 'desc',
+            },
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='find_first',
+            model=self._model,
+            arguments={
+                'skip': skip,
+                'where': where,
+                'order_by': order,
+                'cursor': cursor,
+                'include': include,
+                'distinct': distinct,
+            },
+        )
+        result = resp['data']['result']
+        if result is None:
+            return None
+
+        return model_parse(self._model, result)
+
+    async def find_first_or_raise(
+        self,
+        skip: Optional[int] = None,
+        where: Optional[types.EventSourceWhereInput] = None,
+        cursor: Optional[types.EventSourceWhereUniqueInput] = None,
+        include: Optional[types.EventSourceInclude] = None,
+        order: Optional[Union[types.EventSourceOrderByInput, List[types.EventSourceOrderByInput]]] = None,
+        distinct: Optional[List[types.EventSourceScalarFieldKeys]] = None,
+    ) -> _PrismaModelT:
+        """Find a single EventSource record. Raises `RecordNotFoundError` if no record was found.
+
+        Parameters
+        ----------
+        skip
+            Ignore the first N records
+        where
+            EventSource filter to select the record
+        cursor
+            Specifies the position in the list to start returning results from, (typically an ID field)
+        include
+            Specifies which relations should be loaded on the returned EventSource model
+        order
+            Order the returned EventSource records by any field
+        distinct
+            Filter EventSource records by either a single distinct field or distinct combinations of fields
+
+        Returns
+        -------
+        prisma.models.EventSource
+            The first EventSource record found, matching the given arguments
+
+        Raises
+        ------
+        prisma.errors.RecordNotFoundError
+            No record was found
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # find the second EventSource record ordered by the id field
+        eventsource = await EventSource.prisma().find_first_or_raise(
+            skip=1,
+            order={
+                'id': 'desc',
+            },
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='find_first_or_raise',
+            model=self._model,
+            arguments={
+                'skip': skip,
+                'where': where,
+                'order_by': order,
+                'cursor': cursor,
+                'include': include,
+                'distinct': distinct,
+            },
+        )
+        return model_parse(self._model, resp['data']['result'])
+
+    async def update(
+        self,
+        data: types.EventSourceUpdateInput,
+        where: types.EventSourceWhereUniqueInput,
+        include: Optional[types.EventSourceInclude] = None
+    ) -> Optional[_PrismaModelT]:
+        """Update a single EventSource record.
+
+        Parameters
+        ----------
+        data
+            EventSource record data specifying what to update
+        where
+            EventSource filter to select the unique record to create / update
+        include
+            Specifies which relations should be loaded on the returned EventSource model
+
+        Returns
+        -------
+        prisma.models.EventSource
+            The updated EventSource record
+        None
+            No record could be found
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        eventsource = await EventSource.prisma().update(
+            where={
+                'id': 2000430152,
+            },
+            data={
+                # data to update the EventSource record to
+            },
+        )
+        ```
+        """
+        try:
+            resp = await self._client._execute(
+                method='update',
+                model=self._model,
+                arguments={
+                    'data': data,
+                    'where': where,
+                    'include': include,
+                },
+            )
+        except errors.RecordNotFoundError:
+            return None
+
+        return model_parse(self._model, resp['data']['result'])
+
+    async def upsert(
+        self,
+        where: types.EventSourceWhereUniqueInput,
+        data: types.EventSourceUpsertInput,
+        include: Optional[types.EventSourceInclude] = None,
+    ) -> _PrismaModelT:
+        """Updates an existing record or create a new one
+
+        Parameters
+        ----------
+        where
+            EventSource filter to select the unique record to create / update
+        data
+            Data specifying what fields to set on create and update
+        include
+            Specifies which relations should be loaded on the returned EventSource model
+
+        Returns
+        -------
+        prisma.models.EventSource
+            The created or updated EventSource record
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+        prisma.errors.MissingRequiredValueError
+            Value is required but was not found
+
+        Example
+        -------
+        ```py
+        eventsource = await EventSource.prisma().upsert(
+            where={
+                'id': 1868141281,
+            },
+            data={
+                'create': {
+                    'id': 1868141281,
+                    'domain': 'bbbgbhfjge',
+                },
+                'update': {
+                    'domain': 'bbbgbhfjge',
+                },
+            },
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='upsert',
+            model=self._model,
+            arguments={
+                'where': where,
+                'include': include,
+                'create': data.get('create'),
+                'update': data.get('update'),
+            },
+        )
+        return model_parse(self._model, resp['data']['result'])
+
+    async def update_many(
+        self,
+        data: types.EventSourceUpdateManyMutationInput,
+        where: types.EventSourceWhereInput,
+    ) -> int:
+        """Update multiple EventSource records
+
+        Parameters
+        ----------
+        data
+            EventSource data to update the selected EventSource records to
+        where
+            Filter to select the EventSource records to update
+
+        Returns
+        -------
+        int
+            The total number of EventSource records that were updated
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # update all EventSource records
+        total = await EventSource.prisma().update_many(
+            data={
+                'domain': 'bigaiehgcc'
+            },
+            where={}
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='update_many',
+            model=self._model,
+            arguments={'data': data, 'where': where,},
+            root_selection=['count'],
+        )
+        return int(resp['data']['result']['count'])
+
+    @overload
+    async def count(
+        self,
+        select: None = None,
+        take: Optional[int] = None,
+        skip: Optional[int] = None,
+        where: Optional[types.EventSourceWhereInput] = None,
+        cursor: Optional[types.EventSourceWhereUniqueInput] = None,
+    ) -> int:
+        """Count the number of EventSource records present in the database
+
+        Parameters
+        ----------
+        select
+            Select the EventSource fields to be counted
+        take
+            Limit the maximum result
+        skip
+            Ignore the first N records
+        where
+            EventSource filter to find records
+        cursor
+            Specifies the position in the list to start counting results from, (typically an ID field)
+        order
+            This parameter is deprecated and will be removed in a future release
+
+        Returns
+        -------
+        int
+            The total number of records found, returned if `select` is not given
+
+        prisma.types.EventSourceCountAggregateOutput
+            Data returned when `select` is used, the fields present in this dictionary will
+            match the fields passed in the `select` argument
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # total: int
+        total = await EventSource.prisma().count()
+
+        # results: prisma.types.EventSourceCountAggregateOutput
+        results = await EventSource.prisma().count(
+            select={
+                '_all': True,
+                'label': True,
+            },
+        )
+        ```
+        """
+
+
+    @overload
+    async def count(
+        self,
+        select: types.EventSourceCountAggregateInput,
+        take: Optional[int] = None,
+        skip: Optional[int] = None,
+        where: Optional[types.EventSourceWhereInput] = None,
+        cursor: Optional[types.EventSourceWhereUniqueInput] = None,
+    ) -> types.EventSourceCountAggregateOutput:
+        ...
+
+    async def count(
+        self,
+        select: Optional[types.EventSourceCountAggregateInput] = None,
+        take: Optional[int] = None,
+        skip: Optional[int] = None,
+        where: Optional[types.EventSourceWhereInput] = None,
+        cursor: Optional[types.EventSourceWhereUniqueInput] = None,
+    ) -> Union[int, types.EventSourceCountAggregateOutput]:
+        """Count the number of EventSource records present in the database
+
+        Parameters
+        ----------
+        select
+            Select the EventSource fields to be counted
+        take
+            Limit the maximum result
+        skip
+            Ignore the first N records
+        where
+            EventSource filter to find records
+        cursor
+            Specifies the position in the list to start counting results from, (typically an ID field)
+        order
+            This parameter is deprecated and will be removed in a future release
+
+        Returns
+        -------
+        int
+            The total number of records found, returned if `select` is not given
+
+        prisma.types.EventSourceCountAggregateOutput
+            Data returned when `select` is used, the fields present in this dictionary will
+            match the fields passed in the `select` argument
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # total: int
+        total = await EventSource.prisma().count()
+
+        # results: prisma.types.EventSourceCountAggregateOutput
+        results = await EventSource.prisma().count(
+            select={
+                '_all': True,
+                'createdAt': True,
+            },
+        )
+        ```
+        """
+
+        # TODO: this selection building should be moved to the QueryBuilder
+        #
+        # note the distinction between checking for `not select` here and `select is None`
+        # later is to handle the case that the given select dictionary is empty, this
+        # is a limitation of our types.
+        if not select:
+            root_selection = ['_count { _all }']
+        else:
+
+            root_selection = [
+                '_count {{ {0} }}'.format(' '.join(k for k, v in select.items() if v is True))
+            ]
+
+        resp = await self._client._execute(
+            method='count',
+            model=self._model,
+            arguments={
+                'take': take,
+                'skip': skip,
+                'where': where,
+                'cursor': cursor,
+            },
+            root_selection=root_selection,
+        )
+
+        if select is None:
+            return cast(int, resp['data']['result']['_count']['_all'])
+        else:
+            return cast(types.EventSourceCountAggregateOutput, resp['data']['result']['_count'])
+
+    async def delete_many(
+        self,
+        where: Optional[types.EventSourceWhereInput] = None
+    ) -> int:
+        """Delete multiple EventSource records.
+
+        Parameters
+        ----------
+        where
+            Optional EventSource filter to find the records to be deleted
+
+        Returns
+        -------
+        int
+            The total number of EventSource records that were deleted
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # delete all EventSource records
+        total = await EventSource.prisma().delete_many()
+        ```
+        """
+        resp = await self._client._execute(
+            method='delete_many',
+            model=self._model,
+            arguments={'where': where},
+            root_selection=['count'],
+        )
+        return int(resp['data']['result']['count'])
+
+    # TODO: make this easier to work with safely, currently output fields are typed as
+    #       not required, we should refactor the return type
+    # TODO: consider returning a Dict where the keys are a Tuple of the `by` selection
+    # TODO: statically type that the order argument is required when take or skip are present
+    async def group_by(
+        self,
+        by: List['types.EventSourceScalarFieldKeys'],
+        *,
+        where: Optional['types.EventSourceWhereInput'] = None,
+        take: Optional[int] = None,
+        skip: Optional[int] = None,
+        avg: Optional['types.EventSourceAvgAggregateInput'] = None,
+        sum: Optional['types.EventSourceSumAggregateInput'] = None,
+        min: Optional['types.EventSourceMinAggregateInput'] = None,
+        max: Optional['types.EventSourceMaxAggregateInput'] = None,
+        having: Optional['types.EventSourceScalarWhereWithAggregatesInput'] = None,
+        count: Optional[Union[bool, 'types.EventSourceCountAggregateInput']] = None,
+        order: Optional[Union[Mapping['types.EventSourceScalarFieldKeys', 'types.SortOrder'], List[Mapping['types.EventSourceScalarFieldKeys', 'types.SortOrder']]]] = None,
+    ) -> List['types.EventSourceGroupByOutput']:
+        """Group EventSource records by one or more field values and perform aggregations
+        each group such as finding the average.
+
+        Parameters
+        ----------
+        by
+            List of scalar EventSource fields to group records by
+        where
+            EventSource filter to select records
+        take
+            Limit the maximum number of EventSource records returned
+        skip
+            Ignore the first N records
+        avg
+            Adds the average of all values of the specified fields to the `_avg` field
+            in the returned data.
+        sum
+            Adds the sum of all values of the specified fields to the `_sum` field
+            in the returned data.
+        min
+            Adds the smallest available value for the specified fields to the `_min` field
+            in the returned data.
+        max
+            Adds the largest available value for the specified fields to the `_max` field
+            in the returned data.
+        count
+            Adds a count of non-fields to the `_count` field in the returned data.
+        having
+            Allows you to filter groups by an aggregate value - for example only return
+            groups having an average age less than 50.
+        order
+            Lets you order the returned list by any property that is also present in `by`.
+            Only **one** field is allowed at a time.
+
+        Returns
+        -------
+        List[prisma.types.EventSourceGroupByOutput]
+            A list of dictionaries representing the EventSource record,
+            this will also have additional fields present if aggregation arguments
+            are used (see the above parameters)
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # group EventSource records by id values
+        # and count how many records are in each group
+        results = await EventSource.prisma().group_by(
+            ['id'],
+            count=True,
+        )
+        ```
+        """
+        if order is None:
+            if take is not None:
+                raise TypeError('Missing argument: \'order\' which is required when \'take\' is present')
+
+            if skip is not None:
+                raise TypeError('Missing argument: \'order\' which is required when \'skip\' is present')
+
+        root_selection: List[str] = [*by]
+        if avg is not None:
+            root_selection.append(_select_fields('_avg', avg))
+
+        if min is not None:
+            root_selection.append(_select_fields('_min', min))
+
+        if sum is not None:
+            root_selection.append(_select_fields('_sum', sum))
+
+        if max is not None:
+            root_selection.append(_select_fields('_max', max))
+
+        if count is not None:
+            if count is True:
+                root_selection.append('_count { _all }')
+            elif isinstance(count, dict):
+                root_selection.append(_select_fields('_count', count))
+
+        resp = await self._client._execute(
+            method='group_by',
+            model=self._model,
+            arguments={
+                'by': by,
+                'take': take,
+                'skip': skip,
+                'where': where,
+                'having': having,
+                'orderBy': order,
+            },
+            root_selection=root_selection,
+        )
+        return resp['data']['result']  # type: ignore[no-any-return]
+
+
+class TagActions(Generic[_PrismaModelT]):
+    __slots__ = (
+        '_client',
+        '_model',
+    )
+
+    def __init__(self, client: Prisma, model: Type[_PrismaModelT]) -> None:
+        self._client = client
+        self._model = model
+
+    async def query_raw(
+        self,
+        query: LiteralString,
+        *args: Any,
+    ) -> List[_PrismaModelT]:
+        """Execute a raw SQL query
+
+        Parameters
+        ----------
+        query
+            The raw SQL query string to be executed
+        *args
+            Parameters to be passed to the SQL query, these MUST be used over
+            string formatting to avoid an SQL injection vulnerability
+
+        Returns
+        -------
+        List[prisma.models.Tag]
+            The records returned by the SQL query
+
+        Raises
+        ------
+        prisma_errors.RawQueryError
+            This could be due to invalid syntax, mismatched number of parameters or any other error
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        users = await Tag.prisma().query_raw(
+            'SELECT * FROM Tag WHERE id = $1',
+            1448521415,
+        )
+        ```
+        """
+        return await self._client.query_raw(query, *args, model=self._model)
+
+    async def query_first(
+        self,
+        query: LiteralString,
+        *args: Any,
+    ) -> Optional[_PrismaModelT]:
+        """Execute a raw SQL query, returning the first result
+
+        Parameters
+        ----------
+        query
+            The raw SQL query string to be executed
+        *args
+            Parameters to be passed to the SQL query, these MUST be used over
+            string formatting to avoid an SQL injection vulnerability
+
+        Returns
+        -------
+        prisma.models.Tag
+            The first record returned by the SQL query
+        None
+            The raw SQL query did not return any records
+
+        Raises
+        ------
+        prisma_errors.RawQueryError
+            This could be due to invalid syntax, mismatched number of parameters or any other error
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        user = await Tag.prisma().query_first(
+            'SELECT * FROM Tag WHERE name = $1',
+            'bgcigfahea',
+        )
+        ```
+        """
+        return await self._client.query_first(query, *args, model=self._model)
+
+    async def create(
+        self,
+        data: types.TagCreateInput,
+        include: Optional[types.TagInclude] = None
+    ) -> _PrismaModelT:
+        """Create a new Tag record.
+
+        Parameters
+        ----------
+        data
+            Tag record data
+        include
+            Specifies which relations should be loaded on the returned Tag model
+
+        Returns
+        -------
+        prisma.models.Tag
+            The created Tag record
+
+        Raises
+        ------
+        prisma.errors.MissingRequiredValueError
+            Value is required but was not found
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # create a Tag record from just the required fields
+        tag = await Tag.prisma().create(
+            data={
+                # data to create a Tag record
+                'name': 'bcejgaggif',
+            },
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='create',
+            model=self._model,
+            arguments={
+                'data': data,
+                'include': include,
+            },
+        )
+        return model_parse(self._model, resp['data']['result'])
+
+    async def create_many(
+        self,
+        data: List[types.TagCreateWithoutRelationsInput],
+        *,
+        skip_duplicates: Optional[bool] = None,
+    ) -> int:
+        """Create multiple Tag records at once.
+
+        This function is *not* available when using SQLite.
+
+        Parameters
+        ----------
+        data
+            List of Tag record data
+        skip_duplicates
+            Boolean flag for ignoring unique constraint errors
+
+        Returns
+        -------
+        int
+            The total number of records created
+
+        Raises
+        ------
+        prisma.errors.UnsupportedDatabaseError
+            Attempting to query when using SQLite
+        prisma.errors.UniqueViolationError
+            A unique constraint check has failed, these can be ignored with the `skip_duplicates` argument
+        prisma.errors.MissingRequiredValueError
+            Value is required but was not found
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        total = await Tag.prisma().create_many(
+            data=[
+                {
+                    # data to create a Tag record
+                    'name': 'idfjadbcc',
+                },
+                {
+                    # data to create a Tag record
+                    'name': 'hgdhbjhhj',
+                },
+            ],
+            skip_duplicates=True,
+        )
+        ```
+        """
+        if skip_duplicates and self._client._active_provider in CREATE_MANY_SKIP_DUPLICATES_UNSUPPORTED:
+            raise errors.UnsupportedDatabaseError(self._client._active_provider, 'create_many_skip_duplicates')
+
+        resp = await self._client._execute(
+            method='create_many',
+            model=self._model,
+            arguments={
+                'data': data,
+                'skipDuplicates': skip_duplicates,
+            },
+            root_selection=['count'],
+        )
+        return int(resp['data']['result']['count'])
+
+    async def delete(
+        self,
+        where: types.TagWhereUniqueInput,
+        include: Optional[types.TagInclude] = None
+    ) -> Optional[_PrismaModelT]:
+        """Delete a single Tag record.
+
+        Parameters
+        ----------
+        where
+            Tag filter to select the record to be deleted, must be unique
+        include
+            Specifies which relations should be loaded on the returned Tag model
+
+        Returns
+        -------
+        prisma.models.Tag
+            The deleted Tag record
+        None
+            Could not find a record to delete
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+        prisma.errors.MissingRequiredValueError
+            Value is required but was not found
+
+        Example
+        -------
+        ```py
+        tag = await Tag.prisma().delete(
+            where={
+                'id': 429995104,
+            },
+        )
+        ```
+        """
+        try:
+            resp = await self._client._execute(
+                method='delete',
+                model=self._model,
+                arguments={
+                    'where': where,
+                    'include': include,
+                },
+            )
+        except errors.RecordNotFoundError:
+            return None
+
+        return model_parse(self._model, resp['data']['result'])
+
+    async def find_unique(
+        self,
+        where: types.TagWhereUniqueInput,
+        include: Optional[types.TagInclude] = None
+    ) -> Optional[_PrismaModelT]:
+        """Find a unique Tag record.
+
+        Parameters
+        ----------
+        where
+            Tag filter to find the record, must be unique
+        include
+            Specifies which relations should be loaded on the returned Tag model
+
+        Returns
+        -------
+        prisma.models.Tag
+            The found Tag record
+        None
+            No record matching the given input could be found
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+        prisma.errors.MissingRequiredValueError
+            Value is required but was not found
+
+        Example
+        -------
+        ```py
+        tag = await Tag.prisma().find_unique(
+            where={
+                'id': 1775811865,
+            },
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='find_unique',
+            model=self._model,
+            arguments={
+                'where': where,
+                'include': include,
+            },
+        )
+        result = resp['data']['result']
+        if result is None:
+            return None
+        return model_parse(self._model, result)
+
+    async def find_unique_or_raise(
+        self,
+        where: types.TagWhereUniqueInput,
+        include: Optional[types.TagInclude] = None
+    ) -> _PrismaModelT:
+        """Find a unique Tag record. Raises `RecordNotFoundError` if no record is found.
+
+        Parameters
+        ----------
+        where
+            Tag filter to find the record, must be unique
+        include
+            Specifies which relations should be loaded on the returned Tag model
+
+        Returns
+        -------
+        prisma.models.Tag
+            The found Tag record
+
+        Raises
+        ------
+        prisma.errors.RecordNotFoundError
+            No record was found
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+        prisma.errors.MissingRequiredValueError
+            Value is required but was not found
+
+        Example
+        -------
+        ```py
+        tag = await Tag.prisma().find_unique_or_raise(
+            where={
+                'id': 893145566,
+            },
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='find_unique_or_raise',
+            model=self._model,
+            arguments={
+                'where': where,
+                'include': include,
+            },
+        )
+        return model_parse(self._model, resp['data']['result'])
+
+    async def find_many(
+        self,
+        take: Optional[int] = None,
+        skip: Optional[int] = None,
+        where: Optional[types.TagWhereInput] = None,
+        cursor: Optional[types.TagWhereUniqueInput] = None,
+        include: Optional[types.TagInclude] = None,
+        order: Optional[Union[types.TagOrderByInput, List[types.TagOrderByInput]]] = None,
+        distinct: Optional[List[types.TagScalarFieldKeys]] = None,
+    ) -> List[_PrismaModelT]:
+        """Find multiple Tag records.
+
+        An empty list is returned if no records could be found.
+
+        Parameters
+        ----------
+        take
+            Limit the maximum number of Tag records returned
+        skip
+            Ignore the first N results
+        where
+            Tag filter to select records
+        cursor
+            Specifies the position in the list to start returning results from, (typically an ID field)
+        include
+            Specifies which relations should be loaded on the returned Tag model
+        order
+            Order the returned Tag records by any field
+        distinct
+            Filter Tag records by either a single distinct field or distinct combinations of fields
+
+        Returns
+        -------
+        List[prisma.models.Tag]
+            The list of all Tag records that could be found
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # find the first 10 Tag records
+        tags = await Tag.prisma().find_many(take=10)
+
+        # find the first 5 Tag records ordered by the id field
+        tags = await Tag.prisma().find_many(
+            take=5,
+            order={
+                'id': 'desc',
+            },
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='find_many',
+            model=self._model,
+            arguments={
+                'take': take,
+                'skip': skip,
+                'where': where,
+                'order_by': order,
+                'cursor': cursor,
+                'include': include,
+                'distinct': distinct,
+            },
+        )
+        return [model_parse(self._model, r) for r in resp['data']['result']]
+
+    async def find_first(
+        self,
+        skip: Optional[int] = None,
+        where: Optional[types.TagWhereInput] = None,
+        cursor: Optional[types.TagWhereUniqueInput] = None,
+        include: Optional[types.TagInclude] = None,
+        order: Optional[Union[types.TagOrderByInput, List[types.TagOrderByInput]]] = None,
+        distinct: Optional[List[types.TagScalarFieldKeys]] = None,
+    ) -> Optional[_PrismaModelT]:
+        """Find a single Tag record.
+
+        Parameters
+        ----------
+        skip
+            Ignore the first N records
+        where
+            Tag filter to select the record
+        cursor
+            Specifies the position in the list to start returning results from, (typically an ID field)
+        include
+            Specifies which relations should be loaded on the returned Tag model
+        order
+            Order the returned Tag records by any field
+        distinct
+            Filter Tag records by either a single distinct field or distinct combinations of fields
+
+        Returns
+        -------
+        prisma.models.Tag
+            The first Tag record found, matching the given arguments
+        None
+            No record could be found
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # find the second Tag record ordered by the name field
+        tag = await Tag.prisma().find_first(
+            skip=1,
+            order={
+                'name': 'desc',
+            },
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='find_first',
+            model=self._model,
+            arguments={
+                'skip': skip,
+                'where': where,
+                'order_by': order,
+                'cursor': cursor,
+                'include': include,
+                'distinct': distinct,
+            },
+        )
+        result = resp['data']['result']
+        if result is None:
+            return None
+
+        return model_parse(self._model, result)
+
+    async def find_first_or_raise(
+        self,
+        skip: Optional[int] = None,
+        where: Optional[types.TagWhereInput] = None,
+        cursor: Optional[types.TagWhereUniqueInput] = None,
+        include: Optional[types.TagInclude] = None,
+        order: Optional[Union[types.TagOrderByInput, List[types.TagOrderByInput]]] = None,
+        distinct: Optional[List[types.TagScalarFieldKeys]] = None,
+    ) -> _PrismaModelT:
+        """Find a single Tag record. Raises `RecordNotFoundError` if no record was found.
+
+        Parameters
+        ----------
+        skip
+            Ignore the first N records
+        where
+            Tag filter to select the record
+        cursor
+            Specifies the position in the list to start returning results from, (typically an ID field)
+        include
+            Specifies which relations should be loaded on the returned Tag model
+        order
+            Order the returned Tag records by any field
+        distinct
+            Filter Tag records by either a single distinct field or distinct combinations of fields
+
+        Returns
+        -------
+        prisma.models.Tag
+            The first Tag record found, matching the given arguments
+
+        Raises
+        ------
+        prisma.errors.RecordNotFoundError
+            No record was found
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # find the second Tag record ordered by the id field
+        tag = await Tag.prisma().find_first_or_raise(
+            skip=1,
+            order={
+                'id': 'desc',
+            },
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='find_first_or_raise',
+            model=self._model,
+            arguments={
+                'skip': skip,
+                'where': where,
+                'order_by': order,
+                'cursor': cursor,
+                'include': include,
+                'distinct': distinct,
+            },
+        )
+        return model_parse(self._model, resp['data']['result'])
+
+    async def update(
+        self,
+        data: types.TagUpdateInput,
+        where: types.TagWhereUniqueInput,
+        include: Optional[types.TagInclude] = None
+    ) -> Optional[_PrismaModelT]:
+        """Update a single Tag record.
+
+        Parameters
+        ----------
+        data
+            Tag record data specifying what to update
+        where
+            Tag filter to select the unique record to create / update
+        include
+            Specifies which relations should be loaded on the returned Tag model
+
+        Returns
+        -------
+        prisma.models.Tag
+            The updated Tag record
+        None
+            No record could be found
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        tag = await Tag.prisma().update(
+            where={
+                'id': 995405759,
+            },
+            data={
+                # data to update the Tag record to
+            },
+        )
+        ```
+        """
+        try:
+            resp = await self._client._execute(
+                method='update',
+                model=self._model,
+                arguments={
+                    'data': data,
+                    'where': where,
+                    'include': include,
+                },
+            )
+        except errors.RecordNotFoundError:
+            return None
+
+        return model_parse(self._model, resp['data']['result'])
+
+    async def upsert(
+        self,
+        where: types.TagWhereUniqueInput,
+        data: types.TagUpsertInput,
+        include: Optional[types.TagInclude] = None,
+    ) -> _PrismaModelT:
+        """Updates an existing record or create a new one
+
+        Parameters
+        ----------
+        where
+            Tag filter to select the unique record to create / update
+        data
+            Data specifying what fields to set on create and update
+        include
+            Specifies which relations should be loaded on the returned Tag model
+
+        Returns
+        -------
+        prisma.models.Tag
+            The created or updated Tag record
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+        prisma.errors.MissingRequiredValueError
+            Value is required but was not found
+
+        Example
+        -------
+        ```py
+        tag = await Tag.prisma().upsert(
+            where={
+                'id': 2102736524,
+            },
+            data={
+                'create': {
+                    'id': 2102736524,
+                    'name': 'hgdhbjhhj',
+                },
+                'update': {
+                    'name': 'hgdhbjhhj',
+                },
+            },
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='upsert',
+            model=self._model,
+            arguments={
+                'where': where,
+                'include': include,
+                'create': data.get('create'),
+                'update': data.get('update'),
+            },
+        )
+        return model_parse(self._model, resp['data']['result'])
+
+    async def update_many(
+        self,
+        data: types.TagUpdateManyMutationInput,
+        where: types.TagWhereInput,
+    ) -> int:
+        """Update multiple Tag records
+
+        Parameters
+        ----------
+        data
+            Tag data to update the selected Tag records to
+        where
+            Filter to select the Tag records to update
+
+        Returns
+        -------
+        int
+            The total number of Tag records that were updated
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # update all Tag records
+        total = await Tag.prisma().update_many(
+            data={
+                'name': 'chbfcacbd'
+            },
+            where={}
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='update_many',
+            model=self._model,
+            arguments={'data': data, 'where': where,},
+            root_selection=['count'],
+        )
+        return int(resp['data']['result']['count'])
+
+    @overload
+    async def count(
+        self,
+        select: None = None,
+        take: Optional[int] = None,
+        skip: Optional[int] = None,
+        where: Optional[types.TagWhereInput] = None,
+        cursor: Optional[types.TagWhereUniqueInput] = None,
+    ) -> int:
+        """Count the number of Tag records present in the database
+
+        Parameters
+        ----------
+        select
+            Select the Tag fields to be counted
+        take
+            Limit the maximum result
+        skip
+            Ignore the first N records
+        where
+            Tag filter to find records
+        cursor
+            Specifies the position in the list to start counting results from, (typically an ID field)
+        order
+            This parameter is deprecated and will be removed in a future release
+
+        Returns
+        -------
+        int
+            The total number of records found, returned if `select` is not given
+
+        prisma.types.TagCountAggregateOutput
+            Data returned when `select` is used, the fields present in this dictionary will
+            match the fields passed in the `select` argument
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # total: int
+        total = await Tag.prisma().count()
+
+        # results: prisma.types.TagCountAggregateOutput
+        results = await Tag.prisma().count(
+            select={
+                '_all': True,
+                'id': True,
+            },
+        )
+        ```
+        """
+
+
+    @overload
+    async def count(
+        self,
+        select: types.TagCountAggregateInput,
+        take: Optional[int] = None,
+        skip: Optional[int] = None,
+        where: Optional[types.TagWhereInput] = None,
+        cursor: Optional[types.TagWhereUniqueInput] = None,
+    ) -> types.TagCountAggregateOutput:
+        ...
+
+    async def count(
+        self,
+        select: Optional[types.TagCountAggregateInput] = None,
+        take: Optional[int] = None,
+        skip: Optional[int] = None,
+        where: Optional[types.TagWhereInput] = None,
+        cursor: Optional[types.TagWhereUniqueInput] = None,
+    ) -> Union[int, types.TagCountAggregateOutput]:
+        """Count the number of Tag records present in the database
+
+        Parameters
+        ----------
+        select
+            Select the Tag fields to be counted
+        take
+            Limit the maximum result
+        skip
+            Ignore the first N records
+        where
+            Tag filter to find records
+        cursor
+            Specifies the position in the list to start counting results from, (typically an ID field)
+        order
+            This parameter is deprecated and will be removed in a future release
+
+        Returns
+        -------
+        int
+            The total number of records found, returned if `select` is not given
+
+        prisma.types.TagCountAggregateOutput
+            Data returned when `select` is used, the fields present in this dictionary will
+            match the fields passed in the `select` argument
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # total: int
+        total = await Tag.prisma().count()
+
+        # results: prisma.types.TagCountAggregateOutput
+        results = await Tag.prisma().count(
+            select={
+                '_all': True,
+                'name': True,
+            },
+        )
+        ```
+        """
+
+        # TODO: this selection building should be moved to the QueryBuilder
+        #
+        # note the distinction between checking for `not select` here and `select is None`
+        # later is to handle the case that the given select dictionary is empty, this
+        # is a limitation of our types.
+        if not select:
+            root_selection = ['_count { _all }']
+        else:
+
+            root_selection = [
+                '_count {{ {0} }}'.format(' '.join(k for k, v in select.items() if v is True))
+            ]
+
+        resp = await self._client._execute(
+            method='count',
+            model=self._model,
+            arguments={
+                'take': take,
+                'skip': skip,
+                'where': where,
+                'cursor': cursor,
+            },
+            root_selection=root_selection,
+        )
+
+        if select is None:
+            return cast(int, resp['data']['result']['_count']['_all'])
+        else:
+            return cast(types.TagCountAggregateOutput, resp['data']['result']['_count'])
+
+    async def delete_many(
+        self,
+        where: Optional[types.TagWhereInput] = None
+    ) -> int:
+        """Delete multiple Tag records.
+
+        Parameters
+        ----------
+        where
+            Optional Tag filter to find the records to be deleted
+
+        Returns
+        -------
+        int
+            The total number of Tag records that were deleted
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # delete all Tag records
+        total = await Tag.prisma().delete_many()
+        ```
+        """
+        resp = await self._client._execute(
+            method='delete_many',
+            model=self._model,
+            arguments={'where': where},
+            root_selection=['count'],
+        )
+        return int(resp['data']['result']['count'])
+
+    # TODO: make this easier to work with safely, currently output fields are typed as
+    #       not required, we should refactor the return type
+    # TODO: consider returning a Dict where the keys are a Tuple of the `by` selection
+    # TODO: statically type that the order argument is required when take or skip are present
+    async def group_by(
+        self,
+        by: List['types.TagScalarFieldKeys'],
+        *,
+        where: Optional['types.TagWhereInput'] = None,
+        take: Optional[int] = None,
+        skip: Optional[int] = None,
+        avg: Optional['types.TagAvgAggregateInput'] = None,
+        sum: Optional['types.TagSumAggregateInput'] = None,
+        min: Optional['types.TagMinAggregateInput'] = None,
+        max: Optional['types.TagMaxAggregateInput'] = None,
+        having: Optional['types.TagScalarWhereWithAggregatesInput'] = None,
+        count: Optional[Union[bool, 'types.TagCountAggregateInput']] = None,
+        order: Optional[Union[Mapping['types.TagScalarFieldKeys', 'types.SortOrder'], List[Mapping['types.TagScalarFieldKeys', 'types.SortOrder']]]] = None,
+    ) -> List['types.TagGroupByOutput']:
+        """Group Tag records by one or more field values and perform aggregations
+        each group such as finding the average.
+
+        Parameters
+        ----------
+        by
+            List of scalar Tag fields to group records by
+        where
+            Tag filter to select records
+        take
+            Limit the maximum number of Tag records returned
+        skip
+            Ignore the first N records
+        avg
+            Adds the average of all values of the specified fields to the `_avg` field
+            in the returned data.
+        sum
+            Adds the sum of all values of the specified fields to the `_sum` field
+            in the returned data.
+        min
+            Adds the smallest available value for the specified fields to the `_min` field
+            in the returned data.
+        max
+            Adds the largest available value for the specified fields to the `_max` field
+            in the returned data.
+        count
+            Adds a count of non-fields to the `_count` field in the returned data.
+        having
+            Allows you to filter groups by an aggregate value - for example only return
+            groups having an average age less than 50.
+        order
+            Lets you order the returned list by any property that is also present in `by`.
+            Only **one** field is allowed at a time.
+
+        Returns
+        -------
+        List[prisma.types.TagGroupByOutput]
+            A list of dictionaries representing the Tag record,
+            this will also have additional fields present if aggregation arguments
+            are used (see the above parameters)
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # group Tag records by id values
+        # and count how many records are in each group
+        results = await Tag.prisma().group_by(
+            ['id'],
+            count=True,
+        )
+        ```
+        """
+        if order is None:
+            if take is not None:
+                raise TypeError('Missing argument: \'order\' which is required when \'take\' is present')
+
+            if skip is not None:
+                raise TypeError('Missing argument: \'order\' which is required when \'skip\' is present')
+
+        root_selection: List[str] = [*by]
+        if avg is not None:
+            root_selection.append(_select_fields('_avg', avg))
+
+        if min is not None:
+            root_selection.append(_select_fields('_min', min))
+
+        if sum is not None:
+            root_selection.append(_select_fields('_sum', sum))
+
+        if max is not None:
+            root_selection.append(_select_fields('_max', max))
+
+        if count is not None:
+            if count is True:
+                root_selection.append('_count { _all }')
+            elif isinstance(count, dict):
+                root_selection.append(_select_fields('_count', count))
+
+        resp = await self._client._execute(
+            method='group_by',
+            model=self._model,
+            arguments={
+                'by': by,
+                'take': take,
+                'skip': skip,
+                'where': where,
+                'having': having,
+                'orderBy': order,
+            },
+            root_selection=root_selection,
+        )
+        return resp['data']['result']  # type: ignore[no-any-return]
+
+
+class EventActions(Generic[_PrismaModelT]):
+    __slots__ = (
+        '_client',
+        '_model',
+    )
+
+    def __init__(self, client: Prisma, model: Type[_PrismaModelT]) -> None:
+        self._client = client
+        self._model = model
+
+    async def query_raw(
+        self,
+        query: LiteralString,
+        *args: Any,
+    ) -> List[_PrismaModelT]:
+        """Execute a raw SQL query
+
+        Parameters
+        ----------
+        query
+            The raw SQL query string to be executed
+        *args
+            Parameters to be passed to the SQL query, these MUST be used over
+            string formatting to avoid an SQL injection vulnerability
+
+        Returns
+        -------
+        List[prisma.models.Event]
+            The records returned by the SQL query
+
+        Raises
+        ------
+        prisma_errors.RawQueryError
+            This could be due to invalid syntax, mismatched number of parameters or any other error
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        users = await Event.prisma().query_raw(
+            'SELECT * FROM Event WHERE id = $1',
+            456633834,
+        )
+        ```
+        """
+        return await self._client.query_raw(query, *args, model=self._model)
+
+    async def query_first(
+        self,
+        query: LiteralString,
+        *args: Any,
+    ) -> Optional[_PrismaModelT]:
+        """Execute a raw SQL query, returning the first result
+
+        Parameters
+        ----------
+        query
+            The raw SQL query string to be executed
+        *args
+            Parameters to be passed to the SQL query, these MUST be used over
+            string formatting to avoid an SQL injection vulnerability
+
+        Returns
+        -------
+        prisma.models.Event
+            The first record returned by the SQL query
+        None
+            The raw SQL query did not return any records
+
+        Raises
+        ------
+        prisma_errors.RawQueryError
+            This could be due to invalid syntax, mismatched number of parameters or any other error
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        user = await Event.prisma().query_first(
+            'SELECT * FROM Event WHERE title = $1',
+            'caficfigfb',
+        )
+        ```
+        """
+        return await self._client.query_first(query, *args, model=self._model)
+
+    async def create(
+        self,
+        data: types.EventCreateInput,
+        include: Optional[types.EventInclude] = None
+    ) -> _PrismaModelT:
+        """Create a new Event record.
+
+        Parameters
+        ----------
+        data
+            Event record data
+        include
+            Specifies which relations should be loaded on the returned Event model
+
+        Returns
+        -------
+        prisma.models.Event
+            The created Event record
+
+        Raises
+        ------
+        prisma.errors.MissingRequiredValueError
+            Value is required but was not found
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # create a Event record from just the required fields
+        event = await Event.prisma().create(
+            data={
+                # data to create a Event record
+                'title': 'bfidgijfjc',
+                'url': 'ihieecagf',
+            },
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='create',
+            model=self._model,
+            arguments={
+                'data': data,
+                'include': include,
+            },
+        )
+        return model_parse(self._model, resp['data']['result'])
+
+    async def create_many(
+        self,
+        data: List[types.EventCreateWithoutRelationsInput],
+        *,
+        skip_duplicates: Optional[bool] = None,
+    ) -> int:
+        """Create multiple Event records at once.
+
+        This function is *not* available when using SQLite.
+
+        Parameters
+        ----------
+        data
+            List of Event record data
+        skip_duplicates
+            Boolean flag for ignoring unique constraint errors
+
+        Returns
+        -------
+        int
+            The total number of records created
+
+        Raises
+        ------
+        prisma.errors.UnsupportedDatabaseError
+            Attempting to query when using SQLite
+        prisma.errors.UniqueViolationError
+            A unique constraint check has failed, these can be ignored with the `skip_duplicates` argument
+        prisma.errors.MissingRequiredValueError
+            Value is required but was not found
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        total = await Event.prisma().create_many(
+            data=[
+                {
+                    # data to create a Event record
+                    'title': 'bghfciaafe',
+                    'url': 'bgchfhgceh',
+                },
+                {
+                    # data to create a Event record
+                    'title': 'cafeiaccbc',
+                    'url': 'gaddfhfh',
+                },
+            ],
+            skip_duplicates=True,
+        )
+        ```
+        """
+        if skip_duplicates and self._client._active_provider in CREATE_MANY_SKIP_DUPLICATES_UNSUPPORTED:
+            raise errors.UnsupportedDatabaseError(self._client._active_provider, 'create_many_skip_duplicates')
+
+        resp = await self._client._execute(
+            method='create_many',
+            model=self._model,
+            arguments={
+                'data': data,
+                'skipDuplicates': skip_duplicates,
+            },
+            root_selection=['count'],
+        )
+        return int(resp['data']['result']['count'])
+
+    async def delete(
+        self,
+        where: types.EventWhereUniqueInput,
+        include: Optional[types.EventInclude] = None
+    ) -> Optional[_PrismaModelT]:
+        """Delete a single Event record.
+
+        Parameters
+        ----------
+        where
+            Event filter to select the record to be deleted, must be unique
+        include
+            Specifies which relations should be loaded on the returned Event model
+
+        Returns
+        -------
+        prisma.models.Event
+            The deleted Event record
+        None
+            Could not find a record to delete
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+        prisma.errors.MissingRequiredValueError
+            Value is required but was not found
+
+        Example
+        -------
+        ```py
+        event = await Event.prisma().delete(
+            where={
+                'id': 684462146,
+            },
+        )
+        ```
+        """
+        try:
+            resp = await self._client._execute(
+                method='delete',
+                model=self._model,
+                arguments={
+                    'where': where,
+                    'include': include,
+                },
+            )
+        except errors.RecordNotFoundError:
+            return None
+
+        return model_parse(self._model, resp['data']['result'])
+
+    async def find_unique(
+        self,
+        where: types.EventWhereUniqueInput,
+        include: Optional[types.EventInclude] = None
+    ) -> Optional[_PrismaModelT]:
+        """Find a unique Event record.
+
+        Parameters
+        ----------
+        where
+            Event filter to find the record, must be unique
+        include
+            Specifies which relations should be loaded on the returned Event model
+
+        Returns
+        -------
+        prisma.models.Event
+            The found Event record
+        None
+            No record matching the given input could be found
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+        prisma.errors.MissingRequiredValueError
+            Value is required but was not found
+
+        Example
+        -------
+        ```py
+        event = await Event.prisma().find_unique(
+            where={
+                'id': 1625503827,
+            },
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='find_unique',
+            model=self._model,
+            arguments={
+                'where': where,
+                'include': include,
+            },
+        )
+        result = resp['data']['result']
+        if result is None:
+            return None
+        return model_parse(self._model, result)
+
+    async def find_unique_or_raise(
+        self,
+        where: types.EventWhereUniqueInput,
+        include: Optional[types.EventInclude] = None
+    ) -> _PrismaModelT:
+        """Find a unique Event record. Raises `RecordNotFoundError` if no record is found.
+
+        Parameters
+        ----------
+        where
+            Event filter to find the record, must be unique
+        include
+            Specifies which relations should be loaded on the returned Event model
+
+        Returns
+        -------
+        prisma.models.Event
+            The found Event record
+
+        Raises
+        ------
+        prisma.errors.RecordNotFoundError
+            No record was found
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+        prisma.errors.MissingRequiredValueError
+            Value is required but was not found
+
+        Example
+        -------
+        ```py
+        event = await Event.prisma().find_unique_or_raise(
+            where={
+                'id': 521827728,
+            },
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='find_unique_or_raise',
+            model=self._model,
+            arguments={
+                'where': where,
+                'include': include,
+            },
+        )
+        return model_parse(self._model, resp['data']['result'])
+
+    async def find_many(
+        self,
+        take: Optional[int] = None,
+        skip: Optional[int] = None,
+        where: Optional[types.EventWhereInput] = None,
+        cursor: Optional[types.EventWhereUniqueInput] = None,
+        include: Optional[types.EventInclude] = None,
+        order: Optional[Union[types.EventOrderByInput, List[types.EventOrderByInput]]] = None,
+        distinct: Optional[List[types.EventScalarFieldKeys]] = None,
+    ) -> List[_PrismaModelT]:
+        """Find multiple Event records.
+
+        An empty list is returned if no records could be found.
+
+        Parameters
+        ----------
+        take
+            Limit the maximum number of Event records returned
+        skip
+            Ignore the first N results
+        where
+            Event filter to select records
+        cursor
+            Specifies the position in the list to start returning results from, (typically an ID field)
+        include
+            Specifies which relations should be loaded on the returned Event model
+        order
+            Order the returned Event records by any field
+        distinct
+            Filter Event records by either a single distinct field or distinct combinations of fields
+
+        Returns
+        -------
+        List[prisma.models.Event]
+            The list of all Event records that could be found
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # find the first 10 Event records
+        events = await Event.prisma().find_many(take=10)
+
+        # find the first 5 Event records ordered by the description field
+        events = await Event.prisma().find_many(
+            take=5,
+            order={
+                'description': 'desc',
+            },
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='find_many',
+            model=self._model,
+            arguments={
+                'take': take,
+                'skip': skip,
+                'where': where,
+                'order_by': order,
+                'cursor': cursor,
+                'include': include,
+                'distinct': distinct,
+            },
+        )
+        return [model_parse(self._model, r) for r in resp['data']['result']]
+
+    async def find_first(
+        self,
+        skip: Optional[int] = None,
+        where: Optional[types.EventWhereInput] = None,
+        cursor: Optional[types.EventWhereUniqueInput] = None,
+        include: Optional[types.EventInclude] = None,
+        order: Optional[Union[types.EventOrderByInput, List[types.EventOrderByInput]]] = None,
+        distinct: Optional[List[types.EventScalarFieldKeys]] = None,
+    ) -> Optional[_PrismaModelT]:
+        """Find a single Event record.
+
+        Parameters
+        ----------
+        skip
+            Ignore the first N records
+        where
+            Event filter to select the record
+        cursor
+            Specifies the position in the list to start returning results from, (typically an ID field)
+        include
+            Specifies which relations should be loaded on the returned Event model
+        order
+            Order the returned Event records by any field
+        distinct
+            Filter Event records by either a single distinct field or distinct combinations of fields
+
+        Returns
+        -------
+        prisma.models.Event
+            The first Event record found, matching the given arguments
+        None
+            No record could be found
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # find the second Event record ordered by the url field
+        event = await Event.prisma().find_first(
+            skip=1,
+            order={
+                'url': 'desc',
+            },
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='find_first',
+            model=self._model,
+            arguments={
+                'skip': skip,
+                'where': where,
+                'order_by': order,
+                'cursor': cursor,
+                'include': include,
+                'distinct': distinct,
+            },
+        )
+        result = resp['data']['result']
+        if result is None:
+            return None
+
+        return model_parse(self._model, result)
+
+    async def find_first_or_raise(
+        self,
+        skip: Optional[int] = None,
+        where: Optional[types.EventWhereInput] = None,
+        cursor: Optional[types.EventWhereUniqueInput] = None,
+        include: Optional[types.EventInclude] = None,
+        order: Optional[Union[types.EventOrderByInput, List[types.EventOrderByInput]]] = None,
+        distinct: Optional[List[types.EventScalarFieldKeys]] = None,
+    ) -> _PrismaModelT:
+        """Find a single Event record. Raises `RecordNotFoundError` if no record was found.
+
+        Parameters
+        ----------
+        skip
+            Ignore the first N records
+        where
+            Event filter to select the record
+        cursor
+            Specifies the position in the list to start returning results from, (typically an ID field)
+        include
+            Specifies which relations should be loaded on the returned Event model
+        order
+            Order the returned Event records by any field
+        distinct
+            Filter Event records by either a single distinct field or distinct combinations of fields
+
+        Returns
+        -------
+        prisma.models.Event
+            The first Event record found, matching the given arguments
+
+        Raises
+        ------
+        prisma.errors.RecordNotFoundError
+            No record was found
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # find the second Event record ordered by the imageUrl field
+        event = await Event.prisma().find_first_or_raise(
+            skip=1,
+            order={
+                'imageUrl': 'desc',
+            },
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='find_first_or_raise',
+            model=self._model,
+            arguments={
+                'skip': skip,
+                'where': where,
+                'order_by': order,
+                'cursor': cursor,
+                'include': include,
+                'distinct': distinct,
+            },
+        )
+        return model_parse(self._model, resp['data']['result'])
+
+    async def update(
+        self,
+        data: types.EventUpdateInput,
+        where: types.EventWhereUniqueInput,
+        include: Optional[types.EventInclude] = None
+    ) -> Optional[_PrismaModelT]:
+        """Update a single Event record.
+
+        Parameters
+        ----------
+        data
+            Event record data specifying what to update
+        where
+            Event filter to select the unique record to create / update
+        include
+            Specifies which relations should be loaded on the returned Event model
+
+        Returns
+        -------
+        prisma.models.Event
+            The updated Event record
+        None
+            No record could be found
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        event = await Event.prisma().update(
+            where={
+                'id': 1266032265,
+            },
+            data={
+                # data to update the Event record to
+            },
+        )
+        ```
+        """
+        try:
+            resp = await self._client._execute(
+                method='update',
+                model=self._model,
+                arguments={
+                    'data': data,
+                    'where': where,
+                    'include': include,
+                },
+            )
+        except errors.RecordNotFoundError:
+            return None
+
+        return model_parse(self._model, resp['data']['result'])
+
+    async def upsert(
+        self,
+        where: types.EventWhereUniqueInput,
+        data: types.EventUpsertInput,
+        include: Optional[types.EventInclude] = None,
+    ) -> _PrismaModelT:
+        """Updates an existing record or create a new one
+
+        Parameters
+        ----------
+        where
+            Event filter to select the unique record to create / update
+        data
+            Data specifying what fields to set on create and update
+        include
+            Specifies which relations should be loaded on the returned Event model
+
+        Returns
+        -------
+        prisma.models.Event
+            The created or updated Event record
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+        prisma.errors.MissingRequiredValueError
+            Value is required but was not found
+
+        Example
+        -------
+        ```py
+        event = await Event.prisma().upsert(
+            where={
+                'id': 93253262,
+            },
+            data={
+                'create': {
+                    'id': 93253262,
+                    'title': 'cafeiaccbc',
+                    'url': 'gaddfhfh',
+                },
+                'update': {
+                    'title': 'cafeiaccbc',
+                    'url': 'gaddfhfh',
+                },
+            },
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='upsert',
+            model=self._model,
+            arguments={
+                'where': where,
+                'include': include,
+                'create': data.get('create'),
+                'update': data.get('update'),
+            },
+        )
+        return model_parse(self._model, resp['data']['result'])
+
+    async def update_many(
+        self,
+        data: types.EventUpdateManyMutationInput,
+        where: types.EventWhereInput,
+    ) -> int:
+        """Update multiple Event records
+
+        Parameters
+        ----------
+        data
+            Event data to update the selected Event records to
+        where
+            Filter to select the Event records to update
+
+        Returns
+        -------
+        int
+            The total number of Event records that were updated
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # update all Event records
+        total = await Event.prisma().update_many(
+            data={
+                'startTime': datetime.datetime.utcnow()
+            },
+            where={}
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='update_many',
+            model=self._model,
+            arguments={'data': data, 'where': where,},
+            root_selection=['count'],
+        )
+        return int(resp['data']['result']['count'])
+
+    @overload
+    async def count(
+        self,
+        select: None = None,
+        take: Optional[int] = None,
+        skip: Optional[int] = None,
+        where: Optional[types.EventWhereInput] = None,
+        cursor: Optional[types.EventWhereUniqueInput] = None,
+    ) -> int:
+        """Count the number of Event records present in the database
+
+        Parameters
+        ----------
+        select
+            Select the Event fields to be counted
+        take
+            Limit the maximum result
+        skip
+            Ignore the first N records
+        where
+            Event filter to find records
+        cursor
+            Specifies the position in the list to start counting results from, (typically an ID field)
+        order
+            This parameter is deprecated and will be removed in a future release
+
+        Returns
+        -------
+        int
+            The total number of records found, returned if `select` is not given
+
+        prisma.types.EventCountAggregateOutput
+            Data returned when `select` is used, the fields present in this dictionary will
+            match the fields passed in the `select` argument
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # total: int
+        total = await Event.prisma().count()
+
+        # results: prisma.types.EventCountAggregateOutput
+        results = await Event.prisma().count(
+            select={
+                '_all': True,
+                'endTime': True,
+            },
+        )
+        ```
+        """
+
+
+    @overload
+    async def count(
+        self,
+        select: types.EventCountAggregateInput,
+        take: Optional[int] = None,
+        skip: Optional[int] = None,
+        where: Optional[types.EventWhereInput] = None,
+        cursor: Optional[types.EventWhereUniqueInput] = None,
+    ) -> types.EventCountAggregateOutput:
+        ...
+
+    async def count(
+        self,
+        select: Optional[types.EventCountAggregateInput] = None,
+        take: Optional[int] = None,
+        skip: Optional[int] = None,
+        where: Optional[types.EventWhereInput] = None,
+        cursor: Optional[types.EventWhereUniqueInput] = None,
+    ) -> Union[int, types.EventCountAggregateOutput]:
+        """Count the number of Event records present in the database
+
+        Parameters
+        ----------
+        select
+            Select the Event fields to be counted
+        take
+            Limit the maximum result
+        skip
+            Ignore the first N records
+        where
+            Event filter to find records
+        cursor
+            Specifies the position in the list to start counting results from, (typically an ID field)
+        order
+            This parameter is deprecated and will be removed in a future release
+
+        Returns
+        -------
+        int
+            The total number of records found, returned if `select` is not given
+
+        prisma.types.EventCountAggregateOutput
+            Data returned when `select` is used, the fields present in this dictionary will
+            match the fields passed in the `select` argument
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # total: int
+        total = await Event.prisma().count()
+
+        # results: prisma.types.EventCountAggregateOutput
+        results = await Event.prisma().count(
+            select={
+                '_all': True,
+                'timezone': True,
+            },
+        )
+        ```
+        """
+
+        # TODO: this selection building should be moved to the QueryBuilder
+        #
+        # note the distinction between checking for `not select` here and `select is None`
+        # later is to handle the case that the given select dictionary is empty, this
+        # is a limitation of our types.
+        if not select:
+            root_selection = ['_count { _all }']
+        else:
+
+            root_selection = [
+                '_count {{ {0} }}'.format(' '.join(k for k, v in select.items() if v is True))
+            ]
+
+        resp = await self._client._execute(
+            method='count',
+            model=self._model,
+            arguments={
+                'take': take,
+                'skip': skip,
+                'where': where,
+                'cursor': cursor,
+            },
+            root_selection=root_selection,
+        )
+
+        if select is None:
+            return cast(int, resp['data']['result']['_count']['_all'])
+        else:
+            return cast(types.EventCountAggregateOutput, resp['data']['result']['_count'])
+
+    async def delete_many(
+        self,
+        where: Optional[types.EventWhereInput] = None
+    ) -> int:
+        """Delete multiple Event records.
+
+        Parameters
+        ----------
+        where
+            Optional Event filter to find the records to be deleted
+
+        Returns
+        -------
+        int
+            The total number of Event records that were deleted
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # delete all Event records
+        total = await Event.prisma().delete_many()
+        ```
+        """
+        resp = await self._client._execute(
+            method='delete_many',
+            model=self._model,
+            arguments={'where': where},
+            root_selection=['count'],
+        )
+        return int(resp['data']['result']['count'])
+
+    # TODO: make this easier to work with safely, currently output fields are typed as
+    #       not required, we should refactor the return type
+    # TODO: consider returning a Dict where the keys are a Tuple of the `by` selection
+    # TODO: statically type that the order argument is required when take or skip are present
+    async def group_by(
+        self,
+        by: List['types.EventScalarFieldKeys'],
+        *,
+        where: Optional['types.EventWhereInput'] = None,
+        take: Optional[int] = None,
+        skip: Optional[int] = None,
+        avg: Optional['types.EventAvgAggregateInput'] = None,
+        sum: Optional['types.EventSumAggregateInput'] = None,
+        min: Optional['types.EventMinAggregateInput'] = None,
+        max: Optional['types.EventMaxAggregateInput'] = None,
+        having: Optional['types.EventScalarWhereWithAggregatesInput'] = None,
+        count: Optional[Union[bool, 'types.EventCountAggregateInput']] = None,
+        order: Optional[Union[Mapping['types.EventScalarFieldKeys', 'types.SortOrder'], List[Mapping['types.EventScalarFieldKeys', 'types.SortOrder']]]] = None,
+    ) -> List['types.EventGroupByOutput']:
+        """Group Event records by one or more field values and perform aggregations
+        each group such as finding the average.
+
+        Parameters
+        ----------
+        by
+            List of scalar Event fields to group records by
+        where
+            Event filter to select records
+        take
+            Limit the maximum number of Event records returned
+        skip
+            Ignore the first N records
+        avg
+            Adds the average of all values of the specified fields to the `_avg` field
+            in the returned data.
+        sum
+            Adds the sum of all values of the specified fields to the `_sum` field
+            in the returned data.
+        min
+            Adds the smallest available value for the specified fields to the `_min` field
+            in the returned data.
+        max
+            Adds the largest available value for the specified fields to the `_max` field
+            in the returned data.
+        count
+            Adds a count of non-fields to the `_count` field in the returned data.
+        having
+            Allows you to filter groups by an aggregate value - for example only return
+            groups having an average age less than 50.
+        order
+            Lets you order the returned list by any property that is also present in `by`.
+            Only **one** field is allowed at a time.
+
+        Returns
+        -------
+        List[prisma.types.EventGroupByOutput]
+            A list of dictionaries representing the Event record,
+            this will also have additional fields present if aggregation arguments
+            are used (see the above parameters)
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # group Event records by price values
+        # and count how many records are in each group
+        results = await Event.prisma().group_by(
+            ['price'],
+            count=True,
+        )
+        ```
+        """
+        if order is None:
+            if take is not None:
+                raise TypeError('Missing argument: \'order\' which is required when \'take\' is present')
+
+            if skip is not None:
+                raise TypeError('Missing argument: \'order\' which is required when \'skip\' is present')
+
+        root_selection: List[str] = [*by]
+        if avg is not None:
+            root_selection.append(_select_fields('_avg', avg))
+
+        if min is not None:
+            root_selection.append(_select_fields('_min', min))
+
+        if sum is not None:
+            root_selection.append(_select_fields('_sum', sum))
+
+        if max is not None:
+            root_selection.append(_select_fields('_max', max))
+
+        if count is not None:
+            if count is True:
+                root_selection.append('_count { _all }')
+            elif isinstance(count, dict):
+                root_selection.append(_select_fields('_count', count))
+
+        resp = await self._client._execute(
+            method='group_by',
+            model=self._model,
+            arguments={
+                'by': by,
+                'take': take,
+                'skip': skip,
+                'where': where,
+                'having': having,
+                'orderBy': order,
+            },
+            root_selection=root_selection,
+        )
+        return resp['data']['result']  # type: ignore[no-any-return]
+
+
+class SavedEventActions(Generic[_PrismaModelT]):
+    __slots__ = (
+        '_client',
+        '_model',
+    )
+
+    def __init__(self, client: Prisma, model: Type[_PrismaModelT]) -> None:
+        self._client = client
+        self._model = model
+
+    async def query_raw(
+        self,
+        query: LiteralString,
+        *args: Any,
+    ) -> List[_PrismaModelT]:
+        """Execute a raw SQL query
+
+        Parameters
+        ----------
+        query
+            The raw SQL query string to be executed
+        *args
+            Parameters to be passed to the SQL query, these MUST be used over
+            string formatting to avoid an SQL injection vulnerability
+
+        Returns
+        -------
+        List[prisma.models.SavedEvent]
+            The records returned by the SQL query
+
+        Raises
+        ------
+        prisma_errors.RawQueryError
+            This could be due to invalid syntax, mismatched number of parameters or any other error
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        users = await SavedEvent.prisma().query_raw(
+            'SELECT * FROM SavedEvent WHERE id = $1',
+            2053047983,
+        )
+        ```
+        """
+        return await self._client.query_raw(query, *args, model=self._model)
+
+    async def query_first(
+        self,
+        query: LiteralString,
+        *args: Any,
+    ) -> Optional[_PrismaModelT]:
+        """Execute a raw SQL query, returning the first result
+
+        Parameters
+        ----------
+        query
+            The raw SQL query string to be executed
+        *args
+            Parameters to be passed to the SQL query, these MUST be used over
+            string formatting to avoid an SQL injection vulnerability
+
+        Returns
+        -------
+        prisma.models.SavedEvent
+            The first record returned by the SQL query
+        None
+            The raw SQL query did not return any records
+
+        Raises
+        ------
+        prisma_errors.RawQueryError
+            This could be due to invalid syntax, mismatched number of parameters or any other error
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        user = await SavedEvent.prisma().query_first(
+            'SELECT * FROM SavedEvent WHERE userId = $1',
+            685333180,
+        )
+        ```
+        """
+        return await self._client.query_first(query, *args, model=self._model)
+
+    async def create(
+        self,
+        data: types.SavedEventCreateInput,
+        include: Optional[types.SavedEventInclude] = None
+    ) -> _PrismaModelT:
+        """Create a new SavedEvent record.
+
+        Parameters
+        ----------
+        data
+            SavedEvent record data
+        include
+            Specifies which relations should be loaded on the returned SavedEvent model
+
+        Returns
+        -------
+        prisma.models.SavedEvent
+            The created SavedEvent record
+
+        Raises
+        ------
+        prisma.errors.MissingRequiredValueError
+            Value is required but was not found
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # create a SavedEvent record from just the required fields
+        savedevent = await SavedEvent.prisma().create(
+            data={
+                # data to create a SavedEvent record
+                'userId': 127474245,
+                'eventId': 948921754,
+            },
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='create',
+            model=self._model,
+            arguments={
+                'data': data,
+                'include': include,
+            },
+        )
+        return model_parse(self._model, resp['data']['result'])
+
+    async def create_many(
+        self,
+        data: List[types.SavedEventCreateWithoutRelationsInput],
+        *,
+        skip_duplicates: Optional[bool] = None,
+    ) -> int:
+        """Create multiple SavedEvent records at once.
+
+        This function is *not* available when using SQLite.
+
+        Parameters
+        ----------
+        data
+            List of SavedEvent record data
+        skip_duplicates
+            Boolean flag for ignoring unique constraint errors
+
+        Returns
+        -------
+        int
+            The total number of records created
+
+        Raises
+        ------
+        prisma.errors.UnsupportedDatabaseError
+            Attempting to query when using SQLite
+        prisma.errors.UniqueViolationError
+            A unique constraint check has failed, these can be ignored with the `skip_duplicates` argument
+        prisma.errors.MissingRequiredValueError
+            Value is required but was not found
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        total = await SavedEvent.prisma().create_many(
+            data=[
+                {
+                    # data to create a SavedEvent record
+                    'userId': 1964990155,
+                    'eventId': 1228891816,
+                },
+                {
+                    # data to create a SavedEvent record
+                    'userId': 255202753,
+                    'eventId': 1223573862,
+                },
+            ],
+            skip_duplicates=True,
+        )
+        ```
+        """
+        if skip_duplicates and self._client._active_provider in CREATE_MANY_SKIP_DUPLICATES_UNSUPPORTED:
+            raise errors.UnsupportedDatabaseError(self._client._active_provider, 'create_many_skip_duplicates')
+
+        resp = await self._client._execute(
+            method='create_many',
+            model=self._model,
+            arguments={
+                'data': data,
+                'skipDuplicates': skip_duplicates,
+            },
+            root_selection=['count'],
+        )
+        return int(resp['data']['result']['count'])
+
+    async def delete(
+        self,
+        where: types.SavedEventWhereUniqueInput,
+        include: Optional[types.SavedEventInclude] = None
+    ) -> Optional[_PrismaModelT]:
+        """Delete a single SavedEvent record.
+
+        Parameters
+        ----------
+        where
+            SavedEvent filter to select the record to be deleted, must be unique
+        include
+            Specifies which relations should be loaded on the returned SavedEvent model
+
+        Returns
+        -------
+        prisma.models.SavedEvent
+            The deleted SavedEvent record
+        None
+            Could not find a record to delete
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+        prisma.errors.MissingRequiredValueError
+            Value is required but was not found
+
+        Example
+        -------
+        ```py
+        savedevent = await SavedEvent.prisma().delete(
+            where={
+                'id': 541269159,
+            },
+        )
+        ```
+        """
+        try:
+            resp = await self._client._execute(
+                method='delete',
+                model=self._model,
+                arguments={
+                    'where': where,
+                    'include': include,
+                },
+            )
+        except errors.RecordNotFoundError:
+            return None
+
+        return model_parse(self._model, resp['data']['result'])
+
+    async def find_unique(
+        self,
+        where: types.SavedEventWhereUniqueInput,
+        include: Optional[types.SavedEventInclude] = None
+    ) -> Optional[_PrismaModelT]:
+        """Find a unique SavedEvent record.
+
+        Parameters
+        ----------
+        where
+            SavedEvent filter to find the record, must be unique
+        include
+            Specifies which relations should be loaded on the returned SavedEvent model
+
+        Returns
+        -------
+        prisma.models.SavedEvent
+            The found SavedEvent record
+        None
+            No record matching the given input could be found
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+        prisma.errors.MissingRequiredValueError
+            Value is required but was not found
+
+        Example
+        -------
+        ```py
+        savedevent = await SavedEvent.prisma().find_unique(
+            where={
+                'id': 1064846676,
+            },
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='find_unique',
+            model=self._model,
+            arguments={
+                'where': where,
+                'include': include,
+            },
+        )
+        result = resp['data']['result']
+        if result is None:
+            return None
+        return model_parse(self._model, result)
+
+    async def find_unique_or_raise(
+        self,
+        where: types.SavedEventWhereUniqueInput,
+        include: Optional[types.SavedEventInclude] = None
+    ) -> _PrismaModelT:
+        """Find a unique SavedEvent record. Raises `RecordNotFoundError` if no record is found.
+
+        Parameters
+        ----------
+        where
+            SavedEvent filter to find the record, must be unique
+        include
+            Specifies which relations should be loaded on the returned SavedEvent model
+
+        Returns
+        -------
+        prisma.models.SavedEvent
+            The found SavedEvent record
+
+        Raises
+        ------
+        prisma.errors.RecordNotFoundError
+            No record was found
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+        prisma.errors.MissingRequiredValueError
+            Value is required but was not found
+
+        Example
+        -------
+        ```py
+        savedevent = await SavedEvent.prisma().find_unique_or_raise(
+            where={
+                'id': 508382461,
+            },
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='find_unique_or_raise',
+            model=self._model,
+            arguments={
+                'where': where,
+                'include': include,
+            },
+        )
+        return model_parse(self._model, resp['data']['result'])
+
+    async def find_many(
+        self,
+        take: Optional[int] = None,
+        skip: Optional[int] = None,
+        where: Optional[types.SavedEventWhereInput] = None,
+        cursor: Optional[types.SavedEventWhereUniqueInput] = None,
+        include: Optional[types.SavedEventInclude] = None,
+        order: Optional[Union[types.SavedEventOrderByInput, List[types.SavedEventOrderByInput]]] = None,
+        distinct: Optional[List[types.SavedEventScalarFieldKeys]] = None,
+    ) -> List[_PrismaModelT]:
+        """Find multiple SavedEvent records.
+
+        An empty list is returned if no records could be found.
+
+        Parameters
+        ----------
+        take
+            Limit the maximum number of SavedEvent records returned
+        skip
+            Ignore the first N results
+        where
+            SavedEvent filter to select records
+        cursor
+            Specifies the position in the list to start returning results from, (typically an ID field)
+        include
+            Specifies which relations should be loaded on the returned SavedEvent model
+        order
+            Order the returned SavedEvent records by any field
+        distinct
+            Filter SavedEvent records by either a single distinct field or distinct combinations of fields
+
+        Returns
+        -------
+        List[prisma.models.SavedEvent]
+            The list of all SavedEvent records that could be found
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # find the first 10 SavedEvent records
+        savedevents = await SavedEvent.prisma().find_many(take=10)
+
+        # find the first 5 SavedEvent records ordered by the eventId field
+        savedevents = await SavedEvent.prisma().find_many(
+            take=5,
+            order={
+                'eventId': 'desc',
+            },
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='find_many',
+            model=self._model,
+            arguments={
+                'take': take,
+                'skip': skip,
+                'where': where,
+                'order_by': order,
+                'cursor': cursor,
+                'include': include,
+                'distinct': distinct,
+            },
+        )
+        return [model_parse(self._model, r) for r in resp['data']['result']]
+
+    async def find_first(
+        self,
+        skip: Optional[int] = None,
+        where: Optional[types.SavedEventWhereInput] = None,
+        cursor: Optional[types.SavedEventWhereUniqueInput] = None,
+        include: Optional[types.SavedEventInclude] = None,
+        order: Optional[Union[types.SavedEventOrderByInput, List[types.SavedEventOrderByInput]]] = None,
+        distinct: Optional[List[types.SavedEventScalarFieldKeys]] = None,
+    ) -> Optional[_PrismaModelT]:
+        """Find a single SavedEvent record.
+
+        Parameters
+        ----------
+        skip
+            Ignore the first N records
+        where
+            SavedEvent filter to select the record
+        cursor
+            Specifies the position in the list to start returning results from, (typically an ID field)
+        include
+            Specifies which relations should be loaded on the returned SavedEvent model
+        order
+            Order the returned SavedEvent records by any field
+        distinct
+            Filter SavedEvent records by either a single distinct field or distinct combinations of fields
+
+        Returns
+        -------
+        prisma.models.SavedEvent
+            The first SavedEvent record found, matching the given arguments
+        None
+            No record could be found
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # find the second SavedEvent record ordered by the createdAt field
+        savedevent = await SavedEvent.prisma().find_first(
+            skip=1,
+            order={
+                'createdAt': 'desc',
+            },
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='find_first',
+            model=self._model,
+            arguments={
+                'skip': skip,
+                'where': where,
+                'order_by': order,
+                'cursor': cursor,
+                'include': include,
+                'distinct': distinct,
+            },
+        )
+        result = resp['data']['result']
+        if result is None:
+            return None
+
+        return model_parse(self._model, result)
+
+    async def find_first_or_raise(
+        self,
+        skip: Optional[int] = None,
+        where: Optional[types.SavedEventWhereInput] = None,
+        cursor: Optional[types.SavedEventWhereUniqueInput] = None,
+        include: Optional[types.SavedEventInclude] = None,
+        order: Optional[Union[types.SavedEventOrderByInput, List[types.SavedEventOrderByInput]]] = None,
+        distinct: Optional[List[types.SavedEventScalarFieldKeys]] = None,
+    ) -> _PrismaModelT:
+        """Find a single SavedEvent record. Raises `RecordNotFoundError` if no record was found.
+
+        Parameters
+        ----------
+        skip
+            Ignore the first N records
+        where
+            SavedEvent filter to select the record
+        cursor
+            Specifies the position in the list to start returning results from, (typically an ID field)
+        include
+            Specifies which relations should be loaded on the returned SavedEvent model
+        order
+            Order the returned SavedEvent records by any field
+        distinct
+            Filter SavedEvent records by either a single distinct field or distinct combinations of fields
+
+        Returns
+        -------
+        prisma.models.SavedEvent
+            The first SavedEvent record found, matching the given arguments
+
+        Raises
+        ------
+        prisma.errors.RecordNotFoundError
+            No record was found
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # find the second SavedEvent record ordered by the id field
+        savedevent = await SavedEvent.prisma().find_first_or_raise(
+            skip=1,
+            order={
+                'id': 'desc',
+            },
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='find_first_or_raise',
+            model=self._model,
+            arguments={
+                'skip': skip,
+                'where': where,
+                'order_by': order,
+                'cursor': cursor,
+                'include': include,
+                'distinct': distinct,
+            },
+        )
+        return model_parse(self._model, resp['data']['result'])
+
+    async def update(
+        self,
+        data: types.SavedEventUpdateInput,
+        where: types.SavedEventWhereUniqueInput,
+        include: Optional[types.SavedEventInclude] = None
+    ) -> Optional[_PrismaModelT]:
+        """Update a single SavedEvent record.
+
+        Parameters
+        ----------
+        data
+            SavedEvent record data specifying what to update
+        where
+            SavedEvent filter to select the unique record to create / update
+        include
+            Specifies which relations should be loaded on the returned SavedEvent model
+
+        Returns
+        -------
+        prisma.models.SavedEvent
+            The updated SavedEvent record
+        None
+            No record could be found
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        savedevent = await SavedEvent.prisma().update(
+            where={
+                'id': 1024265714,
+            },
+            data={
+                # data to update the SavedEvent record to
+            },
+        )
+        ```
+        """
+        try:
+            resp = await self._client._execute(
+                method='update',
+                model=self._model,
+                arguments={
+                    'data': data,
+                    'where': where,
+                    'include': include,
+                },
+            )
+        except errors.RecordNotFoundError:
+            return None
+
+        return model_parse(self._model, resp['data']['result'])
+
+    async def upsert(
+        self,
+        where: types.SavedEventWhereUniqueInput,
+        data: types.SavedEventUpsertInput,
+        include: Optional[types.SavedEventInclude] = None,
+    ) -> _PrismaModelT:
+        """Updates an existing record or create a new one
+
+        Parameters
+        ----------
+        where
+            SavedEvent filter to select the unique record to create / update
+        data
+            Data specifying what fields to set on create and update
+        include
+            Specifies which relations should be loaded on the returned SavedEvent model
+
+        Returns
+        -------
+        prisma.models.SavedEvent
+            The created or updated SavedEvent record
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+        prisma.errors.MissingRequiredValueError
+            Value is required but was not found
+
+        Example
+        -------
+        ```py
+        savedevent = await SavedEvent.prisma().upsert(
+            where={
+                'id': 872078403,
+            },
+            data={
+                'create': {
+                    'id': 872078403,
+                    'userId': 255202753,
+                    'eventId': 1223573862,
+                },
+                'update': {
+                    'userId': 255202753,
+                    'eventId': 1223573862,
+                },
+            },
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='upsert',
+            model=self._model,
+            arguments={
+                'where': where,
+                'include': include,
+                'create': data.get('create'),
+                'update': data.get('update'),
+            },
+        )
+        return model_parse(self._model, resp['data']['result'])
+
+    async def update_many(
+        self,
+        data: types.SavedEventUpdateManyMutationInput,
+        where: types.SavedEventWhereInput,
+    ) -> int:
+        """Update multiple SavedEvent records
+
+        Parameters
+        ----------
+        data
+            SavedEvent data to update the selected SavedEvent records to
+        where
+            Filter to select the SavedEvent records to update
+
+        Returns
+        -------
+        int
+            The total number of SavedEvent records that were updated
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # update all SavedEvent records
+        total = await SavedEvent.prisma().update_many(
+            data={
+                'userId': 1874748096
+            },
+            where={}
+        )
+        ```
+        """
+        resp = await self._client._execute(
+            method='update_many',
+            model=self._model,
+            arguments={'data': data, 'where': where,},
+            root_selection=['count'],
+        )
+        return int(resp['data']['result']['count'])
+
+    @overload
+    async def count(
+        self,
+        select: None = None,
+        take: Optional[int] = None,
+        skip: Optional[int] = None,
+        where: Optional[types.SavedEventWhereInput] = None,
+        cursor: Optional[types.SavedEventWhereUniqueInput] = None,
+    ) -> int:
+        """Count the number of SavedEvent records present in the database
+
+        Parameters
+        ----------
+        select
+            Select the SavedEvent fields to be counted
+        take
+            Limit the maximum result
+        skip
+            Ignore the first N records
+        where
+            SavedEvent filter to find records
+        cursor
+            Specifies the position in the list to start counting results from, (typically an ID field)
+        order
+            This parameter is deprecated and will be removed in a future release
+
+        Returns
+        -------
+        int
+            The total number of records found, returned if `select` is not given
+
+        prisma.types.SavedEventCountAggregateOutput
+            Data returned when `select` is used, the fields present in this dictionary will
+            match the fields passed in the `select` argument
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # total: int
+        total = await SavedEvent.prisma().count()
+
+        # results: prisma.types.SavedEventCountAggregateOutput
+        results = await SavedEvent.prisma().count(
+            select={
+                '_all': True,
+                'eventId': True,
+            },
+        )
+        ```
+        """
+
+
+    @overload
+    async def count(
+        self,
+        select: types.SavedEventCountAggregateInput,
+        take: Optional[int] = None,
+        skip: Optional[int] = None,
+        where: Optional[types.SavedEventWhereInput] = None,
+        cursor: Optional[types.SavedEventWhereUniqueInput] = None,
+    ) -> types.SavedEventCountAggregateOutput:
+        ...
+
+    async def count(
+        self,
+        select: Optional[types.SavedEventCountAggregateInput] = None,
+        take: Optional[int] = None,
+        skip: Optional[int] = None,
+        where: Optional[types.SavedEventWhereInput] = None,
+        cursor: Optional[types.SavedEventWhereUniqueInput] = None,
+    ) -> Union[int, types.SavedEventCountAggregateOutput]:
+        """Count the number of SavedEvent records present in the database
+
+        Parameters
+        ----------
+        select
+            Select the SavedEvent fields to be counted
+        take
+            Limit the maximum result
+        skip
+            Ignore the first N records
+        where
+            SavedEvent filter to find records
+        cursor
+            Specifies the position in the list to start counting results from, (typically an ID field)
+        order
+            This parameter is deprecated and will be removed in a future release
+
+        Returns
+        -------
+        int
+            The total number of records found, returned if `select` is not given
+
+        prisma.types.SavedEventCountAggregateOutput
+            Data returned when `select` is used, the fields present in this dictionary will
+            match the fields passed in the `select` argument
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # total: int
+        total = await SavedEvent.prisma().count()
+
+        # results: prisma.types.SavedEventCountAggregateOutput
+        results = await SavedEvent.prisma().count(
+            select={
+                '_all': True,
+                'createdAt': True,
+            },
+        )
+        ```
+        """
+
+        # TODO: this selection building should be moved to the QueryBuilder
+        #
+        # note the distinction between checking for `not select` here and `select is None`
+        # later is to handle the case that the given select dictionary is empty, this
+        # is a limitation of our types.
+        if not select:
+            root_selection = ['_count { _all }']
+        else:
+
+            root_selection = [
+                '_count {{ {0} }}'.format(' '.join(k for k, v in select.items() if v is True))
+            ]
+
+        resp = await self._client._execute(
+            method='count',
+            model=self._model,
+            arguments={
+                'take': take,
+                'skip': skip,
+                'where': where,
+                'cursor': cursor,
+            },
+            root_selection=root_selection,
+        )
+
+        if select is None:
+            return cast(int, resp['data']['result']['_count']['_all'])
+        else:
+            return cast(types.SavedEventCountAggregateOutput, resp['data']['result']['_count'])
+
+    async def delete_many(
+        self,
+        where: Optional[types.SavedEventWhereInput] = None
+    ) -> int:
+        """Delete multiple SavedEvent records.
+
+        Parameters
+        ----------
+        where
+            Optional SavedEvent filter to find the records to be deleted
+
+        Returns
+        -------
+        int
+            The total number of SavedEvent records that were deleted
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # delete all SavedEvent records
+        total = await SavedEvent.prisma().delete_many()
+        ```
+        """
+        resp = await self._client._execute(
+            method='delete_many',
+            model=self._model,
+            arguments={'where': where},
+            root_selection=['count'],
+        )
+        return int(resp['data']['result']['count'])
+
+    # TODO: make this easier to work with safely, currently output fields are typed as
+    #       not required, we should refactor the return type
+    # TODO: consider returning a Dict where the keys are a Tuple of the `by` selection
+    # TODO: statically type that the order argument is required when take or skip are present
+    async def group_by(
+        self,
+        by: List['types.SavedEventScalarFieldKeys'],
+        *,
+        where: Optional['types.SavedEventWhereInput'] = None,
+        take: Optional[int] = None,
+        skip: Optional[int] = None,
+        avg: Optional['types.SavedEventAvgAggregateInput'] = None,
+        sum: Optional['types.SavedEventSumAggregateInput'] = None,
+        min: Optional['types.SavedEventMinAggregateInput'] = None,
+        max: Optional['types.SavedEventMaxAggregateInput'] = None,
+        having: Optional['types.SavedEventScalarWhereWithAggregatesInput'] = None,
+        count: Optional[Union[bool, 'types.SavedEventCountAggregateInput']] = None,
+        order: Optional[Union[Mapping['types.SavedEventScalarFieldKeys', 'types.SortOrder'], List[Mapping['types.SavedEventScalarFieldKeys', 'types.SortOrder']]]] = None,
+    ) -> List['types.SavedEventGroupByOutput']:
+        """Group SavedEvent records by one or more field values and perform aggregations
+        each group such as finding the average.
+
+        Parameters
+        ----------
+        by
+            List of scalar SavedEvent fields to group records by
+        where
+            SavedEvent filter to select records
+        take
+            Limit the maximum number of SavedEvent records returned
+        skip
+            Ignore the first N records
+        avg
+            Adds the average of all values of the specified fields to the `_avg` field
+            in the returned data.
+        sum
+            Adds the sum of all values of the specified fields to the `_sum` field
+            in the returned data.
+        min
+            Adds the smallest available value for the specified fields to the `_min` field
+            in the returned data.
+        max
+            Adds the largest available value for the specified fields to the `_max` field
+            in the returned data.
+        count
+            Adds a count of non-fields to the `_count` field in the returned data.
+        having
+            Allows you to filter groups by an aggregate value - for example only return
+            groups having an average age less than 50.
+        order
+            Lets you order the returned list by any property that is also present in `by`.
+            Only **one** field is allowed at a time.
+
+        Returns
+        -------
+        List[prisma.types.SavedEventGroupByOutput]
+            A list of dictionaries representing the SavedEvent record,
+            this will also have additional fields present if aggregation arguments
+            are used (see the above parameters)
+
+        Raises
+        ------
+        prisma.errors.PrismaError
+            Catch all for every exception raised by Prisma Client Python
+
+        Example
+        -------
+        ```py
+        # group SavedEvent records by id values
+        # and count how many records are in each group
+        results = await SavedEvent.prisma().group_by(
+            ['id'],
+            count=True,
+        )
+        ```
+        """
+        if order is None:
+            if take is not None:
+                raise TypeError('Missing argument: \'order\' which is required when \'take\' is present')
+
+            if skip is not None:
+                raise TypeError('Missing argument: \'order\' which is required when \'skip\' is present')
+
+        root_selection: List[str] = [*by]
+        if avg is not None:
+            root_selection.append(_select_fields('_avg', avg))
+
+        if min is not None:
+            root_selection.append(_select_fields('_min', min))
+
+        if sum is not None:
+            root_selection.append(_select_fields('_sum', sum))
+
+        if max is not None:
+            root_selection.append(_select_fields('_max', max))
+
+        if count is not None:
+            if count is True:
+                root_selection.append('_count { _all }')
+            elif isinstance(count, dict):
+                root_selection.append(_select_fields('_count', count))
+
+        resp = await self._client._execute(
+            method='group_by',
+            model=self._model,
+            arguments={
+                'by': by,
+                'take': take,
+                'skip': skip,
+                'where': where,
+                'having': having,
+                'orderBy': order,
+            },
+            root_selection=root_selection,
+        )
+        return resp['data']['result']  # type: ignore[no-any-return]
+
+
 
 def _select_fields(root: str, select: Mapping[str, Any]) -> str:
     """Helper to build a GraphQL selection string
