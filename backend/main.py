@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from auth_router import router as auth_router
+from events_router import router as events_router
 from db import db
 
 @asynccontextmanager
@@ -21,3 +22,4 @@ app.add_middleware(
 )
 
 app.include_router(auth_router)
+app.include_router(events_router)

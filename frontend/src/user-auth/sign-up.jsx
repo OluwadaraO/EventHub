@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate, Link } from "react-router-dom"; 
 import './sign-up.css';
 function SignUp() {
     const [form, setForm] = useState({
@@ -114,6 +114,12 @@ function SignUp() {
                     {error && <div className="sign-up-error">{error}</div>}
                     {success && <div className="success-message">{success}</div>}
                     <button type="submit" className="sign-up-button">Register</button>
+                    <p className="sign-up-switch">
+                        Already a user?{" "}
+                        <Link to="/login" className="sign-up-link">
+                            Login
+                        </Link>
+                    </p>
                 </form>
             </div>
         </>

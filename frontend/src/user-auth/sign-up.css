@@ -152,6 +152,24 @@
     border-left: 5px solid #38a169;
 }
 
+.sign-up-switch {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 0.95rem;
+  color: black;
+}
+
+.sign-up-link {
+  color: plum;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.sign-up-link:hover {
+  text-decoration: underline;
+}
+
+
 @media (max-width: 768px) {
     .sign-up-container {
         padding: 40px 35px;
