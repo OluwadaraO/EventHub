@@ -41,3 +41,11 @@ LiteralString = str
 from ._compat import StrEnum
 
 
+class NotificationType(StrEnum):
+    EVENT_SAVED = 'EVENT_SAVED'
+    EVENT_CREATED = 'EVENT_CREATED'
+    EVENT_UPCOMING_14 = 'EVENT_UPCOMING_14'
+    EVENT_UPCOMING_7 = 'EVENT_UPCOMING_7'
+    EVENT_UPCOMING_1 = 'EVENT_UPCOMING_1'
+    EVENT_PAST = 'EVENT_PAST'
+

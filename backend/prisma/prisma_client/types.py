@@ -1134,6 +1134,49 @@ DecimalListUpdate = Union[
     _DecimalListUpdatePush,
 ]
 
+class _NotificationTypeListFilterEqualsInput(TypedDict):
+    equals: Optional[List['enums.NotificationType']]
+
+
+class _NotificationTypeListFilterHasInput(TypedDict):
+    has: 'enums.NotificationType'
+
+
+class _NotificationTypeListFilterHasEveryInput(TypedDict):
+    has_every: List['enums.NotificationType']
+
+
+class _NotificationTypeListFilterHasSomeInput(TypedDict):
+    has_some: List['enums.NotificationType']
+
+
+class _NotificationTypeListFilterIsEmptyInput(TypedDict):
+    is_empty: bool
+
+
+NotificationTypeListFilter = Union[
+    _NotificationTypeListFilterHasInput,
+    _NotificationTypeListFilterEqualsInput,
+    _NotificationTypeListFilterHasSomeInput,
+    _NotificationTypeListFilterIsEmptyInput,
+    _NotificationTypeListFilterHasEveryInput,
+]
+
+
+class _NotificationTypeListUpdateSet(TypedDict):
+    set: List['enums.NotificationType']
+
+
+class _NotificationTypeListUpdatePush(TypedDict):
+    push: List['enums.NotificationType']
+
+
+NotificationTypeListUpdate = Union[
+    List['enums.NotificationType'],
+    _NotificationTypeListUpdateSet,
+    _NotificationTypeListUpdatePush,
+]
+
 
 # User types
 
@@ -1143,6 +1186,7 @@ class UserOptionalCreateInput(TypedDict, total=False):
     name: Optional[_str]
     createdAt: datetime.datetime
     savedEvents: 'SavedEventCreateManyNestedWithoutRelationsInput'
+    notifications: 'NotificationCreateManyNestedWithoutRelationsInput'
 
 
 class UserCreateInput(UserOptionalCreateInput):
@@ -1207,6 +1251,7 @@ class UserUpdateInput(TypedDict, total=False):
     passwordHash: _str
     createdAt: datetime.datetime
     savedEvents: 'SavedEventUpdateManyWithoutRelationsInput'
+    notifications: 'NotificationUpdateManyWithoutRelationsInput'
 
 
 class UserUpdateManyMutationInput(TypedDict, total=False):
@@ -1327,6 +1372,7 @@ class UserListRelationFilter(TypedDict, total=False):
 class UserInclude(TypedDict, total=False):
     """User relational arguments"""
     savedEvents: Union[bool, 'FindManySavedEventArgsFromUser']
+    notifications: Union[bool, 'FindManyNotificationArgsFromUser']
 
 
     
@@ -1334,21 +1380,25 @@ class UserInclude(TypedDict, total=False):
 class UserIncludeFromUser(TypedDict, total=False):
     """Relational arguments for User"""
     savedEvents: Union[bool, 'FindManySavedEventArgsFromUserRecursive1']
+    notifications: Union[bool, 'FindManyNotificationArgsFromUserRecursive1']
 
 
 class UserIncludeFromUserRecursive1(TypedDict, total=False):
     """Relational arguments for User"""
     savedEvents: Union[bool, 'FindManySavedEventArgsFromUserRecursive2']
+    notifications: Union[bool, 'FindManyNotificationArgsFromUserRecursive2']
 
 
 class UserIncludeFromUserRecursive2(TypedDict, total=False):
     """Relational arguments for User"""
     savedEvents: Union[bool, 'FindManySavedEventArgsFromUserRecursive3']
+    notifications: Union[bool, 'FindManyNotificationArgsFromUserRecursive3']
 
 
 class UserIncludeFromUserRecursive3(TypedDict, total=False):
     """Relational arguments for User"""
     savedEvents: Union[bool, 'FindManySavedEventArgsFromUserRecursive4']
+    notifications: Union[bool, 'FindManyNotificationArgsFromUserRecursive4']
 
 
 class UserIncludeFromUserRecursive4(TypedDict, total=False):
@@ -1757,6 +1807,7 @@ class EventIncludeFromUser(TypedDict, total=False):
     source: Union[bool, 'EventSourceArgsFromUserRecursive1']
     tags: Union[bool, 'FindManyTagArgsFromUserRecursive1']
     savedBy: Union[bool, 'FindManySavedEventArgsFromUserRecursive1']
+    notifications: Union[bool, 'FindManyNotificationArgsFromUserRecursive1']
 
 
 class EventIncludeFromUserRecursive1(TypedDict, total=False):
@@ -1765,6 +1816,7 @@ class EventIncludeFromUserRecursive1(TypedDict, total=False):
     source: Union[bool, 'EventSourceArgsFromUserRecursive2']
     tags: Union[bool, 'FindManyTagArgsFromUserRecursive2']
     savedBy: Union[bool, 'FindManySavedEventArgsFromUserRecursive2']
+    notifications: Union[bool, 'FindManyNotificationArgsFromUserRecursive2']
 
 
 class EventIncludeFromUserRecursive2(TypedDict, total=False):
@@ -1773,6 +1825,7 @@ class EventIncludeFromUserRecursive2(TypedDict, total=False):
     source: Union[bool, 'EventSourceArgsFromUserRecursive3']
     tags: Union[bool, 'FindManyTagArgsFromUserRecursive3']
     savedBy: Union[bool, 'FindManySavedEventArgsFromUserRecursive3']
+    notifications: Union[bool, 'FindManyNotificationArgsFromUserRecursive3']
 
 
 class EventIncludeFromUserRecursive3(TypedDict, total=False):
@@ -1781,6 +1834,7 @@ class EventIncludeFromUserRecursive3(TypedDict, total=False):
     source: Union[bool, 'EventSourceArgsFromUserRecursive4']
     tags: Union[bool, 'FindManyTagArgsFromUserRecursive4']
     savedBy: Union[bool, 'FindManySavedEventArgsFromUserRecursive4']
+    notifications: Union[bool, 'FindManyNotificationArgsFromUserRecursive4']
 
 
 class EventIncludeFromUserRecursive4(TypedDict, total=False):
@@ -1975,6 +2029,115 @@ class FindManySavedEventArgsFromUserRecursive4(TypedDict, total=False):
     cursor: 'SavedEventWhereUniqueInput'
     distinct: List['SavedEventScalarFieldKeys']
     
+    
+
+class NotificationIncludeFromUser(TypedDict, total=False):
+    """Relational arguments for User"""
+    user: Union[bool, 'UserArgsFromUserRecursive1']
+    event: Union[bool, 'EventArgsFromUserRecursive1']
+
+
+class NotificationIncludeFromUserRecursive1(TypedDict, total=False):
+    """Relational arguments for User"""
+    user: Union[bool, 'UserArgsFromUserRecursive2']
+    event: Union[bool, 'EventArgsFromUserRecursive2']
+
+
+class NotificationIncludeFromUserRecursive2(TypedDict, total=False):
+    """Relational arguments for User"""
+    user: Union[bool, 'UserArgsFromUserRecursive3']
+    event: Union[bool, 'EventArgsFromUserRecursive3']
+
+
+class NotificationIncludeFromUserRecursive3(TypedDict, total=False):
+    """Relational arguments for User"""
+    user: Union[bool, 'UserArgsFromUserRecursive4']
+    event: Union[bool, 'EventArgsFromUserRecursive4']
+
+
+class NotificationIncludeFromUserRecursive4(TypedDict, total=False):
+    """Relational arguments for User"""
+
+    
+
+class NotificationArgsFromUser(TypedDict, total=False):
+    """Arguments for User"""
+    include: 'NotificationIncludeFromNotificationRecursive1'
+
+
+class NotificationArgsFromUserRecursive1(TypedDict, total=False):
+    """Arguments for User"""
+    include: 'NotificationIncludeFromNotificationRecursive2'
+
+
+class NotificationArgsFromUserRecursive2(TypedDict, total=False):
+    """Arguments for User"""
+    include: 'NotificationIncludeFromNotificationRecursive3'
+
+
+class NotificationArgsFromUserRecursive3(TypedDict, total=False):
+    """Arguments for User"""
+    include: 'NotificationIncludeFromNotificationRecursive4'
+
+
+class NotificationArgsFromUserRecursive4(TypedDict, total=False):
+    """Arguments for User"""
+    
+    
+
+class FindManyNotificationArgsFromUser(TypedDict, total=False):
+    """Arguments for User"""
+    take: int
+    skip: int
+    order_by: Union['NotificationOrderByInput', List['NotificationOrderByInput']]
+    where: 'NotificationWhereInput'
+    cursor: 'NotificationWhereUniqueInput'
+    distinct: List['NotificationScalarFieldKeys']
+    include: 'NotificationIncludeFromNotificationRecursive1'
+
+
+class FindManyNotificationArgsFromUserRecursive1(TypedDict, total=False):
+    """Arguments for User"""
+    take: int
+    skip: int
+    order_by: Union['NotificationOrderByInput', List['NotificationOrderByInput']]
+    where: 'NotificationWhereInput'
+    cursor: 'NotificationWhereUniqueInput'
+    distinct: List['NotificationScalarFieldKeys']
+    include: 'NotificationIncludeFromNotificationRecursive2'
+
+
+class FindManyNotificationArgsFromUserRecursive2(TypedDict, total=False):
+    """Arguments for User"""
+    take: int
+    skip: int
+    order_by: Union['NotificationOrderByInput', List['NotificationOrderByInput']]
+    where: 'NotificationWhereInput'
+    cursor: 'NotificationWhereUniqueInput'
+    distinct: List['NotificationScalarFieldKeys']
+    include: 'NotificationIncludeFromNotificationRecursive3'
+
+
+class FindManyNotificationArgsFromUserRecursive3(TypedDict, total=False):
+    """Arguments for User"""
+    take: int
+    skip: int
+    order_by: Union['NotificationOrderByInput', List['NotificationOrderByInput']]
+    where: 'NotificationWhereInput'
+    cursor: 'NotificationWhereUniqueInput'
+    distinct: List['NotificationScalarFieldKeys']
+    include: 'NotificationIncludeFromNotificationRecursive4'
+
+
+class FindManyNotificationArgsFromUserRecursive4(TypedDict, total=False):
+    """Arguments for User"""
+    take: int
+    skip: int
+    order_by: Union['NotificationOrderByInput', List['NotificationOrderByInput']]
+    where: 'NotificationWhereInput'
+    cursor: 'NotificationWhereUniqueInput'
+    distinct: List['NotificationScalarFieldKeys']
+    
 
 
 FindManyUserArgs = FindManyUserArgsFromUser
@@ -1991,6 +2154,7 @@ class UserWhereInput(TypedDict, total=False):
     passwordHash: Union[_str, 'types.StringFilter']
     createdAt: Union[datetime.datetime, 'types.DateTimeFilter']
     savedEvents: 'SavedEventListRelationFilter'
+    notifications: 'NotificationListRelationFilter'
 
     # should be noted that AND and NOT should be Union['UserWhereInputRecursive1', List['UserWhereInputRecursive1']]
     # but this causes mypy to hang :/
@@ -2007,6 +2171,7 @@ class UserWhereInputRecursive1(TypedDict, total=False):
     passwordHash: Union[_str, 'types.StringFilter']
     createdAt: Union[datetime.datetime, 'types.DateTimeFilter']
     savedEvents: 'SavedEventListRelationFilter'
+    notifications: 'NotificationListRelationFilter'
 
     # should be noted that AND and NOT should be Union['UserWhereInputRecursive2', List['UserWhereInputRecursive2']]
     # but this causes mypy to hang :/
@@ -2023,6 +2188,7 @@ class UserWhereInputRecursive2(TypedDict, total=False):
     passwordHash: Union[_str, 'types.StringFilter']
     createdAt: Union[datetime.datetime, 'types.DateTimeFilter']
     savedEvents: 'SavedEventListRelationFilter'
+    notifications: 'NotificationListRelationFilter'
 
     # should be noted that AND and NOT should be Union['UserWhereInputRecursive3', List['UserWhereInputRecursive3']]
     # but this causes mypy to hang :/
@@ -2039,6 +2205,7 @@ class UserWhereInputRecursive3(TypedDict, total=False):
     passwordHash: Union[_str, 'types.StringFilter']
     createdAt: Union[datetime.datetime, 'types.DateTimeFilter']
     savedEvents: 'SavedEventListRelationFilter'
+    notifications: 'NotificationListRelationFilter'
 
     # should be noted that AND and NOT should be Union['UserWhereInputRecursive4', List['UserWhereInputRecursive4']]
     # but this causes mypy to hang :/
@@ -2055,6 +2222,7 @@ class UserWhereInputRecursive4(TypedDict, total=False):
     passwordHash: Union[_str, 'types.StringFilter']
     createdAt: Union[datetime.datetime, 'types.DateTimeFilter']
     savedEvents: 'SavedEventListRelationFilter'
+    notifications: 'NotificationListRelationFilter'
 
 
 
@@ -2222,6 +2390,7 @@ UserKeys = Literal[
     'passwordHash',
     'createdAt',
     'savedEvents',
+    'notifications',
 ]
 UserScalarFieldKeys = Literal[
     'id',
@@ -2234,6 +2403,7 @@ UserScalarFieldKeysT = TypeVar('UserScalarFieldKeysT', bound=UserScalarFieldKeys
 
 UserRelationalFieldKeys = Literal[
         'savedEvents',
+        'notifications',
     ]
 
 # Venue types
@@ -2476,21 +2646,25 @@ class VenueInclude(TypedDict, total=False):
 class UserIncludeFromVenue(TypedDict, total=False):
     """Relational arguments for Venue"""
     savedEvents: Union[bool, 'FindManySavedEventArgsFromVenueRecursive1']
+    notifications: Union[bool, 'FindManyNotificationArgsFromVenueRecursive1']
 
 
 class UserIncludeFromVenueRecursive1(TypedDict, total=False):
     """Relational arguments for Venue"""
     savedEvents: Union[bool, 'FindManySavedEventArgsFromVenueRecursive2']
+    notifications: Union[bool, 'FindManyNotificationArgsFromVenueRecursive2']
 
 
 class UserIncludeFromVenueRecursive2(TypedDict, total=False):
     """Relational arguments for Venue"""
     savedEvents: Union[bool, 'FindManySavedEventArgsFromVenueRecursive3']
+    notifications: Union[bool, 'FindManyNotificationArgsFromVenueRecursive3']
 
 
 class UserIncludeFromVenueRecursive3(TypedDict, total=False):
     """Relational arguments for Venue"""
     savedEvents: Union[bool, 'FindManySavedEventArgsFromVenueRecursive4']
+    notifications: Union[bool, 'FindManyNotificationArgsFromVenueRecursive4']
 
 
 class UserIncludeFromVenueRecursive4(TypedDict, total=False):
@@ -2899,6 +3073,7 @@ class EventIncludeFromVenue(TypedDict, total=False):
     source: Union[bool, 'EventSourceArgsFromVenueRecursive1']
     tags: Union[bool, 'FindManyTagArgsFromVenueRecursive1']
     savedBy: Union[bool, 'FindManySavedEventArgsFromVenueRecursive1']
+    notifications: Union[bool, 'FindManyNotificationArgsFromVenueRecursive1']
 
 
 class EventIncludeFromVenueRecursive1(TypedDict, total=False):
@@ -2907,6 +3082,7 @@ class EventIncludeFromVenueRecursive1(TypedDict, total=False):
     source: Union[bool, 'EventSourceArgsFromVenueRecursive2']
     tags: Union[bool, 'FindManyTagArgsFromVenueRecursive2']
     savedBy: Union[bool, 'FindManySavedEventArgsFromVenueRecursive2']
+    notifications: Union[bool, 'FindManyNotificationArgsFromVenueRecursive2']
 
 
 class EventIncludeFromVenueRecursive2(TypedDict, total=False):
@@ -2915,6 +3091,7 @@ class EventIncludeFromVenueRecursive2(TypedDict, total=False):
     source: Union[bool, 'EventSourceArgsFromVenueRecursive3']
     tags: Union[bool, 'FindManyTagArgsFromVenueRecursive3']
     savedBy: Union[bool, 'FindManySavedEventArgsFromVenueRecursive3']
+    notifications: Union[bool, 'FindManyNotificationArgsFromVenueRecursive3']
 
 
 class EventIncludeFromVenueRecursive3(TypedDict, total=False):
@@ -2923,6 +3100,7 @@ class EventIncludeFromVenueRecursive3(TypedDict, total=False):
     source: Union[bool, 'EventSourceArgsFromVenueRecursive4']
     tags: Union[bool, 'FindManyTagArgsFromVenueRecursive4']
     savedBy: Union[bool, 'FindManySavedEventArgsFromVenueRecursive4']
+    notifications: Union[bool, 'FindManyNotificationArgsFromVenueRecursive4']
 
 
 class EventIncludeFromVenueRecursive4(TypedDict, total=False):
@@ -3116,6 +3294,115 @@ class FindManySavedEventArgsFromVenueRecursive4(TypedDict, total=False):
     where: 'SavedEventWhereInput'
     cursor: 'SavedEventWhereUniqueInput'
     distinct: List['SavedEventScalarFieldKeys']
+    
+    
+
+class NotificationIncludeFromVenue(TypedDict, total=False):
+    """Relational arguments for Venue"""
+    user: Union[bool, 'UserArgsFromVenueRecursive1']
+    event: Union[bool, 'EventArgsFromVenueRecursive1']
+
+
+class NotificationIncludeFromVenueRecursive1(TypedDict, total=False):
+    """Relational arguments for Venue"""
+    user: Union[bool, 'UserArgsFromVenueRecursive2']
+    event: Union[bool, 'EventArgsFromVenueRecursive2']
+
+
+class NotificationIncludeFromVenueRecursive2(TypedDict, total=False):
+    """Relational arguments for Venue"""
+    user: Union[bool, 'UserArgsFromVenueRecursive3']
+    event: Union[bool, 'EventArgsFromVenueRecursive3']
+
+
+class NotificationIncludeFromVenueRecursive3(TypedDict, total=False):
+    """Relational arguments for Venue"""
+    user: Union[bool, 'UserArgsFromVenueRecursive4']
+    event: Union[bool, 'EventArgsFromVenueRecursive4']
+
+
+class NotificationIncludeFromVenueRecursive4(TypedDict, total=False):
+    """Relational arguments for Venue"""
+
+    
+
+class NotificationArgsFromVenue(TypedDict, total=False):
+    """Arguments for Venue"""
+    include: 'NotificationIncludeFromNotificationRecursive1'
+
+
+class NotificationArgsFromVenueRecursive1(TypedDict, total=False):
+    """Arguments for Venue"""
+    include: 'NotificationIncludeFromNotificationRecursive2'
+
+
+class NotificationArgsFromVenueRecursive2(TypedDict, total=False):
+    """Arguments for Venue"""
+    include: 'NotificationIncludeFromNotificationRecursive3'
+
+
+class NotificationArgsFromVenueRecursive3(TypedDict, total=False):
+    """Arguments for Venue"""
+    include: 'NotificationIncludeFromNotificationRecursive4'
+
+
+class NotificationArgsFromVenueRecursive4(TypedDict, total=False):
+    """Arguments for Venue"""
+    
+    
+
+class FindManyNotificationArgsFromVenue(TypedDict, total=False):
+    """Arguments for Venue"""
+    take: int
+    skip: int
+    order_by: Union['NotificationOrderByInput', List['NotificationOrderByInput']]
+    where: 'NotificationWhereInput'
+    cursor: 'NotificationWhereUniqueInput'
+    distinct: List['NotificationScalarFieldKeys']
+    include: 'NotificationIncludeFromNotificationRecursive1'
+
+
+class FindManyNotificationArgsFromVenueRecursive1(TypedDict, total=False):
+    """Arguments for Venue"""
+    take: int
+    skip: int
+    order_by: Union['NotificationOrderByInput', List['NotificationOrderByInput']]
+    where: 'NotificationWhereInput'
+    cursor: 'NotificationWhereUniqueInput'
+    distinct: List['NotificationScalarFieldKeys']
+    include: 'NotificationIncludeFromNotificationRecursive2'
+
+
+class FindManyNotificationArgsFromVenueRecursive2(TypedDict, total=False):
+    """Arguments for Venue"""
+    take: int
+    skip: int
+    order_by: Union['NotificationOrderByInput', List['NotificationOrderByInput']]
+    where: 'NotificationWhereInput'
+    cursor: 'NotificationWhereUniqueInput'
+    distinct: List['NotificationScalarFieldKeys']
+    include: 'NotificationIncludeFromNotificationRecursive3'
+
+
+class FindManyNotificationArgsFromVenueRecursive3(TypedDict, total=False):
+    """Arguments for Venue"""
+    take: int
+    skip: int
+    order_by: Union['NotificationOrderByInput', List['NotificationOrderByInput']]
+    where: 'NotificationWhereInput'
+    cursor: 'NotificationWhereUniqueInput'
+    distinct: List['NotificationScalarFieldKeys']
+    include: 'NotificationIncludeFromNotificationRecursive4'
+
+
+class FindManyNotificationArgsFromVenueRecursive4(TypedDict, total=False):
+    """Arguments for Venue"""
+    take: int
+    skip: int
+    order_by: Union['NotificationOrderByInput', List['NotificationOrderByInput']]
+    where: 'NotificationWhereInput'
+    cursor: 'NotificationWhereUniqueInput'
+    distinct: List['NotificationScalarFieldKeys']
     
 
 
@@ -3642,21 +3929,25 @@ class EventSourceInclude(TypedDict, total=False):
 class UserIncludeFromEventSource(TypedDict, total=False):
     """Relational arguments for EventSource"""
     savedEvents: Union[bool, 'FindManySavedEventArgsFromEventSourceRecursive1']
+    notifications: Union[bool, 'FindManyNotificationArgsFromEventSourceRecursive1']
 
 
 class UserIncludeFromEventSourceRecursive1(TypedDict, total=False):
     """Relational arguments for EventSource"""
     savedEvents: Union[bool, 'FindManySavedEventArgsFromEventSourceRecursive2']
+    notifications: Union[bool, 'FindManyNotificationArgsFromEventSourceRecursive2']
 
 
 class UserIncludeFromEventSourceRecursive2(TypedDict, total=False):
     """Relational arguments for EventSource"""
     savedEvents: Union[bool, 'FindManySavedEventArgsFromEventSourceRecursive3']
+    notifications: Union[bool, 'FindManyNotificationArgsFromEventSourceRecursive3']
 
 
 class UserIncludeFromEventSourceRecursive3(TypedDict, total=False):
     """Relational arguments for EventSource"""
     savedEvents: Union[bool, 'FindManySavedEventArgsFromEventSourceRecursive4']
+    notifications: Union[bool, 'FindManyNotificationArgsFromEventSourceRecursive4']
 
 
 class UserIncludeFromEventSourceRecursive4(TypedDict, total=False):
@@ -4065,6 +4356,7 @@ class EventIncludeFromEventSource(TypedDict, total=False):
     source: Union[bool, 'EventSourceArgsFromEventSourceRecursive1']
     tags: Union[bool, 'FindManyTagArgsFromEventSourceRecursive1']
     savedBy: Union[bool, 'FindManySavedEventArgsFromEventSourceRecursive1']
+    notifications: Union[bool, 'FindManyNotificationArgsFromEventSourceRecursive1']
 
 
 class EventIncludeFromEventSourceRecursive1(TypedDict, total=False):
@@ -4073,6 +4365,7 @@ class EventIncludeFromEventSourceRecursive1(TypedDict, total=False):
     source: Union[bool, 'EventSourceArgsFromEventSourceRecursive2']
     tags: Union[bool, 'FindManyTagArgsFromEventSourceRecursive2']
     savedBy: Union[bool, 'FindManySavedEventArgsFromEventSourceRecursive2']
+    notifications: Union[bool, 'FindManyNotificationArgsFromEventSourceRecursive2']
 
 
 class EventIncludeFromEventSourceRecursive2(TypedDict, total=False):
@@ -4081,6 +4374,7 @@ class EventIncludeFromEventSourceRecursive2(TypedDict, total=False):
     source: Union[bool, 'EventSourceArgsFromEventSourceRecursive3']
     tags: Union[bool, 'FindManyTagArgsFromEventSourceRecursive3']
     savedBy: Union[bool, 'FindManySavedEventArgsFromEventSourceRecursive3']
+    notifications: Union[bool, 'FindManyNotificationArgsFromEventSourceRecursive3']
 
 
 class EventIncludeFromEventSourceRecursive3(TypedDict, total=False):
@@ -4089,6 +4383,7 @@ class EventIncludeFromEventSourceRecursive3(TypedDict, total=False):
     source: Union[bool, 'EventSourceArgsFromEventSourceRecursive4']
     tags: Union[bool, 'FindManyTagArgsFromEventSourceRecursive4']
     savedBy: Union[bool, 'FindManySavedEventArgsFromEventSourceRecursive4']
+    notifications: Union[bool, 'FindManyNotificationArgsFromEventSourceRecursive4']
 
 
 class EventIncludeFromEventSourceRecursive4(TypedDict, total=False):
@@ -4282,6 +4577,115 @@ class FindManySavedEventArgsFromEventSourceRecursive4(TypedDict, total=False):
     where: 'SavedEventWhereInput'
     cursor: 'SavedEventWhereUniqueInput'
     distinct: List['SavedEventScalarFieldKeys']
+    
+    
+
+class NotificationIncludeFromEventSource(TypedDict, total=False):
+    """Relational arguments for EventSource"""
+    user: Union[bool, 'UserArgsFromEventSourceRecursive1']
+    event: Union[bool, 'EventArgsFromEventSourceRecursive1']
+
+
+class NotificationIncludeFromEventSourceRecursive1(TypedDict, total=False):
+    """Relational arguments for EventSource"""
+    user: Union[bool, 'UserArgsFromEventSourceRecursive2']
+    event: Union[bool, 'EventArgsFromEventSourceRecursive2']
+
+
+class NotificationIncludeFromEventSourceRecursive2(TypedDict, total=False):
+    """Relational arguments for EventSource"""
+    user: Union[bool, 'UserArgsFromEventSourceRecursive3']
+    event: Union[bool, 'EventArgsFromEventSourceRecursive3']
+
+
+class NotificationIncludeFromEventSourceRecursive3(TypedDict, total=False):
+    """Relational arguments for EventSource"""
+    user: Union[bool, 'UserArgsFromEventSourceRecursive4']
+    event: Union[bool, 'EventArgsFromEventSourceRecursive4']
+
+
+class NotificationIncludeFromEventSourceRecursive4(TypedDict, total=False):
+    """Relational arguments for EventSource"""
+
+    
+
+class NotificationArgsFromEventSource(TypedDict, total=False):
+    """Arguments for EventSource"""
+    include: 'NotificationIncludeFromNotificationRecursive1'
+
+
+class NotificationArgsFromEventSourceRecursive1(TypedDict, total=False):
+    """Arguments for EventSource"""
+    include: 'NotificationIncludeFromNotificationRecursive2'
+
+
+class NotificationArgsFromEventSourceRecursive2(TypedDict, total=False):
+    """Arguments for EventSource"""
+    include: 'NotificationIncludeFromNotificationRecursive3'
+
+
+class NotificationArgsFromEventSourceRecursive3(TypedDict, total=False):
+    """Arguments for EventSource"""
+    include: 'NotificationIncludeFromNotificationRecursive4'
+
+
+class NotificationArgsFromEventSourceRecursive4(TypedDict, total=False):
+    """Arguments for EventSource"""
+    
+    
+
+class FindManyNotificationArgsFromEventSource(TypedDict, total=False):
+    """Arguments for EventSource"""
+    take: int
+    skip: int
+    order_by: Union['NotificationOrderByInput', List['NotificationOrderByInput']]
+    where: 'NotificationWhereInput'
+    cursor: 'NotificationWhereUniqueInput'
+    distinct: List['NotificationScalarFieldKeys']
+    include: 'NotificationIncludeFromNotificationRecursive1'
+
+
+class FindManyNotificationArgsFromEventSourceRecursive1(TypedDict, total=False):
+    """Arguments for EventSource"""
+    take: int
+    skip: int
+    order_by: Union['NotificationOrderByInput', List['NotificationOrderByInput']]
+    where: 'NotificationWhereInput'
+    cursor: 'NotificationWhereUniqueInput'
+    distinct: List['NotificationScalarFieldKeys']
+    include: 'NotificationIncludeFromNotificationRecursive2'
+
+
+class FindManyNotificationArgsFromEventSourceRecursive2(TypedDict, total=False):
+    """Arguments for EventSource"""
+    take: int
+    skip: int
+    order_by: Union['NotificationOrderByInput', List['NotificationOrderByInput']]
+    where: 'NotificationWhereInput'
+    cursor: 'NotificationWhereUniqueInput'
+    distinct: List['NotificationScalarFieldKeys']
+    include: 'NotificationIncludeFromNotificationRecursive3'
+
+
+class FindManyNotificationArgsFromEventSourceRecursive3(TypedDict, total=False):
+    """Arguments for EventSource"""
+    take: int
+    skip: int
+    order_by: Union['NotificationOrderByInput', List['NotificationOrderByInput']]
+    where: 'NotificationWhereInput'
+    cursor: 'NotificationWhereUniqueInput'
+    distinct: List['NotificationScalarFieldKeys']
+    include: 'NotificationIncludeFromNotificationRecursive4'
+
+
+class FindManyNotificationArgsFromEventSourceRecursive4(TypedDict, total=False):
+    """Arguments for EventSource"""
+    take: int
+    skip: int
+    order_by: Union['NotificationOrderByInput', List['NotificationOrderByInput']]
+    where: 'NotificationWhereInput'
+    cursor: 'NotificationWhereUniqueInput'
+    distinct: List['NotificationScalarFieldKeys']
     
 
 
@@ -4686,21 +5090,25 @@ class TagInclude(TypedDict, total=False):
 class UserIncludeFromTag(TypedDict, total=False):
     """Relational arguments for Tag"""
     savedEvents: Union[bool, 'FindManySavedEventArgsFromTagRecursive1']
+    notifications: Union[bool, 'FindManyNotificationArgsFromTagRecursive1']
 
 
 class UserIncludeFromTagRecursive1(TypedDict, total=False):
     """Relational arguments for Tag"""
     savedEvents: Union[bool, 'FindManySavedEventArgsFromTagRecursive2']
+    notifications: Union[bool, 'FindManyNotificationArgsFromTagRecursive2']
 
 
 class UserIncludeFromTagRecursive2(TypedDict, total=False):
     """Relational arguments for Tag"""
     savedEvents: Union[bool, 'FindManySavedEventArgsFromTagRecursive3']
+    notifications: Union[bool, 'FindManyNotificationArgsFromTagRecursive3']
 
 
 class UserIncludeFromTagRecursive3(TypedDict, total=False):
     """Relational arguments for Tag"""
     savedEvents: Union[bool, 'FindManySavedEventArgsFromTagRecursive4']
+    notifications: Union[bool, 'FindManyNotificationArgsFromTagRecursive4']
 
 
 class UserIncludeFromTagRecursive4(TypedDict, total=False):
@@ -5109,6 +5517,7 @@ class EventIncludeFromTag(TypedDict, total=False):
     source: Union[bool, 'EventSourceArgsFromTagRecursive1']
     tags: Union[bool, 'FindManyTagArgsFromTagRecursive1']
     savedBy: Union[bool, 'FindManySavedEventArgsFromTagRecursive1']
+    notifications: Union[bool, 'FindManyNotificationArgsFromTagRecursive1']
 
 
 class EventIncludeFromTagRecursive1(TypedDict, total=False):
@@ -5117,6 +5526,7 @@ class EventIncludeFromTagRecursive1(TypedDict, total=False):
     source: Union[bool, 'EventSourceArgsFromTagRecursive2']
     tags: Union[bool, 'FindManyTagArgsFromTagRecursive2']
     savedBy: Union[bool, 'FindManySavedEventArgsFromTagRecursive2']
+    notifications: Union[bool, 'FindManyNotificationArgsFromTagRecursive2']
 
 
 class EventIncludeFromTagRecursive2(TypedDict, total=False):
@@ -5125,6 +5535,7 @@ class EventIncludeFromTagRecursive2(TypedDict, total=False):
     source: Union[bool, 'EventSourceArgsFromTagRecursive3']
     tags: Union[bool, 'FindManyTagArgsFromTagRecursive3']
     savedBy: Union[bool, 'FindManySavedEventArgsFromTagRecursive3']
+    notifications: Union[bool, 'FindManyNotificationArgsFromTagRecursive3']
 
 
 class EventIncludeFromTagRecursive3(TypedDict, total=False):
@@ -5133,6 +5544,7 @@ class EventIncludeFromTagRecursive3(TypedDict, total=False):
     source: Union[bool, 'EventSourceArgsFromTagRecursive4']
     tags: Union[bool, 'FindManyTagArgsFromTagRecursive4']
     savedBy: Union[bool, 'FindManySavedEventArgsFromTagRecursive4']
+    notifications: Union[bool, 'FindManyNotificationArgsFromTagRecursive4']
 
 
 class EventIncludeFromTagRecursive4(TypedDict, total=False):
@@ -5326,6 +5738,115 @@ class FindManySavedEventArgsFromTagRecursive4(TypedDict, total=False):
     where: 'SavedEventWhereInput'
     cursor: 'SavedEventWhereUniqueInput'
     distinct: List['SavedEventScalarFieldKeys']
+    
+    
+
+class NotificationIncludeFromTag(TypedDict, total=False):
+    """Relational arguments for Tag"""
+    user: Union[bool, 'UserArgsFromTagRecursive1']
+    event: Union[bool, 'EventArgsFromTagRecursive1']
+
+
+class NotificationIncludeFromTagRecursive1(TypedDict, total=False):
+    """Relational arguments for Tag"""
+    user: Union[bool, 'UserArgsFromTagRecursive2']
+    event: Union[bool, 'EventArgsFromTagRecursive2']
+
+
+class NotificationIncludeFromTagRecursive2(TypedDict, total=False):
+    """Relational arguments for Tag"""
+    user: Union[bool, 'UserArgsFromTagRecursive3']
+    event: Union[bool, 'EventArgsFromTagRecursive3']
+
+
+class NotificationIncludeFromTagRecursive3(TypedDict, total=False):
+    """Relational arguments for Tag"""
+    user: Union[bool, 'UserArgsFromTagRecursive4']
+    event: Union[bool, 'EventArgsFromTagRecursive4']
+
+
+class NotificationIncludeFromTagRecursive4(TypedDict, total=False):
+    """Relational arguments for Tag"""
+
+    
+
+class NotificationArgsFromTag(TypedDict, total=False):
+    """Arguments for Tag"""
+    include: 'NotificationIncludeFromNotificationRecursive1'
+
+
+class NotificationArgsFromTagRecursive1(TypedDict, total=False):
+    """Arguments for Tag"""
+    include: 'NotificationIncludeFromNotificationRecursive2'
+
+
+class NotificationArgsFromTagRecursive2(TypedDict, total=False):
+    """Arguments for Tag"""
+    include: 'NotificationIncludeFromNotificationRecursive3'
+
+
+class NotificationArgsFromTagRecursive3(TypedDict, total=False):
+    """Arguments for Tag"""
+    include: 'NotificationIncludeFromNotificationRecursive4'
+
+
+class NotificationArgsFromTagRecursive4(TypedDict, total=False):
+    """Arguments for Tag"""
+    
+    
+
+class FindManyNotificationArgsFromTag(TypedDict, total=False):
+    """Arguments for Tag"""
+    take: int
+    skip: int
+    order_by: Union['NotificationOrderByInput', List['NotificationOrderByInput']]
+    where: 'NotificationWhereInput'
+    cursor: 'NotificationWhereUniqueInput'
+    distinct: List['NotificationScalarFieldKeys']
+    include: 'NotificationIncludeFromNotificationRecursive1'
+
+
+class FindManyNotificationArgsFromTagRecursive1(TypedDict, total=False):
+    """Arguments for Tag"""
+    take: int
+    skip: int
+    order_by: Union['NotificationOrderByInput', List['NotificationOrderByInput']]
+    where: 'NotificationWhereInput'
+    cursor: 'NotificationWhereUniqueInput'
+    distinct: List['NotificationScalarFieldKeys']
+    include: 'NotificationIncludeFromNotificationRecursive2'
+
+
+class FindManyNotificationArgsFromTagRecursive2(TypedDict, total=False):
+    """Arguments for Tag"""
+    take: int
+    skip: int
+    order_by: Union['NotificationOrderByInput', List['NotificationOrderByInput']]
+    where: 'NotificationWhereInput'
+    cursor: 'NotificationWhereUniqueInput'
+    distinct: List['NotificationScalarFieldKeys']
+    include: 'NotificationIncludeFromNotificationRecursive3'
+
+
+class FindManyNotificationArgsFromTagRecursive3(TypedDict, total=False):
+    """Arguments for Tag"""
+    take: int
+    skip: int
+    order_by: Union['NotificationOrderByInput', List['NotificationOrderByInput']]
+    where: 'NotificationWhereInput'
+    cursor: 'NotificationWhereUniqueInput'
+    distinct: List['NotificationScalarFieldKeys']
+    include: 'NotificationIncludeFromNotificationRecursive4'
+
+
+class FindManyNotificationArgsFromTagRecursive4(TypedDict, total=False):
+    """Arguments for Tag"""
+    take: int
+    skip: int
+    order_by: Union['NotificationOrderByInput', List['NotificationOrderByInput']]
+    where: 'NotificationWhereInput'
+    cursor: 'NotificationWhereUniqueInput'
+    distinct: List['NotificationScalarFieldKeys']
     
 
 
@@ -5554,6 +6075,7 @@ class EventOptionalCreateInput(TypedDict, total=False):
     updatedAt: datetime.datetime
     tags: 'TagCreateManyNestedWithoutRelationsInput'
     savedBy: 'SavedEventCreateManyNestedWithoutRelationsInput'
+    notifications: 'NotificationCreateManyNestedWithoutRelationsInput'
 
 
 class EventCreateInput(EventOptionalCreateInput):
@@ -5637,6 +6159,7 @@ class EventUpdateInput(TypedDict, total=False):
     updatedAt: datetime.datetime
     tags: 'TagUpdateManyWithoutRelationsInput'
     savedBy: 'SavedEventUpdateManyWithoutRelationsInput'
+    notifications: 'NotificationUpdateManyWithoutRelationsInput'
 
 
 class EventUpdateManyMutationInput(TypedDict, total=False):
@@ -5848,6 +6371,7 @@ class EventInclude(TypedDict, total=False):
     source: Union[bool, 'EventSourceArgsFromEvent']
     tags: Union[bool, 'FindManyTagArgsFromEvent']
     savedBy: Union[bool, 'FindManySavedEventArgsFromEvent']
+    notifications: Union[bool, 'FindManyNotificationArgsFromEvent']
 
 
     
@@ -5855,21 +6379,25 @@ class EventInclude(TypedDict, total=False):
 class UserIncludeFromEvent(TypedDict, total=False):
     """Relational arguments for Event"""
     savedEvents: Union[bool, 'FindManySavedEventArgsFromEventRecursive1']
+    notifications: Union[bool, 'FindManyNotificationArgsFromEventRecursive1']
 
 
 class UserIncludeFromEventRecursive1(TypedDict, total=False):
     """Relational arguments for Event"""
     savedEvents: Union[bool, 'FindManySavedEventArgsFromEventRecursive2']
+    notifications: Union[bool, 'FindManyNotificationArgsFromEventRecursive2']
 
 
 class UserIncludeFromEventRecursive2(TypedDict, total=False):
     """Relational arguments for Event"""
     savedEvents: Union[bool, 'FindManySavedEventArgsFromEventRecursive3']
+    notifications: Union[bool, 'FindManyNotificationArgsFromEventRecursive3']
 
 
 class UserIncludeFromEventRecursive3(TypedDict, total=False):
     """Relational arguments for Event"""
     savedEvents: Union[bool, 'FindManySavedEventArgsFromEventRecursive4']
+    notifications: Union[bool, 'FindManyNotificationArgsFromEventRecursive4']
 
 
 class UserIncludeFromEventRecursive4(TypedDict, total=False):
@@ -6278,6 +6806,7 @@ class EventIncludeFromEvent(TypedDict, total=False):
     source: Union[bool, 'EventSourceArgsFromEventRecursive1']
     tags: Union[bool, 'FindManyTagArgsFromEventRecursive1']
     savedBy: Union[bool, 'FindManySavedEventArgsFromEventRecursive1']
+    notifications: Union[bool, 'FindManyNotificationArgsFromEventRecursive1']
 
 
 class EventIncludeFromEventRecursive1(TypedDict, total=False):
@@ -6286,6 +6815,7 @@ class EventIncludeFromEventRecursive1(TypedDict, total=False):
     source: Union[bool, 'EventSourceArgsFromEventRecursive2']
     tags: Union[bool, 'FindManyTagArgsFromEventRecursive2']
     savedBy: Union[bool, 'FindManySavedEventArgsFromEventRecursive2']
+    notifications: Union[bool, 'FindManyNotificationArgsFromEventRecursive2']
 
 
 class EventIncludeFromEventRecursive2(TypedDict, total=False):
@@ -6294,6 +6824,7 @@ class EventIncludeFromEventRecursive2(TypedDict, total=False):
     source: Union[bool, 'EventSourceArgsFromEventRecursive3']
     tags: Union[bool, 'FindManyTagArgsFromEventRecursive3']
     savedBy: Union[bool, 'FindManySavedEventArgsFromEventRecursive3']
+    notifications: Union[bool, 'FindManyNotificationArgsFromEventRecursive3']
 
 
 class EventIncludeFromEventRecursive3(TypedDict, total=False):
@@ -6302,6 +6833,7 @@ class EventIncludeFromEventRecursive3(TypedDict, total=False):
     source: Union[bool, 'EventSourceArgsFromEventRecursive4']
     tags: Union[bool, 'FindManyTagArgsFromEventRecursive4']
     savedBy: Union[bool, 'FindManySavedEventArgsFromEventRecursive4']
+    notifications: Union[bool, 'FindManyNotificationArgsFromEventRecursive4']
 
 
 class EventIncludeFromEventRecursive4(TypedDict, total=False):
@@ -6496,6 +7028,115 @@ class FindManySavedEventArgsFromEventRecursive4(TypedDict, total=False):
     cursor: 'SavedEventWhereUniqueInput'
     distinct: List['SavedEventScalarFieldKeys']
     
+    
+
+class NotificationIncludeFromEvent(TypedDict, total=False):
+    """Relational arguments for Event"""
+    user: Union[bool, 'UserArgsFromEventRecursive1']
+    event: Union[bool, 'EventArgsFromEventRecursive1']
+
+
+class NotificationIncludeFromEventRecursive1(TypedDict, total=False):
+    """Relational arguments for Event"""
+    user: Union[bool, 'UserArgsFromEventRecursive2']
+    event: Union[bool, 'EventArgsFromEventRecursive2']
+
+
+class NotificationIncludeFromEventRecursive2(TypedDict, total=False):
+    """Relational arguments for Event"""
+    user: Union[bool, 'UserArgsFromEventRecursive3']
+    event: Union[bool, 'EventArgsFromEventRecursive3']
+
+
+class NotificationIncludeFromEventRecursive3(TypedDict, total=False):
+    """Relational arguments for Event"""
+    user: Union[bool, 'UserArgsFromEventRecursive4']
+    event: Union[bool, 'EventArgsFromEventRecursive4']
+
+
+class NotificationIncludeFromEventRecursive4(TypedDict, total=False):
+    """Relational arguments for Event"""
+
+    
+
+class NotificationArgsFromEvent(TypedDict, total=False):
+    """Arguments for Event"""
+    include: 'NotificationIncludeFromNotificationRecursive1'
+
+
+class NotificationArgsFromEventRecursive1(TypedDict, total=False):
+    """Arguments for Event"""
+    include: 'NotificationIncludeFromNotificationRecursive2'
+
+
+class NotificationArgsFromEventRecursive2(TypedDict, total=False):
+    """Arguments for Event"""
+    include: 'NotificationIncludeFromNotificationRecursive3'
+
+
+class NotificationArgsFromEventRecursive3(TypedDict, total=False):
+    """Arguments for Event"""
+    include: 'NotificationIncludeFromNotificationRecursive4'
+
+
+class NotificationArgsFromEventRecursive4(TypedDict, total=False):
+    """Arguments for Event"""
+    
+    
+
+class FindManyNotificationArgsFromEvent(TypedDict, total=False):
+    """Arguments for Event"""
+    take: int
+    skip: int
+    order_by: Union['NotificationOrderByInput', List['NotificationOrderByInput']]
+    where: 'NotificationWhereInput'
+    cursor: 'NotificationWhereUniqueInput'
+    distinct: List['NotificationScalarFieldKeys']
+    include: 'NotificationIncludeFromNotificationRecursive1'
+
+
+class FindManyNotificationArgsFromEventRecursive1(TypedDict, total=False):
+    """Arguments for Event"""
+    take: int
+    skip: int
+    order_by: Union['NotificationOrderByInput', List['NotificationOrderByInput']]
+    where: 'NotificationWhereInput'
+    cursor: 'NotificationWhereUniqueInput'
+    distinct: List['NotificationScalarFieldKeys']
+    include: 'NotificationIncludeFromNotificationRecursive2'
+
+
+class FindManyNotificationArgsFromEventRecursive2(TypedDict, total=False):
+    """Arguments for Event"""
+    take: int
+    skip: int
+    order_by: Union['NotificationOrderByInput', List['NotificationOrderByInput']]
+    where: 'NotificationWhereInput'
+    cursor: 'NotificationWhereUniqueInput'
+    distinct: List['NotificationScalarFieldKeys']
+    include: 'NotificationIncludeFromNotificationRecursive3'
+
+
+class FindManyNotificationArgsFromEventRecursive3(TypedDict, total=False):
+    """Arguments for Event"""
+    take: int
+    skip: int
+    order_by: Union['NotificationOrderByInput', List['NotificationOrderByInput']]
+    where: 'NotificationWhereInput'
+    cursor: 'NotificationWhereUniqueInput'
+    distinct: List['NotificationScalarFieldKeys']
+    include: 'NotificationIncludeFromNotificationRecursive4'
+
+
+class FindManyNotificationArgsFromEventRecursive4(TypedDict, total=False):
+    """Arguments for Event"""
+    take: int
+    skip: int
+    order_by: Union['NotificationOrderByInput', List['NotificationOrderByInput']]
+    where: 'NotificationWhereInput'
+    cursor: 'NotificationWhereUniqueInput'
+    distinct: List['NotificationScalarFieldKeys']
+    
 
 
 FindManyEventArgs = FindManyEventArgsFromEvent
@@ -6524,6 +7165,7 @@ class EventWhereInput(TypedDict, total=False):
     updatedAt: Union[datetime.datetime, 'types.DateTimeFilter']
     tags: 'TagListRelationFilter'
     savedBy: 'SavedEventListRelationFilter'
+    notifications: 'NotificationListRelationFilter'
 
     # should be noted that AND and NOT should be Union['EventWhereInputRecursive1', List['EventWhereInputRecursive1']]
     # but this causes mypy to hang :/
@@ -6552,6 +7194,7 @@ class EventWhereInputRecursive1(TypedDict, total=False):
     updatedAt: Union[datetime.datetime, 'types.DateTimeFilter']
     tags: 'TagListRelationFilter'
     savedBy: 'SavedEventListRelationFilter'
+    notifications: 'NotificationListRelationFilter'
 
     # should be noted that AND and NOT should be Union['EventWhereInputRecursive2', List['EventWhereInputRecursive2']]
     # but this causes mypy to hang :/
@@ -6580,6 +7223,7 @@ class EventWhereInputRecursive2(TypedDict, total=False):
     updatedAt: Union[datetime.datetime, 'types.DateTimeFilter']
     tags: 'TagListRelationFilter'
     savedBy: 'SavedEventListRelationFilter'
+    notifications: 'NotificationListRelationFilter'
 
     # should be noted that AND and NOT should be Union['EventWhereInputRecursive3', List['EventWhereInputRecursive3']]
     # but this causes mypy to hang :/
@@ -6608,6 +7252,7 @@ class EventWhereInputRecursive3(TypedDict, total=False):
     updatedAt: Union[datetime.datetime, 'types.DateTimeFilter']
     tags: 'TagListRelationFilter'
     savedBy: 'SavedEventListRelationFilter'
+    notifications: 'NotificationListRelationFilter'
 
     # should be noted that AND and NOT should be Union['EventWhereInputRecursive4', List['EventWhereInputRecursive4']]
     # but this causes mypy to hang :/
@@ -6636,6 +7281,7 @@ class EventWhereInputRecursive4(TypedDict, total=False):
     updatedAt: Union[datetime.datetime, 'types.DateTimeFilter']
     tags: 'TagListRelationFilter'
     savedBy: 'SavedEventListRelationFilter'
+    notifications: 'NotificationListRelationFilter'
 
 
 
@@ -6920,6 +7566,7 @@ EventKeys = Literal[
     'updatedAt',
     'tags',
     'savedBy',
+    'notifications',
 ]
 EventScalarFieldKeys = Literal[
     'id',
@@ -6944,6 +7591,7 @@ EventRelationalFieldKeys = Literal[
         'source',
         'tags',
         'savedBy',
+        'notifications',
     ]
 
 # SavedEvent types
@@ -7140,21 +7788,25 @@ class SavedEventInclude(TypedDict, total=False):
 class UserIncludeFromSavedEvent(TypedDict, total=False):
     """Relational arguments for SavedEvent"""
     savedEvents: Union[bool, 'FindManySavedEventArgsFromSavedEventRecursive1']
+    notifications: Union[bool, 'FindManyNotificationArgsFromSavedEventRecursive1']
 
 
 class UserIncludeFromSavedEventRecursive1(TypedDict, total=False):
     """Relational arguments for SavedEvent"""
     savedEvents: Union[bool, 'FindManySavedEventArgsFromSavedEventRecursive2']
+    notifications: Union[bool, 'FindManyNotificationArgsFromSavedEventRecursive2']
 
 
 class UserIncludeFromSavedEventRecursive2(TypedDict, total=False):
     """Relational arguments for SavedEvent"""
     savedEvents: Union[bool, 'FindManySavedEventArgsFromSavedEventRecursive3']
+    notifications: Union[bool, 'FindManyNotificationArgsFromSavedEventRecursive3']
 
 
 class UserIncludeFromSavedEventRecursive3(TypedDict, total=False):
     """Relational arguments for SavedEvent"""
     savedEvents: Union[bool, 'FindManySavedEventArgsFromSavedEventRecursive4']
+    notifications: Union[bool, 'FindManyNotificationArgsFromSavedEventRecursive4']
 
 
 class UserIncludeFromSavedEventRecursive4(TypedDict, total=False):
@@ -7563,6 +8215,7 @@ class EventIncludeFromSavedEvent(TypedDict, total=False):
     source: Union[bool, 'EventSourceArgsFromSavedEventRecursive1']
     tags: Union[bool, 'FindManyTagArgsFromSavedEventRecursive1']
     savedBy: Union[bool, 'FindManySavedEventArgsFromSavedEventRecursive1']
+    notifications: Union[bool, 'FindManyNotificationArgsFromSavedEventRecursive1']
 
 
 class EventIncludeFromSavedEventRecursive1(TypedDict, total=False):
@@ -7571,6 +8224,7 @@ class EventIncludeFromSavedEventRecursive1(TypedDict, total=False):
     source: Union[bool, 'EventSourceArgsFromSavedEventRecursive2']
     tags: Union[bool, 'FindManyTagArgsFromSavedEventRecursive2']
     savedBy: Union[bool, 'FindManySavedEventArgsFromSavedEventRecursive2']
+    notifications: Union[bool, 'FindManyNotificationArgsFromSavedEventRecursive2']
 
 
 class EventIncludeFromSavedEventRecursive2(TypedDict, total=False):
@@ -7579,6 +8233,7 @@ class EventIncludeFromSavedEventRecursive2(TypedDict, total=False):
     source: Union[bool, 'EventSourceArgsFromSavedEventRecursive3']
     tags: Union[bool, 'FindManyTagArgsFromSavedEventRecursive3']
     savedBy: Union[bool, 'FindManySavedEventArgsFromSavedEventRecursive3']
+    notifications: Union[bool, 'FindManyNotificationArgsFromSavedEventRecursive3']
 
 
 class EventIncludeFromSavedEventRecursive3(TypedDict, total=False):
@@ -7587,6 +8242,7 @@ class EventIncludeFromSavedEventRecursive3(TypedDict, total=False):
     source: Union[bool, 'EventSourceArgsFromSavedEventRecursive4']
     tags: Union[bool, 'FindManyTagArgsFromSavedEventRecursive4']
     savedBy: Union[bool, 'FindManySavedEventArgsFromSavedEventRecursive4']
+    notifications: Union[bool, 'FindManyNotificationArgsFromSavedEventRecursive4']
 
 
 class EventIncludeFromSavedEventRecursive4(TypedDict, total=False):
@@ -7780,6 +8436,115 @@ class FindManySavedEventArgsFromSavedEventRecursive4(TypedDict, total=False):
     where: 'SavedEventWhereInput'
     cursor: 'SavedEventWhereUniqueInput'
     distinct: List['SavedEventScalarFieldKeys']
+    
+    
+
+class NotificationIncludeFromSavedEvent(TypedDict, total=False):
+    """Relational arguments for SavedEvent"""
+    user: Union[bool, 'UserArgsFromSavedEventRecursive1']
+    event: Union[bool, 'EventArgsFromSavedEventRecursive1']
+
+
+class NotificationIncludeFromSavedEventRecursive1(TypedDict, total=False):
+    """Relational arguments for SavedEvent"""
+    user: Union[bool, 'UserArgsFromSavedEventRecursive2']
+    event: Union[bool, 'EventArgsFromSavedEventRecursive2']
+
+
+class NotificationIncludeFromSavedEventRecursive2(TypedDict, total=False):
+    """Relational arguments for SavedEvent"""
+    user: Union[bool, 'UserArgsFromSavedEventRecursive3']
+    event: Union[bool, 'EventArgsFromSavedEventRecursive3']
+
+
+class NotificationIncludeFromSavedEventRecursive3(TypedDict, total=False):
+    """Relational arguments for SavedEvent"""
+    user: Union[bool, 'UserArgsFromSavedEventRecursive4']
+    event: Union[bool, 'EventArgsFromSavedEventRecursive4']
+
+
+class NotificationIncludeFromSavedEventRecursive4(TypedDict, total=False):
+    """Relational arguments for SavedEvent"""
+
+    
+
+class NotificationArgsFromSavedEvent(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    include: 'NotificationIncludeFromNotificationRecursive1'
+
+
+class NotificationArgsFromSavedEventRecursive1(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    include: 'NotificationIncludeFromNotificationRecursive2'
+
+
+class NotificationArgsFromSavedEventRecursive2(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    include: 'NotificationIncludeFromNotificationRecursive3'
+
+
+class NotificationArgsFromSavedEventRecursive3(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    include: 'NotificationIncludeFromNotificationRecursive4'
+
+
+class NotificationArgsFromSavedEventRecursive4(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    
+    
+
+class FindManyNotificationArgsFromSavedEvent(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    take: int
+    skip: int
+    order_by: Union['NotificationOrderByInput', List['NotificationOrderByInput']]
+    where: 'NotificationWhereInput'
+    cursor: 'NotificationWhereUniqueInput'
+    distinct: List['NotificationScalarFieldKeys']
+    include: 'NotificationIncludeFromNotificationRecursive1'
+
+
+class FindManyNotificationArgsFromSavedEventRecursive1(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    take: int
+    skip: int
+    order_by: Union['NotificationOrderByInput', List['NotificationOrderByInput']]
+    where: 'NotificationWhereInput'
+    cursor: 'NotificationWhereUniqueInput'
+    distinct: List['NotificationScalarFieldKeys']
+    include: 'NotificationIncludeFromNotificationRecursive2'
+
+
+class FindManyNotificationArgsFromSavedEventRecursive2(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    take: int
+    skip: int
+    order_by: Union['NotificationOrderByInput', List['NotificationOrderByInput']]
+    where: 'NotificationWhereInput'
+    cursor: 'NotificationWhereUniqueInput'
+    distinct: List['NotificationScalarFieldKeys']
+    include: 'NotificationIncludeFromNotificationRecursive3'
+
+
+class FindManyNotificationArgsFromSavedEventRecursive3(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    take: int
+    skip: int
+    order_by: Union['NotificationOrderByInput', List['NotificationOrderByInput']]
+    where: 'NotificationWhereInput'
+    cursor: 'NotificationWhereUniqueInput'
+    distinct: List['NotificationScalarFieldKeys']
+    include: 'NotificationIncludeFromNotificationRecursive4'
+
+
+class FindManyNotificationArgsFromSavedEventRecursive4(TypedDict, total=False):
+    """Arguments for SavedEvent"""
+    take: int
+    skip: int
+    order_by: Union['NotificationOrderByInput', List['NotificationOrderByInput']]
+    where: 'NotificationWhereInput'
+    cursor: 'NotificationWhereUniqueInput'
+    distinct: List['NotificationScalarFieldKeys']
     
 
 
@@ -8033,6 +8798,1287 @@ SavedEventScalarFieldKeys = Literal[
 SavedEventScalarFieldKeysT = TypeVar('SavedEventScalarFieldKeysT', bound=SavedEventScalarFieldKeys)
 
 SavedEventRelationalFieldKeys = Literal[
+        'user',
+        'event',
+    ]
+
+# Notification types
+
+class NotificationOptionalCreateInput(TypedDict, total=False):
+    """Optional arguments to the Notification create method"""
+    id: _int
+    userId: _int
+    user: 'UserCreateNestedWithoutRelationsInput'
+    eventId: Optional[_int]
+    event: 'EventCreateNestedWithoutRelationsInput'
+    createdAt: datetime.datetime
+    readAt: Optional[datetime.datetime]
+
+
+class NotificationCreateInput(NotificationOptionalCreateInput):
+    """Required arguments to the Notification create method"""
+    type: 'enums.NotificationType'
+    message: _str
+
+
+# TODO: remove this in favour of without explicit relations
+# e.g. PostCreateWithoutAuthorInput
+
+class NotificationOptionalCreateWithoutRelationsInput(TypedDict, total=False):
+    """Optional arguments to the Notification create method, without relations"""
+    id: _int
+    userId: _int
+    eventId: Optional[_int]
+    createdAt: datetime.datetime
+    readAt: Optional[datetime.datetime]
+
+
+class NotificationCreateWithoutRelationsInput(NotificationOptionalCreateWithoutRelationsInput):
+    """Required arguments to the Notification create method, without relations"""
+    type: 'enums.NotificationType'
+    message: _str
+
+
+class NotificationCreateNestedWithoutRelationsInput(TypedDict, total=False):
+    create: 'NotificationCreateWithoutRelationsInput'
+    connect: 'NotificationWhereUniqueInput'
+
+
+class NotificationCreateManyNestedWithoutRelationsInput(TypedDict, total=False):
+    create: Union['NotificationCreateWithoutRelationsInput', List['NotificationCreateWithoutRelationsInput']]
+    connect: Union['NotificationWhereUniqueInput', List['NotificationWhereUniqueInput']]
+
+
+_NotificationWhereUnique_id_Input = TypedDict(
+    '_NotificationWhereUnique_id_Input',
+    {
+        'id': '_int',
+    },
+    total=True
+)
+
+NotificationWhereUniqueInput = _NotificationWhereUnique_id_Input
+
+
+class NotificationUpdateInput(TypedDict, total=False):
+    """Optional arguments for updating a record"""
+    id: Union[AtomicIntInput, _int]
+    user: 'UserUpdateOneWithoutRelationsInput'
+    event: 'EventUpdateOneWithoutRelationsInput'
+    type: 'enums.NotificationType'
+    message: _str
+    createdAt: datetime.datetime
+    readAt: Optional[datetime.datetime]
+
+
+class NotificationUpdateManyMutationInput(TypedDict, total=False):
+    """Arguments for updating many records"""
+    id: Union[AtomicIntInput, _int]
+    type: 'enums.NotificationType'
+    message: _str
+    createdAt: datetime.datetime
+    readAt: Optional[datetime.datetime]
+
+
+class NotificationUpdateManyWithoutRelationsInput(TypedDict, total=False):
+    create: List['NotificationCreateWithoutRelationsInput']
+    connect: List['NotificationWhereUniqueInput']
+    set: List['NotificationWhereUniqueInput']
+    disconnect: List['NotificationWhereUniqueInput']
+    delete: List['NotificationWhereUniqueInput']
+
+    # TODO
+    # update: List['NotificationUpdateWithWhereUniqueWithoutRelationsInput']
+    # updateMany: List['NotificationUpdateManyWithWhereUniqueWithoutRelationsInput']
+    # deleteMany: List['NotificationScalarWhereInput']
+    # upsert: List['NotificationUpserteWithWhereUniqueWithoutRelationsInput']
+    # connectOrCreate: List['NotificationCreateOrConnectWithoutRelationsInput']
+
+
+class NotificationUpdateOneWithoutRelationsInput(TypedDict, total=False):
+    create: 'NotificationCreateWithoutRelationsInput'
+    connect: 'NotificationWhereUniqueInput'
+    disconnect: bool
+    delete: bool
+
+    # TODO
+    # update: 'NotificationUpdateInput'
+    # upsert: 'NotificationUpsertWithoutRelationsInput'
+    # connectOrCreate: 'NotificationCreateOrConnectWithoutRelationsInput'
+
+
+class NotificationUpsertInput(TypedDict):
+    create: 'NotificationCreateInput'
+    update: 'NotificationUpdateInput'  # pyright: ignore[reportIncompatibleMethodOverride]
+
+
+_Notification_id_OrderByInput = TypedDict(
+    '_Notification_id_OrderByInput',
+    {
+        'id': 'SortOrder',
+    },
+    total=True
+)
+
+_Notification_userId_OrderByInput = TypedDict(
+    '_Notification_userId_OrderByInput',
+    {
+        'userId': 'SortOrder',
+    },
+    total=True
+)
+
+_Notification_eventId_OrderByInput = TypedDict(
+    '_Notification_eventId_OrderByInput',
+    {
+        'eventId': 'SortOrder',
+    },
+    total=True
+)
+
+_Notification_type_OrderByInput = TypedDict(
+    '_Notification_type_OrderByInput',
+    {
+        'type': 'SortOrder',
+    },
+    total=True
+)
+
+_Notification_message_OrderByInput = TypedDict(
+    '_Notification_message_OrderByInput',
+    {
+        'message': 'SortOrder',
+    },
+    total=True
+)
+
+_Notification_createdAt_OrderByInput = TypedDict(
+    '_Notification_createdAt_OrderByInput',
+    {
+        'createdAt': 'SortOrder',
+    },
+    total=True
+)
+
+_Notification_readAt_OrderByInput = TypedDict(
+    '_Notification_readAt_OrderByInput',
+    {
+        'readAt': 'SortOrder',
+    },
+    total=True
+)
+
+NotificationOrderByInput = Union[
+    '_Notification_id_OrderByInput',
+    '_Notification_userId_OrderByInput',
+    '_Notification_eventId_OrderByInput',
+    '_Notification_type_OrderByInput',
+    '_Notification_message_OrderByInput',
+    '_Notification_createdAt_OrderByInput',
+    '_Notification_readAt_OrderByInput',
+]
+
+
+
+# recursive Notification types
+# TODO: cleanup these types
+
+
+# Dict[str, Any] is a mypy limitation
+# see https://github.com/RobertCraigie/prisma-client-py/issues/45
+# switch to pyright for improved types, see https://prisma-client-py.readthedocs.io/en/stable/reference/limitations/
+
+NotificationRelationFilter = TypedDict(
+    'NotificationRelationFilter',
+    {
+        'is': 'Dict[str, Any]',
+        'is_not': 'Dict[str, Any]',
+    },
+    total=False,
+)
+
+
+class NotificationListRelationFilter(TypedDict, total=False):
+    some: 'Dict[str, Any]'
+    none: 'Dict[str, Any]'
+    every: 'Dict[str, Any]'
+
+
+class NotificationInclude(TypedDict, total=False):
+    """Notification relational arguments"""
+    user: Union[bool, 'UserArgsFromNotification']
+    event: Union[bool, 'EventArgsFromNotification']
+
+
+    
+
+class UserIncludeFromNotification(TypedDict, total=False):
+    """Relational arguments for Notification"""
+    savedEvents: Union[bool, 'FindManySavedEventArgsFromNotificationRecursive1']
+    notifications: Union[bool, 'FindManyNotificationArgsFromNotificationRecursive1']
+
+
+class UserIncludeFromNotificationRecursive1(TypedDict, total=False):
+    """Relational arguments for Notification"""
+    savedEvents: Union[bool, 'FindManySavedEventArgsFromNotificationRecursive2']
+    notifications: Union[bool, 'FindManyNotificationArgsFromNotificationRecursive2']
+
+
+class UserIncludeFromNotificationRecursive2(TypedDict, total=False):
+    """Relational arguments for Notification"""
+    savedEvents: Union[bool, 'FindManySavedEventArgsFromNotificationRecursive3']
+    notifications: Union[bool, 'FindManyNotificationArgsFromNotificationRecursive3']
+
+
+class UserIncludeFromNotificationRecursive3(TypedDict, total=False):
+    """Relational arguments for Notification"""
+    savedEvents: Union[bool, 'FindManySavedEventArgsFromNotificationRecursive4']
+    notifications: Union[bool, 'FindManyNotificationArgsFromNotificationRecursive4']
+
+
+class UserIncludeFromNotificationRecursive4(TypedDict, total=False):
+    """Relational arguments for Notification"""
+
+    
+
+class UserArgsFromNotification(TypedDict, total=False):
+    """Arguments for Notification"""
+    include: 'UserIncludeFromUserRecursive1'
+
+
+class UserArgsFromNotificationRecursive1(TypedDict, total=False):
+    """Arguments for Notification"""
+    include: 'UserIncludeFromUserRecursive2'
+
+
+class UserArgsFromNotificationRecursive2(TypedDict, total=False):
+    """Arguments for Notification"""
+    include: 'UserIncludeFromUserRecursive3'
+
+
+class UserArgsFromNotificationRecursive3(TypedDict, total=False):
+    """Arguments for Notification"""
+    include: 'UserIncludeFromUserRecursive4'
+
+
+class UserArgsFromNotificationRecursive4(TypedDict, total=False):
+    """Arguments for Notification"""
+    
+    
+
+class FindManyUserArgsFromNotification(TypedDict, total=False):
+    """Arguments for Notification"""
+    take: int
+    skip: int
+    order_by: Union['UserOrderByInput', List['UserOrderByInput']]
+    where: 'UserWhereInput'
+    cursor: 'UserWhereUniqueInput'
+    distinct: List['UserScalarFieldKeys']
+    include: 'UserIncludeFromUserRecursive1'
+
+
+class FindManyUserArgsFromNotificationRecursive1(TypedDict, total=False):
+    """Arguments for Notification"""
+    take: int
+    skip: int
+    order_by: Union['UserOrderByInput', List['UserOrderByInput']]
+    where: 'UserWhereInput'
+    cursor: 'UserWhereUniqueInput'
+    distinct: List['UserScalarFieldKeys']
+    include: 'UserIncludeFromUserRecursive2'
+
+
+class FindManyUserArgsFromNotificationRecursive2(TypedDict, total=False):
+    """Arguments for Notification"""
+    take: int
+    skip: int
+    order_by: Union['UserOrderByInput', List['UserOrderByInput']]
+    where: 'UserWhereInput'
+    cursor: 'UserWhereUniqueInput'
+    distinct: List['UserScalarFieldKeys']
+    include: 'UserIncludeFromUserRecursive3'
+
+
+class FindManyUserArgsFromNotificationRecursive3(TypedDict, total=False):
+    """Arguments for Notification"""
+    take: int
+    skip: int
+    order_by: Union['UserOrderByInput', List['UserOrderByInput']]
+    where: 'UserWhereInput'
+    cursor: 'UserWhereUniqueInput'
+    distinct: List['UserScalarFieldKeys']
+    include: 'UserIncludeFromUserRecursive4'
+
+
+class FindManyUserArgsFromNotificationRecursive4(TypedDict, total=False):
+    """Arguments for Notification"""
+    take: int
+    skip: int
+    order_by: Union['UserOrderByInput', List['UserOrderByInput']]
+    where: 'UserWhereInput'
+    cursor: 'UserWhereUniqueInput'
+    distinct: List['UserScalarFieldKeys']
+    
+    
+
+class VenueIncludeFromNotification(TypedDict, total=False):
+    """Relational arguments for Notification"""
+    events: Union[bool, 'FindManyEventArgsFromNotificationRecursive1']
+
+
+class VenueIncludeFromNotificationRecursive1(TypedDict, total=False):
+    """Relational arguments for Notification"""
+    events: Union[bool, 'FindManyEventArgsFromNotificationRecursive2']
+
+
+class VenueIncludeFromNotificationRecursive2(TypedDict, total=False):
+    """Relational arguments for Notification"""
+    events: Union[bool, 'FindManyEventArgsFromNotificationRecursive3']
+
+
+class VenueIncludeFromNotificationRecursive3(TypedDict, total=False):
+    """Relational arguments for Notification"""
+    events: Union[bool, 'FindManyEventArgsFromNotificationRecursive4']
+
+
+class VenueIncludeFromNotificationRecursive4(TypedDict, total=False):
+    """Relational arguments for Notification"""
+
+    
+
+class VenueArgsFromNotification(TypedDict, total=False):
+    """Arguments for Notification"""
+    include: 'VenueIncludeFromVenueRecursive1'
+
+
+class VenueArgsFromNotificationRecursive1(TypedDict, total=False):
+    """Arguments for Notification"""
+    include: 'VenueIncludeFromVenueRecursive2'
+
+
+class VenueArgsFromNotificationRecursive2(TypedDict, total=False):
+    """Arguments for Notification"""
+    include: 'VenueIncludeFromVenueRecursive3'
+
+
+class VenueArgsFromNotificationRecursive3(TypedDict, total=False):
+    """Arguments for Notification"""
+    include: 'VenueIncludeFromVenueRecursive4'
+
+
+class VenueArgsFromNotificationRecursive4(TypedDict, total=False):
+    """Arguments for Notification"""
+    
+    
+
+class FindManyVenueArgsFromNotification(TypedDict, total=False):
+    """Arguments for Notification"""
+    take: int
+    skip: int
+    order_by: Union['VenueOrderByInput', List['VenueOrderByInput']]
+    where: 'VenueWhereInput'
+    cursor: 'VenueWhereUniqueInput'
+    distinct: List['VenueScalarFieldKeys']
+    include: 'VenueIncludeFromVenueRecursive1'
+
+
+class FindManyVenueArgsFromNotificationRecursive1(TypedDict, total=False):
+    """Arguments for Notification"""
+    take: int
+    skip: int
+    order_by: Union['VenueOrderByInput', List['VenueOrderByInput']]
+    where: 'VenueWhereInput'
+    cursor: 'VenueWhereUniqueInput'
+    distinct: List['VenueScalarFieldKeys']
+    include: 'VenueIncludeFromVenueRecursive2'
+
+
+class FindManyVenueArgsFromNotificationRecursive2(TypedDict, total=False):
+    """Arguments for Notification"""
+    take: int
+    skip: int
+    order_by: Union['VenueOrderByInput', List['VenueOrderByInput']]
+    where: 'VenueWhereInput'
+    cursor: 'VenueWhereUniqueInput'
+    distinct: List['VenueScalarFieldKeys']
+    include: 'VenueIncludeFromVenueRecursive3'
+
+
+class FindManyVenueArgsFromNotificationRecursive3(TypedDict, total=False):
+    """Arguments for Notification"""
+    take: int
+    skip: int
+    order_by: Union['VenueOrderByInput', List['VenueOrderByInput']]
+    where: 'VenueWhereInput'
+    cursor: 'VenueWhereUniqueInput'
+    distinct: List['VenueScalarFieldKeys']
+    include: 'VenueIncludeFromVenueRecursive4'
+
+
+class FindManyVenueArgsFromNotificationRecursive4(TypedDict, total=False):
+    """Arguments for Notification"""
+    take: int
+    skip: int
+    order_by: Union['VenueOrderByInput', List['VenueOrderByInput']]
+    where: 'VenueWhereInput'
+    cursor: 'VenueWhereUniqueInput'
+    distinct: List['VenueScalarFieldKeys']
+    
+    
+
+class EventSourceIncludeFromNotification(TypedDict, total=False):
+    """Relational arguments for Notification"""
+    events: Union[bool, 'FindManyEventArgsFromNotificationRecursive1']
+
+
+class EventSourceIncludeFromNotificationRecursive1(TypedDict, total=False):
+    """Relational arguments for Notification"""
+    events: Union[bool, 'FindManyEventArgsFromNotificationRecursive2']
+
+
+class EventSourceIncludeFromNotificationRecursive2(TypedDict, total=False):
+    """Relational arguments for Notification"""
+    events: Union[bool, 'FindManyEventArgsFromNotificationRecursive3']
+
+
+class EventSourceIncludeFromNotificationRecursive3(TypedDict, total=False):
+    """Relational arguments for Notification"""
+    events: Union[bool, 'FindManyEventArgsFromNotificationRecursive4']
+
+
+class EventSourceIncludeFromNotificationRecursive4(TypedDict, total=False):
+    """Relational arguments for Notification"""
+
+    
+
+class EventSourceArgsFromNotification(TypedDict, total=False):
+    """Arguments for Notification"""
+    include: 'EventSourceIncludeFromEventSourceRecursive1'
+
+
+class EventSourceArgsFromNotificationRecursive1(TypedDict, total=False):
+    """Arguments for Notification"""
+    include: 'EventSourceIncludeFromEventSourceRecursive2'
+
+
+class EventSourceArgsFromNotificationRecursive2(TypedDict, total=False):
+    """Arguments for Notification"""
+    include: 'EventSourceIncludeFromEventSourceRecursive3'
+
+
+class EventSourceArgsFromNotificationRecursive3(TypedDict, total=False):
+    """Arguments for Notification"""
+    include: 'EventSourceIncludeFromEventSourceRecursive4'
+
+
+class EventSourceArgsFromNotificationRecursive4(TypedDict, total=False):
+    """Arguments for Notification"""
+    
+    
+
+class FindManyEventSourceArgsFromNotification(TypedDict, total=False):
+    """Arguments for Notification"""
+    take: int
+    skip: int
+    order_by: Union['EventSourceOrderByInput', List['EventSourceOrderByInput']]
+    where: 'EventSourceWhereInput'
+    cursor: 'EventSourceWhereUniqueInput'
+    distinct: List['EventSourceScalarFieldKeys']
+    include: 'EventSourceIncludeFromEventSourceRecursive1'
+
+
+class FindManyEventSourceArgsFromNotificationRecursive1(TypedDict, total=False):
+    """Arguments for Notification"""
+    take: int
+    skip: int
+    order_by: Union['EventSourceOrderByInput', List['EventSourceOrderByInput']]
+    where: 'EventSourceWhereInput'
+    cursor: 'EventSourceWhereUniqueInput'
+    distinct: List['EventSourceScalarFieldKeys']
+    include: 'EventSourceIncludeFromEventSourceRecursive2'
+
+
+class FindManyEventSourceArgsFromNotificationRecursive2(TypedDict, total=False):
+    """Arguments for Notification"""
+    take: int
+    skip: int
+    order_by: Union['EventSourceOrderByInput', List['EventSourceOrderByInput']]
+    where: 'EventSourceWhereInput'
+    cursor: 'EventSourceWhereUniqueInput'
+    distinct: List['EventSourceScalarFieldKeys']
+    include: 'EventSourceIncludeFromEventSourceRecursive3'
+
+
+class FindManyEventSourceArgsFromNotificationRecursive3(TypedDict, total=False):
+    """Arguments for Notification"""
+    take: int
+    skip: int
+    order_by: Union['EventSourceOrderByInput', List['EventSourceOrderByInput']]
+    where: 'EventSourceWhereInput'
+    cursor: 'EventSourceWhereUniqueInput'
+    distinct: List['EventSourceScalarFieldKeys']
+    include: 'EventSourceIncludeFromEventSourceRecursive4'
+
+
+class FindManyEventSourceArgsFromNotificationRecursive4(TypedDict, total=False):
+    """Arguments for Notification"""
+    take: int
+    skip: int
+    order_by: Union['EventSourceOrderByInput', List['EventSourceOrderByInput']]
+    where: 'EventSourceWhereInput'
+    cursor: 'EventSourceWhereUniqueInput'
+    distinct: List['EventSourceScalarFieldKeys']
+    
+    
+
+class TagIncludeFromNotification(TypedDict, total=False):
+    """Relational arguments for Notification"""
+    events: Union[bool, 'FindManyEventArgsFromNotificationRecursive1']
+
+
+class TagIncludeFromNotificationRecursive1(TypedDict, total=False):
+    """Relational arguments for Notification"""
+    events: Union[bool, 'FindManyEventArgsFromNotificationRecursive2']
+
+
+class TagIncludeFromNotificationRecursive2(TypedDict, total=False):
+    """Relational arguments for Notification"""
+    events: Union[bool, 'FindManyEventArgsFromNotificationRecursive3']
+
+
+class TagIncludeFromNotificationRecursive3(TypedDict, total=False):
+    """Relational arguments for Notification"""
+    events: Union[bool, 'FindManyEventArgsFromNotificationRecursive4']
+
+
+class TagIncludeFromNotificationRecursive4(TypedDict, total=False):
+    """Relational arguments for Notification"""
+
+    
+
+class TagArgsFromNotification(TypedDict, total=False):
+    """Arguments for Notification"""
+    include: 'TagIncludeFromTagRecursive1'
+
+
+class TagArgsFromNotificationRecursive1(TypedDict, total=False):
+    """Arguments for Notification"""
+    include: 'TagIncludeFromTagRecursive2'
+
+
+class TagArgsFromNotificationRecursive2(TypedDict, total=False):
+    """Arguments for Notification"""
+    include: 'TagIncludeFromTagRecursive3'
+
+
+class TagArgsFromNotificationRecursive3(TypedDict, total=False):
+    """Arguments for Notification"""
+    include: 'TagIncludeFromTagRecursive4'
+
+
+class TagArgsFromNotificationRecursive4(TypedDict, total=False):
+    """Arguments for Notification"""
+    
+    
+
+class FindManyTagArgsFromNotification(TypedDict, total=False):
+    """Arguments for Notification"""
+    take: int
+    skip: int
+    order_by: Union['TagOrderByInput', List['TagOrderByInput']]
+    where: 'TagWhereInput'
+    cursor: 'TagWhereUniqueInput'
+    distinct: List['TagScalarFieldKeys']
+    include: 'TagIncludeFromTagRecursive1'
+
+
+class FindManyTagArgsFromNotificationRecursive1(TypedDict, total=False):
+    """Arguments for Notification"""
+    take: int
+    skip: int
+    order_by: Union['TagOrderByInput', List['TagOrderByInput']]
+    where: 'TagWhereInput'
+    cursor: 'TagWhereUniqueInput'
+    distinct: List['TagScalarFieldKeys']
+    include: 'TagIncludeFromTagRecursive2'
+
+
+class FindManyTagArgsFromNotificationRecursive2(TypedDict, total=False):
+    """Arguments for Notification"""
+    take: int
+    skip: int
+    order_by: Union['TagOrderByInput', List['TagOrderByInput']]
+    where: 'TagWhereInput'
+    cursor: 'TagWhereUniqueInput'
+    distinct: List['TagScalarFieldKeys']
+    include: 'TagIncludeFromTagRecursive3'
+
+
+class FindManyTagArgsFromNotificationRecursive3(TypedDict, total=False):
+    """Arguments for Notification"""
+    take: int
+    skip: int
+    order_by: Union['TagOrderByInput', List['TagOrderByInput']]
+    where: 'TagWhereInput'
+    cursor: 'TagWhereUniqueInput'
+    distinct: List['TagScalarFieldKeys']
+    include: 'TagIncludeFromTagRecursive4'
+
+
+class FindManyTagArgsFromNotificationRecursive4(TypedDict, total=False):
+    """Arguments for Notification"""
+    take: int
+    skip: int
+    order_by: Union['TagOrderByInput', List['TagOrderByInput']]
+    where: 'TagWhereInput'
+    cursor: 'TagWhereUniqueInput'
+    distinct: List['TagScalarFieldKeys']
+    
+    
+
+class EventIncludeFromNotification(TypedDict, total=False):
+    """Relational arguments for Notification"""
+    venue: Union[bool, 'VenueArgsFromNotificationRecursive1']
+    source: Union[bool, 'EventSourceArgsFromNotificationRecursive1']
+    tags: Union[bool, 'FindManyTagArgsFromNotificationRecursive1']
+    savedBy: Union[bool, 'FindManySavedEventArgsFromNotificationRecursive1']
+    notifications: Union[bool, 'FindManyNotificationArgsFromNotificationRecursive1']
+
+
+class EventIncludeFromNotificationRecursive1(TypedDict, total=False):
+    """Relational arguments for Notification"""
+    venue: Union[bool, 'VenueArgsFromNotificationRecursive2']
+    source: Union[bool, 'EventSourceArgsFromNotificationRecursive2']
+    tags: Union[bool, 'FindManyTagArgsFromNotificationRecursive2']
+    savedBy: Union[bool, 'FindManySavedEventArgsFromNotificationRecursive2']
+    notifications: Union[bool, 'FindManyNotificationArgsFromNotificationRecursive2']
+
+
+class EventIncludeFromNotificationRecursive2(TypedDict, total=False):
+    """Relational arguments for Notification"""
+    venue: Union[bool, 'VenueArgsFromNotificationRecursive3']
+    source: Union[bool, 'EventSourceArgsFromNotificationRecursive3']
+    tags: Union[bool, 'FindManyTagArgsFromNotificationRecursive3']
+    savedBy: Union[bool, 'FindManySavedEventArgsFromNotificationRecursive3']
+    notifications: Union[bool, 'FindManyNotificationArgsFromNotificationRecursive3']
+
+
+class EventIncludeFromNotificationRecursive3(TypedDict, total=False):
+    """Relational arguments for Notification"""
+    venue: Union[bool, 'VenueArgsFromNotificationRecursive4']
+    source: Union[bool, 'EventSourceArgsFromNotificationRecursive4']
+    tags: Union[bool, 'FindManyTagArgsFromNotificationRecursive4']
+    savedBy: Union[bool, 'FindManySavedEventArgsFromNotificationRecursive4']
+    notifications: Union[bool, 'FindManyNotificationArgsFromNotificationRecursive4']
+
+
+class EventIncludeFromNotificationRecursive4(TypedDict, total=False):
+    """Relational arguments for Notification"""
+
+    
+
+class EventArgsFromNotification(TypedDict, total=False):
+    """Arguments for Notification"""
+    include: 'EventIncludeFromEventRecursive1'
+
+
+class EventArgsFromNotificationRecursive1(TypedDict, total=False):
+    """Arguments for Notification"""
+    include: 'EventIncludeFromEventRecursive2'
+
+
+class EventArgsFromNotificationRecursive2(TypedDict, total=False):
+    """Arguments for Notification"""
+    include: 'EventIncludeFromEventRecursive3'
+
+
+class EventArgsFromNotificationRecursive3(TypedDict, total=False):
+    """Arguments for Notification"""
+    include: 'EventIncludeFromEventRecursive4'
+
+
+class EventArgsFromNotificationRecursive4(TypedDict, total=False):
+    """Arguments for Notification"""
+    
+    
+
+class FindManyEventArgsFromNotification(TypedDict, total=False):
+    """Arguments for Notification"""
+    take: int
+    skip: int
+    order_by: Union['EventOrderByInput', List['EventOrderByInput']]
+    where: 'EventWhereInput'
+    cursor: 'EventWhereUniqueInput'
+    distinct: List['EventScalarFieldKeys']
+    include: 'EventIncludeFromEventRecursive1'
+
+
+class FindManyEventArgsFromNotificationRecursive1(TypedDict, total=False):
+    """Arguments for Notification"""
+    take: int
+    skip: int
+    order_by: Union['EventOrderByInput', List['EventOrderByInput']]
+    where: 'EventWhereInput'
+    cursor: 'EventWhereUniqueInput'
+    distinct: List['EventScalarFieldKeys']
+    include: 'EventIncludeFromEventRecursive2'
+
+
+class FindManyEventArgsFromNotificationRecursive2(TypedDict, total=False):
+    """Arguments for Notification"""
+    take: int
+    skip: int
+    order_by: Union['EventOrderByInput', List['EventOrderByInput']]
+    where: 'EventWhereInput'
+    cursor: 'EventWhereUniqueInput'
+    distinct: List['EventScalarFieldKeys']
+    include: 'EventIncludeFromEventRecursive3'
+
+
+class FindManyEventArgsFromNotificationRecursive3(TypedDict, total=False):
+    """Arguments for Notification"""
+    take: int
+    skip: int
+    order_by: Union['EventOrderByInput', List['EventOrderByInput']]
+    where: 'EventWhereInput'
+    cursor: 'EventWhereUniqueInput'
+    distinct: List['EventScalarFieldKeys']
+    include: 'EventIncludeFromEventRecursive4'
+
+
+class FindManyEventArgsFromNotificationRecursive4(TypedDict, total=False):
+    """Arguments for Notification"""
+    take: int
+    skip: int
+    order_by: Union['EventOrderByInput', List['EventOrderByInput']]
+    where: 'EventWhereInput'
+    cursor: 'EventWhereUniqueInput'
+    distinct: List['EventScalarFieldKeys']
+    
+    
+
+class SavedEventIncludeFromNotification(TypedDict, total=False):
+    """Relational arguments for Notification"""
+    user: Union[bool, 'UserArgsFromNotificationRecursive1']
+    event: Union[bool, 'EventArgsFromNotificationRecursive1']
+
+
+class SavedEventIncludeFromNotificationRecursive1(TypedDict, total=False):
+    """Relational arguments for Notification"""
+    user: Union[bool, 'UserArgsFromNotificationRecursive2']
+    event: Union[bool, 'EventArgsFromNotificationRecursive2']
+
+
+class SavedEventIncludeFromNotificationRecursive2(TypedDict, total=False):
+    """Relational arguments for Notification"""
+    user: Union[bool, 'UserArgsFromNotificationRecursive3']
+    event: Union[bool, 'EventArgsFromNotificationRecursive3']
+
+
+class SavedEventIncludeFromNotificationRecursive3(TypedDict, total=False):
+    """Relational arguments for Notification"""
+    user: Union[bool, 'UserArgsFromNotificationRecursive4']
+    event: Union[bool, 'EventArgsFromNotificationRecursive4']
+
+
+class SavedEventIncludeFromNotificationRecursive4(TypedDict, total=False):
+    """Relational arguments for Notification"""
+
+    
+
+class SavedEventArgsFromNotification(TypedDict, total=False):
+    """Arguments for Notification"""
+    include: 'SavedEventIncludeFromSavedEventRecursive1'
+
+
+class SavedEventArgsFromNotificationRecursive1(TypedDict, total=False):
+    """Arguments for Notification"""
+    include: 'SavedEventIncludeFromSavedEventRecursive2'
+
+
+class SavedEventArgsFromNotificationRecursive2(TypedDict, total=False):
+    """Arguments for Notification"""
+    include: 'SavedEventIncludeFromSavedEventRecursive3'
+
+
+class SavedEventArgsFromNotificationRecursive3(TypedDict, total=False):
+    """Arguments for Notification"""
+    include: 'SavedEventIncludeFromSavedEventRecursive4'
+
+
+class SavedEventArgsFromNotificationRecursive4(TypedDict, total=False):
+    """Arguments for Notification"""
+    
+    
+
+class FindManySavedEventArgsFromNotification(TypedDict, total=False):
+    """Arguments for Notification"""
+    take: int
+    skip: int
+    order_by: Union['SavedEventOrderByInput', List['SavedEventOrderByInput']]
+    where: 'SavedEventWhereInput'
+    cursor: 'SavedEventWhereUniqueInput'
+    distinct: List['SavedEventScalarFieldKeys']
+    include: 'SavedEventIncludeFromSavedEventRecursive1'
+
+
+class FindManySavedEventArgsFromNotificationRecursive1(TypedDict, total=False):
+    """Arguments for Notification"""
+    take: int
+    skip: int
+    order_by: Union['SavedEventOrderByInput', List['SavedEventOrderByInput']]
+    where: 'SavedEventWhereInput'
+    cursor: 'SavedEventWhereUniqueInput'
+    distinct: List['SavedEventScalarFieldKeys']
+    include: 'SavedEventIncludeFromSavedEventRecursive2'
+
+
+class FindManySavedEventArgsFromNotificationRecursive2(TypedDict, total=False):
+    """Arguments for Notification"""
+    take: int
+    skip: int
+    order_by: Union['SavedEventOrderByInput', List['SavedEventOrderByInput']]
+    where: 'SavedEventWhereInput'
+    cursor: 'SavedEventWhereUniqueInput'
+    distinct: List['SavedEventScalarFieldKeys']
+    include: 'SavedEventIncludeFromSavedEventRecursive3'
+
+
+class FindManySavedEventArgsFromNotificationRecursive3(TypedDict, total=False):
+    """Arguments for Notification"""
+    take: int
+    skip: int
+    order_by: Union['SavedEventOrderByInput', List['SavedEventOrderByInput']]
+    where: 'SavedEventWhereInput'
+    cursor: 'SavedEventWhereUniqueInput'
+    distinct: List['SavedEventScalarFieldKeys']
+    include: 'SavedEventIncludeFromSavedEventRecursive4'
+
+
+class FindManySavedEventArgsFromNotificationRecursive4(TypedDict, total=False):
+    """Arguments for Notification"""
+    take: int
+    skip: int
+    order_by: Union['SavedEventOrderByInput', List['SavedEventOrderByInput']]
+    where: 'SavedEventWhereInput'
+    cursor: 'SavedEventWhereUniqueInput'
+    distinct: List['SavedEventScalarFieldKeys']
+    
+    
+
+class NotificationIncludeFromNotification(TypedDict, total=False):
+    """Relational arguments for Notification"""
+    user: Union[bool, 'UserArgsFromNotificationRecursive1']
+    event: Union[bool, 'EventArgsFromNotificationRecursive1']
+
+
+class NotificationIncludeFromNotificationRecursive1(TypedDict, total=False):
+    """Relational arguments for Notification"""
+    user: Union[bool, 'UserArgsFromNotificationRecursive2']
+    event: Union[bool, 'EventArgsFromNotificationRecursive2']
+
+
+class NotificationIncludeFromNotificationRecursive2(TypedDict, total=False):
+    """Relational arguments for Notification"""
+    user: Union[bool, 'UserArgsFromNotificationRecursive3']
+    event: Union[bool, 'EventArgsFromNotificationRecursive3']
+
+
+class NotificationIncludeFromNotificationRecursive3(TypedDict, total=False):
+    """Relational arguments for Notification"""
+    user: Union[bool, 'UserArgsFromNotificationRecursive4']
+    event: Union[bool, 'EventArgsFromNotificationRecursive4']
+
+
+class NotificationIncludeFromNotificationRecursive4(TypedDict, total=False):
+    """Relational arguments for Notification"""
+
+    
+
+class NotificationArgsFromNotification(TypedDict, total=False):
+    """Arguments for Notification"""
+    include: 'NotificationIncludeFromNotificationRecursive1'
+
+
+class NotificationArgsFromNotificationRecursive1(TypedDict, total=False):
+    """Arguments for Notification"""
+    include: 'NotificationIncludeFromNotificationRecursive2'
+
+
+class NotificationArgsFromNotificationRecursive2(TypedDict, total=False):
+    """Arguments for Notification"""
+    include: 'NotificationIncludeFromNotificationRecursive3'
+
+
+class NotificationArgsFromNotificationRecursive3(TypedDict, total=False):
+    """Arguments for Notification"""
+    include: 'NotificationIncludeFromNotificationRecursive4'
+
+
+class NotificationArgsFromNotificationRecursive4(TypedDict, total=False):
+    """Arguments for Notification"""
+    
+    
+
+class FindManyNotificationArgsFromNotification(TypedDict, total=False):
+    """Arguments for Notification"""
+    take: int
+    skip: int
+    order_by: Union['NotificationOrderByInput', List['NotificationOrderByInput']]
+    where: 'NotificationWhereInput'
+    cursor: 'NotificationWhereUniqueInput'
+    distinct: List['NotificationScalarFieldKeys']
+    include: 'NotificationIncludeFromNotificationRecursive1'
+
+
+class FindManyNotificationArgsFromNotificationRecursive1(TypedDict, total=False):
+    """Arguments for Notification"""
+    take: int
+    skip: int
+    order_by: Union['NotificationOrderByInput', List['NotificationOrderByInput']]
+    where: 'NotificationWhereInput'
+    cursor: 'NotificationWhereUniqueInput'
+    distinct: List['NotificationScalarFieldKeys']
+    include: 'NotificationIncludeFromNotificationRecursive2'
+
+
+class FindManyNotificationArgsFromNotificationRecursive2(TypedDict, total=False):
+    """Arguments for Notification"""
+    take: int
+    skip: int
+    order_by: Union['NotificationOrderByInput', List['NotificationOrderByInput']]
+    where: 'NotificationWhereInput'
+    cursor: 'NotificationWhereUniqueInput'
+    distinct: List['NotificationScalarFieldKeys']
+    include: 'NotificationIncludeFromNotificationRecursive3'
+
+
+class FindManyNotificationArgsFromNotificationRecursive3(TypedDict, total=False):
+    """Arguments for Notification"""
+    take: int
+    skip: int
+    order_by: Union['NotificationOrderByInput', List['NotificationOrderByInput']]
+    where: 'NotificationWhereInput'
+    cursor: 'NotificationWhereUniqueInput'
+    distinct: List['NotificationScalarFieldKeys']
+    include: 'NotificationIncludeFromNotificationRecursive4'
+
+
+class FindManyNotificationArgsFromNotificationRecursive4(TypedDict, total=False):
+    """Arguments for Notification"""
+    take: int
+    skip: int
+    order_by: Union['NotificationOrderByInput', List['NotificationOrderByInput']]
+    where: 'NotificationWhereInput'
+    cursor: 'NotificationWhereUniqueInput'
+    distinct: List['NotificationScalarFieldKeys']
+    
+
+
+FindManyNotificationArgs = FindManyNotificationArgsFromNotification
+FindFirstNotificationArgs = FindManyNotificationArgsFromNotification
+
+
+    
+
+class NotificationWhereInput(TypedDict, total=False):
+    """Notification arguments for searching"""
+    id: Union[_int, 'types.IntFilter']
+    userId: Union[_int, 'types.IntFilter']
+    user: 'UserRelationFilter'
+    eventId: Union[None, _int, 'types.IntFilter']
+    event: 'EventRelationFilter'
+    type: 'enums.NotificationType'
+    message: Union[_str, 'types.StringFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeFilter']
+    readAt: Union[None, datetime.datetime, 'types.DateTimeFilter']
+
+    # should be noted that AND and NOT should be Union['NotificationWhereInputRecursive1', List['NotificationWhereInputRecursive1']]
+    # but this causes mypy to hang :/
+    AND: List['NotificationWhereInputRecursive1']
+    OR: List['NotificationWhereInputRecursive1']
+    NOT: List['NotificationWhereInputRecursive1']
+
+
+class NotificationWhereInputRecursive1(TypedDict, total=False):
+    """Notification arguments for searching"""
+    id: Union[_int, 'types.IntFilter']
+    userId: Union[_int, 'types.IntFilter']
+    user: 'UserRelationFilter'
+    eventId: Union[None, _int, 'types.IntFilter']
+    event: 'EventRelationFilter'
+    type: 'enums.NotificationType'
+    message: Union[_str, 'types.StringFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeFilter']
+    readAt: Union[None, datetime.datetime, 'types.DateTimeFilter']
+
+    # should be noted that AND and NOT should be Union['NotificationWhereInputRecursive2', List['NotificationWhereInputRecursive2']]
+    # but this causes mypy to hang :/
+    AND: List['NotificationWhereInputRecursive2']
+    OR: List['NotificationWhereInputRecursive2']
+    NOT: List['NotificationWhereInputRecursive2']
+
+
+class NotificationWhereInputRecursive2(TypedDict, total=False):
+    """Notification arguments for searching"""
+    id: Union[_int, 'types.IntFilter']
+    userId: Union[_int, 'types.IntFilter']
+    user: 'UserRelationFilter'
+    eventId: Union[None, _int, 'types.IntFilter']
+    event: 'EventRelationFilter'
+    type: 'enums.NotificationType'
+    message: Union[_str, 'types.StringFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeFilter']
+    readAt: Union[None, datetime.datetime, 'types.DateTimeFilter']
+
+    # should be noted that AND and NOT should be Union['NotificationWhereInputRecursive3', List['NotificationWhereInputRecursive3']]
+    # but this causes mypy to hang :/
+    AND: List['NotificationWhereInputRecursive3']
+    OR: List['NotificationWhereInputRecursive3']
+    NOT: List['NotificationWhereInputRecursive3']
+
+
+class NotificationWhereInputRecursive3(TypedDict, total=False):
+    """Notification arguments for searching"""
+    id: Union[_int, 'types.IntFilter']
+    userId: Union[_int, 'types.IntFilter']
+    user: 'UserRelationFilter'
+    eventId: Union[None, _int, 'types.IntFilter']
+    event: 'EventRelationFilter'
+    type: 'enums.NotificationType'
+    message: Union[_str, 'types.StringFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeFilter']
+    readAt: Union[None, datetime.datetime, 'types.DateTimeFilter']
+
+    # should be noted that AND and NOT should be Union['NotificationWhereInputRecursive4', List['NotificationWhereInputRecursive4']]
+    # but this causes mypy to hang :/
+    AND: List['NotificationWhereInputRecursive4']
+    OR: List['NotificationWhereInputRecursive4']
+    NOT: List['NotificationWhereInputRecursive4']
+
+
+class NotificationWhereInputRecursive4(TypedDict, total=False):
+    """Notification arguments for searching"""
+    id: Union[_int, 'types.IntFilter']
+    userId: Union[_int, 'types.IntFilter']
+    user: 'UserRelationFilter'
+    eventId: Union[None, _int, 'types.IntFilter']
+    event: 'EventRelationFilter'
+    type: 'enums.NotificationType'
+    message: Union[_str, 'types.StringFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeFilter']
+    readAt: Union[None, datetime.datetime, 'types.DateTimeFilter']
+
+
+
+# aggregate Notification types
+
+
+    
+
+class NotificationScalarWhereWithAggregatesInput(TypedDict, total=False):
+    """Notification arguments for searching"""
+    id: Union[_int, 'types.IntWithAggregatesFilter']
+    userId: Union[_int, 'types.IntWithAggregatesFilter']
+    eventId: Union[_int, 'types.IntWithAggregatesFilter']
+    type: 'enums.NotificationType'
+    message: Union[_str, 'types.StringWithAggregatesFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+    readAt: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+
+    AND: List['NotificationScalarWhereWithAggregatesInputRecursive1']
+    OR: List['NotificationScalarWhereWithAggregatesInputRecursive1']
+    NOT: List['NotificationScalarWhereWithAggregatesInputRecursive1']
+
+
+class NotificationScalarWhereWithAggregatesInputRecursive1(TypedDict, total=False):
+    """Notification arguments for searching"""
+    id: Union[_int, 'types.IntWithAggregatesFilter']
+    userId: Union[_int, 'types.IntWithAggregatesFilter']
+    eventId: Union[_int, 'types.IntWithAggregatesFilter']
+    type: 'enums.NotificationType'
+    message: Union[_str, 'types.StringWithAggregatesFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+    readAt: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+
+    AND: List['NotificationScalarWhereWithAggregatesInputRecursive2']
+    OR: List['NotificationScalarWhereWithAggregatesInputRecursive2']
+    NOT: List['NotificationScalarWhereWithAggregatesInputRecursive2']
+
+
+class NotificationScalarWhereWithAggregatesInputRecursive2(TypedDict, total=False):
+    """Notification arguments for searching"""
+    id: Union[_int, 'types.IntWithAggregatesFilter']
+    userId: Union[_int, 'types.IntWithAggregatesFilter']
+    eventId: Union[_int, 'types.IntWithAggregatesFilter']
+    type: 'enums.NotificationType'
+    message: Union[_str, 'types.StringWithAggregatesFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+    readAt: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+
+    AND: List['NotificationScalarWhereWithAggregatesInputRecursive3']
+    OR: List['NotificationScalarWhereWithAggregatesInputRecursive3']
+    NOT: List['NotificationScalarWhereWithAggregatesInputRecursive3']
+
+
+class NotificationScalarWhereWithAggregatesInputRecursive3(TypedDict, total=False):
+    """Notification arguments for searching"""
+    id: Union[_int, 'types.IntWithAggregatesFilter']
+    userId: Union[_int, 'types.IntWithAggregatesFilter']
+    eventId: Union[_int, 'types.IntWithAggregatesFilter']
+    type: 'enums.NotificationType'
+    message: Union[_str, 'types.StringWithAggregatesFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+    readAt: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+
+    AND: List['NotificationScalarWhereWithAggregatesInputRecursive4']
+    OR: List['NotificationScalarWhereWithAggregatesInputRecursive4']
+    NOT: List['NotificationScalarWhereWithAggregatesInputRecursive4']
+
+
+class NotificationScalarWhereWithAggregatesInputRecursive4(TypedDict, total=False):
+    """Notification arguments for searching"""
+    id: Union[_int, 'types.IntWithAggregatesFilter']
+    userId: Union[_int, 'types.IntWithAggregatesFilter']
+    eventId: Union[_int, 'types.IntWithAggregatesFilter']
+    type: 'enums.NotificationType'
+    message: Union[_str, 'types.StringWithAggregatesFilter']
+    createdAt: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+    readAt: Union[datetime.datetime, 'types.DateTimeWithAggregatesFilter']
+
+
+
+class NotificationGroupByOutput(TypedDict, total=False):
+    id: _int
+    userId: _int
+    eventId: _int
+    type: 'enums.NotificationType'
+    message: _str
+    createdAt: datetime.datetime
+    readAt: datetime.datetime
+    _sum: 'NotificationSumAggregateOutput'
+    _avg: 'NotificationAvgAggregateOutput'
+    _min: 'NotificationMinAggregateOutput'
+    _max: 'NotificationMaxAggregateOutput'
+    _count: 'NotificationCountAggregateOutput'
+
+
+class NotificationAvgAggregateOutput(TypedDict, total=False):
+    """Notification output for aggregating averages"""
+    id: float
+    userId: float
+    eventId: float
+
+
+class NotificationSumAggregateOutput(TypedDict, total=False):
+    """Notification output for aggregating sums"""
+    id: _int
+    userId: _int
+    eventId: _int
+
+
+class NotificationScalarAggregateOutput(TypedDict, total=False):
+    """Notification output including scalar fields"""
+    id: _int
+    userId: _int
+    eventId: _int
+    type: 'enums.NotificationType'
+    message: _str
+    createdAt: datetime.datetime
+    readAt: datetime.datetime
+
+
+NotificationMinAggregateOutput = NotificationScalarAggregateOutput
+NotificationMaxAggregateOutput = NotificationScalarAggregateOutput
+
+
+class NotificationMaxAggregateInput(TypedDict, total=False):
+    """Notification input for aggregating by max"""
+    id: bool
+    userId: bool
+    eventId: bool
+    type: bool
+    message: bool
+    createdAt: bool
+    readAt: bool
+
+
+class NotificationMinAggregateInput(TypedDict, total=False):
+    """Notification input for aggregating by min"""
+    id: bool
+    userId: bool
+    eventId: bool
+    type: bool
+    message: bool
+    createdAt: bool
+    readAt: bool
+
+
+class NotificationNumberAggregateInput(TypedDict, total=False):
+    """Notification input for aggregating numbers"""
+    id: bool
+    userId: bool
+    eventId: bool
+
+
+NotificationAvgAggregateInput = NotificationNumberAggregateInput
+NotificationSumAggregateInput = NotificationNumberAggregateInput
+
+
+NotificationCountAggregateInput = TypedDict(
+    'NotificationCountAggregateInput',
+    {
+        'id': bool,
+        'userId': bool,
+        'eventId': bool,
+        'type': bool,
+        'message': bool,
+        'createdAt': bool,
+        'readAt': bool,
+        '_all': bool,
+    },
+    total=False,
+)
+
+NotificationCountAggregateOutput = TypedDict(
+    'NotificationCountAggregateOutput',
+    {
+        'id': int,
+        'userId': int,
+        'eventId': int,
+        'type': int,
+        'message': int,
+        'createdAt': int,
+        'readAt': int,
+        '_all': int,
+    },
+    total=False,
+)
+
+
+NotificationKeys = Literal[
+    'id',
+    'userId',
+    'user',
+    'eventId',
+    'event',
+    'type',
+    'message',
+    'createdAt',
+    'readAt',
+]
+NotificationScalarFieldKeys = Literal[
+    'id',
+    'userId',
+    'eventId',
+    'type',
+    'message',
+    'createdAt',
+    'readAt',
+]
+NotificationScalarFieldKeysT = TypeVar('NotificationScalarFieldKeysT', bound=NotificationScalarFieldKeys)
+
+NotificationRelationalFieldKeys = Literal[
         'user',
         'event',
     ]

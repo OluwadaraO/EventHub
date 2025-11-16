@@ -20,14 +20,30 @@ async def scrape_and_upsert(
     db: Prisma = Depends(get_db),
     user_email: str = Depends(get_current_user_email)
 ):
+    # -------------------------------------------
+    # 1) Find user
+    # -------------------------------------------
+    user = await db.user.find_unique(where={"email": user_email})
 
-    # scrape the website
+    # -------------------------------------------
+    # 2) Check if event exists BEFORE upsert
+    #    (Used later to decide if it's new)
+    # -------------------------------------------
+    existing = await db.event.find_unique(where={"url": str(payload.url)})
+
+    # -------------------------------------------
+    # 3) Scrape the website
+    # -------------------------------------------
     data = await scrape_event(str(payload.url))
 
     if not data:
         raise HTTPException(500, "Scraper returned no data")
 
-    # upsert source (domain)
+    # -------------------------------------------
+    # 4) Upsert source + venue + event
+    # (your existing code here...)
+    # -------------------------------------------
+
     source = await db.eventsource.upsert(
         where={"domain": data["source"]},
         data={
@@ -36,9 +52,9 @@ async def scrape_and_upsert(
         }
     )
 
-    # upsert venue
-    venue_id = None
     v = data.get("venue") or {}
+    venue_id = None
+
     if any(v.values()):
         venue = await db.venue.create(
             data={
@@ -53,7 +69,6 @@ async def scrape_and_upsert(
         )
         venue_id = venue.id
 
-    # upsert event by URL
     ev = await db.event.upsert(
         where={"url": str(payload.url)},
         data={
@@ -86,8 +101,23 @@ async def scrape_and_upsert(
         include={"venue": True}
     )
 
-    # check if user already saved it
-    user = await db.user.find_unique(where={"email": user_email})
+    # ----------------------------------------------------------
+    # ⭐ 5) USE `existing` HERE
+    # Create a notification **ONLY IF** this event is new
+    # ----------------------------------------------------------
+    if existing is None:
+        await db.notification.create(
+            data={
+                "userId": user.id,
+                "eventId": ev.id,
+                "type": "EVENT_CREATED",
+                "message": f"You added a new event: '{ev.title}'."
+            }
+        )
+
+    # ----------------------------------------------------------
+    # 6) Check if user saved it before (your normal logic)
+    # ----------------------------------------------------------
     saved = await db.savedevent.find_first(
         where={"userId": user.id, "eventId": ev.id}
     )
@@ -172,7 +202,10 @@ async def save_event(
     ev = await db.event.find_unique(where={"id": payload.eventId})
     if not ev:
         raise HTTPException(404, "Event not found")
-
+    
+    already_saved = await db.savedevent.find_first(
+        where={"userId": user.id, "eventId": ev.id}
+    )
     await db.savedevent.upsert(
         where={"userId_eventId": {"userId": user.id, "eventId": ev.id}},
         data={
@@ -180,7 +213,15 @@ async def save_event(
             "update": {}
         }
     )
-
+    if not already_saved:
+        await db.notification.create(
+            data={
+                "userId": user.id,
+                "eventId": ev.id,
+                "type": "EVENT_SAVED",
+                "message": f"You saved '{ev.title}'."
+            }
+        )
     return {"ok": True}
 
 

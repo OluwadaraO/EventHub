@@ -134,3 +134,13 @@ class BaseSavedEvent(_PrismaModel):
         return actions.SavedEventActions[_PrismaModelT](client or get_client(), cls)
 
 
+class BaseNotification(_PrismaModel):
+    __prisma_model__: ClassVar[Literal['Notification']] = 'Notification'  # pyright: ignore[reportIncompatibleVariableOverride]
+
+    @classmethod
+    def prisma(cls: Type[_PrismaModelT], client: Optional['Prisma'] = None) -> 'actions.NotificationActions[_PrismaModelT]':
+        from .client import get_client
+
+        return actions.NotificationActions[_PrismaModelT](client or get_client(), cls)
+
+

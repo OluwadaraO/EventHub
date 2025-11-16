@@ -12,11 +12,13 @@ PRISMA_MODELS: set[str] = {
     'Tag',
     'Event',
     'SavedEvent',
+    'Notification',
 }
 
 RELATIONAL_FIELD_MAPPINGS: dict[str, dict[str, str]] = {
     'User': {
         'savedEvents': 'SavedEvent',
+        'notifications': 'Notification',
     },
     'Venue': {
         'events': 'Event',
@@ -32,8 +34,13 @@ RELATIONAL_FIELD_MAPPINGS: dict[str, dict[str, str]] = {
         'source': 'EventSource',
         'tags': 'Tag',
         'savedBy': 'SavedEvent',
+        'notifications': 'Notification',
     },
     'SavedEvent': {
+        'user': 'User',
+        'event': 'Event',
+    },
+    'Notification': {
         'user': 'User',
         'event': 'Event',
     },

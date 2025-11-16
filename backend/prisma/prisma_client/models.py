@@ -65,6 +65,7 @@ class User(bases.BaseUser):
     passwordHash: _str
     createdAt: datetime.datetime
     savedEvents: Optional[List['models.SavedEvent']] = None
+    notifications: Optional[List['models.Notification']] = None
 
     # take *args and **kwargs so that other metaclasses can define arguments
     def __init_subclass__(
@@ -609,6 +610,7 @@ class Event(bases.BaseEvent):
     updatedAt: datetime.datetime
     tags: Optional[List['models.Tag']] = None
     savedBy: Optional[List['models.SavedEvent']] = None
+    notifications: Optional[List['models.Notification']] = None
 
     # take *args and **kwargs so that other metaclasses can define arguments
     def __init_subclass__(
@@ -866,9 +868,146 @@ class SavedEvent(bases.BaseSavedEvent):
         _created_partial_types.add(name)
 
 
+class Notification(bases.BaseNotification):
+    """Represents a Notification record"""
+
+    id: _int
+    userId: _int
+    user: Optional['models.User'] = None
+    eventId: Optional[_int] = None
+    event: Optional['models.Event'] = None
+    type: 'enums.NotificationType'
+    message: _str
+    createdAt: datetime.datetime
+    readAt: Optional[datetime.datetime] = None
+
+    # take *args and **kwargs so that other metaclasses can define arguments
+    def __init_subclass__(
+        cls,
+        *args: Any,
+        warn_subclass: Optional[bool] = None,
+        **kwargs: Any,
+    ) -> None:
+        super().__init_subclass__()
+        if warn_subclass is not None:
+            warnings.warn(
+                'The `warn_subclass` argument is deprecated as it is no longer necessary and will be removed in the next release',
+                DeprecationWarning,
+                stacklevel=3,
+            )
+
+
+    @staticmethod
+    def create_partial(
+        name: str,
+        include: Optional[Iterable['types.NotificationKeys']] = None,
+        exclude: Optional[Iterable['types.NotificationKeys']] = None,
+        required: Optional[Iterable['types.NotificationKeys']] = None,
+        optional: Optional[Iterable['types.NotificationKeys']] = None,
+        relations: Optional[Mapping['types.NotificationRelationalFieldKeys', str]] = None,
+        exclude_relational_fields: bool = False,
+    ) -> None:
+        if not os.environ.get('PRISMA_GENERATOR_INVOCATION'):
+            raise RuntimeError(
+                'Attempted to create a partial type outside of client generation.'
+            )
+
+        if name in _created_partial_types:
+            raise ValueError(f'Partial type "{name}" has already been created.')
+
+        if include is not None:
+            if exclude is not None:
+                raise TypeError('Exclude and include are mutually exclusive.')
+            if exclude_relational_fields is True:
+                raise TypeError('Include and exclude_relational_fields=True are mutually exclusive.')
+
+        if required and optional:
+            shared = set(required) & set(optional)
+            if shared:
+                raise ValueError(f'Cannot make the same field(s) required and optional {shared}')
+
+        if exclude_relational_fields and relations:
+            raise ValueError(
+                'exclude_relational_fields and relations are mutually exclusive'
+            )
+
+        fields: Dict['types.NotificationKeys', PartialModelField] = OrderedDict()
+
+        try:
+            if include:
+                for field in include:
+                    fields[field] = _Notification_fields[field].copy()
+            elif exclude:
+                for field in exclude:
+                    if field not in _Notification_fields:
+                        raise KeyError(field)
+
+                fields = {
+                    key: data.copy()
+                    for key, data in _Notification_fields.items()
+                    if key not in exclude
+                }
+            else:
+                fields = {
+                    key: data.copy()
+                    for key, data in _Notification_fields.items()
+                }
+
+            if required:
+                for field in required:
+                    fields[field]['optional'] = False
+
+            if optional:
+                for field in optional:
+                    fields[field]['optional'] = True
+
+            if exclude_relational_fields:
+                fields = {
+                    key: data
+                    for key, data in fields.items()
+                    if key not in _Notification_relational_fields
+                }
+
+            if relations:
+                for field, type_ in relations.items():
+                    if field not in _Notification_relational_fields:
+                        raise errors.UnknownRelationalFieldError('Notification', field)
+
+                    # TODO: this method of validating types is not ideal
+                    # as it means we cannot two create partial types that
+                    # reference each other
+                    if type_ not in _created_partial_types:
+                        raise ValueError(
+                            f'Unknown partial type: "{type_}". '
+                            f'Did you remember to generate the {type_} type before this one?'
+                        )
+
+                    # TODO: support non prisma.partials models
+                    info = fields[field]
+                    if info['is_list']:
+                        info['type'] = f'List[\'partials.{type_}\']'
+                    else:
+                        info['type'] = f'\'partials.{type_}\''
+        except KeyError as exc:
+            raise ValueError(
+                f'{exc.args[0]} is not a valid Notification / {name} field.'
+            ) from None
+
+        models = partial_models_ctx.get()
+        models.append(
+            {
+                'name': name,
+                'fields': cast(Mapping[str, PartialModelField], fields),
+                'from_model': 'Notification',
+            }
+        )
+        _created_partial_types.add(name)
+
+
 
 _User_relational_fields: Set[str] = {
         'savedEvents',
+        'notifications',
     }
 _User_fields: Dict['types.UserKeys', PartialModelField] = OrderedDict(
     [
@@ -917,6 +1056,14 @@ _User_fields: Dict['types.UserKeys', PartialModelField] = OrderedDict(
             'is_list': True,
             'optional': True,
             'type': 'List[\'models.SavedEvent\']',
+            'is_relational': True,
+            'documentation': None,
+        }),
+        ('notifications', {
+            'name': 'notifications',
+            'is_list': True,
+            'optional': True,
+            'type': 'List[\'models.Notification\']',
             'is_relational': True,
             'documentation': None,
         }),
@@ -1096,6 +1243,7 @@ _Event_relational_fields: Set[str] = {
         'source',
         'tags',
         'savedBy',
+        'notifications',
     }
 _Event_fields: Dict['types.EventKeys', PartialModelField] = OrderedDict(
     [
@@ -1243,6 +1391,14 @@ _Event_fields: Dict['types.EventKeys', PartialModelField] = OrderedDict(
             'is_relational': True,
             'documentation': None,
         }),
+        ('notifications', {
+            'name': 'notifications',
+            'is_list': True,
+            'optional': True,
+            'type': 'List[\'models.Notification\']',
+            'is_relational': True,
+            'documentation': None,
+        }),
     ],
 )
 
@@ -1303,6 +1459,87 @@ _SavedEvent_fields: Dict['types.SavedEventKeys', PartialModelField] = OrderedDic
     ],
 )
 
+_Notification_relational_fields: Set[str] = {
+        'user',
+        'event',
+    }
+_Notification_fields: Dict['types.NotificationKeys', PartialModelField] = OrderedDict(
+    [
+        ('id', {
+            'name': 'id',
+            'is_list': False,
+            'optional': False,
+            'type': '_int',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('userId', {
+            'name': 'userId',
+            'is_list': False,
+            'optional': False,
+            'type': '_int',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('user', {
+            'name': 'user',
+            'is_list': False,
+            'optional': True,
+            'type': 'models.User',
+            'is_relational': True,
+            'documentation': None,
+        }),
+        ('eventId', {
+            'name': 'eventId',
+            'is_list': False,
+            'optional': True,
+            'type': '_int',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('event', {
+            'name': 'event',
+            'is_list': False,
+            'optional': True,
+            'type': 'models.Event',
+            'is_relational': True,
+            'documentation': None,
+        }),
+        ('type', {
+            'name': 'type',
+            'is_list': False,
+            'optional': False,
+            'type': 'enums.NotificationType',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('message', {
+            'name': 'message',
+            'is_list': False,
+            'optional': False,
+            'type': '_str',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('createdAt', {
+            'name': 'createdAt',
+            'is_list': False,
+            'optional': False,
+            'type': 'datetime.datetime',
+            'is_relational': False,
+            'documentation': None,
+        }),
+        ('readAt', {
+            'name': 'readAt',
+            'is_list': False,
+            'optional': True,
+            'type': 'datetime.datetime',
+            'is_relational': False,
+            'documentation': None,
+        }),
+    ],
+)
+
 
 
 # we have to import ourselves as relation types are namespaced to models
@@ -1316,3 +1553,4 @@ model_rebuild(EventSource)
 model_rebuild(Tag)
 model_rebuild(Event)
 model_rebuild(SavedEvent)
+model_rebuild(Notification)

@@ -21,6 +21,7 @@ model User {
   passwordHash String
   createdAt    DateTime     @default(now())
   savedEvents  SavedEvent[]
+  notifications Notification[]
 }
 
 model Venue {
@@ -69,6 +70,7 @@ model Event {
   updatedAt   DateTime     @updatedAt
   tags        Tag[]
   savedBy     SavedEvent[]
+  notifications Notification[]
 }
 
 model SavedEvent {
@@ -80,4 +82,27 @@ model SavedEvent {
   event     Event    @relation(fields: [eventId], references: [id])
 
   @@unique([userId, eventId])
+}
+
+enum NotificationType {
+  EVENT_SAVED
+  EVENT_CREATED
+  EVENT_UPCOMING_14
+  EVENT_UPCOMING_7
+  EVENT_UPCOMING_1
+  EVENT_PAST
+}
+
+model Notification {
+  id        Int              @id @default(autoincrement())
+  userId    Int
+  user      User             @relation(fields: [userId], references: [id])
+  eventId   Int?
+  event     Event?           @relation(fields: [eventId], references: [id])
+  type      NotificationType
+  message   String
+  createdAt DateTime         @default(now())
+  readAt    DateTime?
+
+  @@index([userId, createdAt])
 }
