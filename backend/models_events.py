@@ -4,7 +4,6 @@ from datetime import datetime
 
 
 class ScrapeIn(BaseModel):
-    # body for POST /events/scrape
     url: HttpUrl
 
 
@@ -27,5 +26,4 @@ class EventOut(BaseModel):
 
 
 class SaveEventIn(BaseModel):
-    # body for POST /events/save
     eventId: int

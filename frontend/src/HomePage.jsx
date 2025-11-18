@@ -208,8 +208,6 @@ const handleConfirmSave = async () => {
           + Add event from link
         </button>
       </div>
-
-      {/* 🔥 Modal */}
 {showForm && (
   <div className="modal-backdrop" onClick={closeModal}>
     <div className="modal-content" onClick={(e) => e.stopPropagation()}>

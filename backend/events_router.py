@@ -10,39 +10,18 @@ from scraping import scrape_event
 
 router = APIRouter(prefix="/events", tags=["events"])
 
-
-# ------------------------------------------------------
-# 1) SCRAPE + UPSERT EVENT
-# ------------------------------------------------------
 @router.post("/scrape", response_model=EventOut)
 async def scrape_and_upsert(
     payload: ScrapeIn,
     db: Prisma = Depends(get_db),
     user_email: str = Depends(get_current_user_email)
 ):
-    # -------------------------------------------
-    # 1) Find user
-    # -------------------------------------------
     user = await db.user.find_unique(where={"email": user_email})
-
-    # -------------------------------------------
-    # 2) Check if event exists BEFORE upsert
-    #    (Used later to decide if it's new)
-    # -------------------------------------------
     existing = await db.event.find_unique(where={"url": str(payload.url)})
-
-    # -------------------------------------------
-    # 3) Scrape the website
-    # -------------------------------------------
     data = await scrape_event(str(payload.url))
 
     if not data:
         raise HTTPException(500, "Scraper returned no data")
-
-    # -------------------------------------------
-    # 4) Upsert source + venue + event
-    # (your existing code here...)
-    # -------------------------------------------
 
     source = await db.eventsource.upsert(
         where={"domain": data["source"]},
@@ -100,11 +79,6 @@ async def scrape_and_upsert(
         },
         include={"venue": True}
     )
-
-    # ----------------------------------------------------------
-    # ⭐ 5) USE `existing` HERE
-    # Create a notification **ONLY IF** this event is new
-    # ----------------------------------------------------------
     if existing is None:
         await db.notification.create(
             data={
@@ -114,10 +88,6 @@ async def scrape_and_upsert(
                 "message": f"You added a new event: '{ev.title}'."
             }
         )
-
-    # ----------------------------------------------------------
-    # 6) Check if user saved it before (your normal logic)
-    # ----------------------------------------------------------
     saved = await db.savedevent.find_first(
         where={"userId": user.id, "eventId": ev.id}
     )
@@ -141,9 +111,6 @@ async def scrape_and_upsert(
     )
 
 
-# ------------------------------------------------------
-# 2) LIST ALL EVENTS
-# ------------------------------------------------------
 @router.get("", response_model=List[EventOut])
 async def list_events(
     db: Prisma = Depends(get_db),
@@ -187,9 +154,6 @@ async def list_events(
     return out
 
 
-# ------------------------------------------------------
-# 3) SAVE EVENT
-# ------------------------------------------------------
 @router.post("/save")
 async def save_event(
     payload: SaveEventIn,
@@ -224,10 +188,6 @@ async def save_event(
         )
     return {"ok": True}
 
-
-# ------------------------------------------------------
-# 4) UNSAVE EVENT
-# ------------------------------------------------------
 @router.delete("/save/{event_id}")
 async def unsave_event(
     event_id: int,
@@ -247,9 +207,6 @@ async def unsave_event(
     return {"ok": True}
 
 
-# ------------------------------------------------------
-# 5) LIST SAVED EVENTS BY USER
-# ------------------------------------------------------
 @router.get("/saved", response_model=List[EventOut])
 async def list_saved(
     db: Prisma = Depends(get_db),

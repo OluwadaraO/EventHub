@@ -45,10 +45,9 @@ async def scrape_event(url: str) -> Dict[str, Any]:
 
     soup = BeautifulSoup(html, "lxml")
 
-    # 1) JSON-LD path
     jsonld_events = _extract_jsonld_events(soup)
     if jsonld_events:
-        e = jsonld_events[0]  # take first if multiple
+        e = jsonld_events[0]
         offers = e.get("offers") or {}
         loc = e.get("location") or {}
         if isinstance(loc, list): loc = loc[0] or {}
@@ -77,7 +76,6 @@ async def scrape_event(url: str) -> Dict[str, Any]:
             "source": urllib.parse.urlparse(url).hostname or "",
         }
 
-    # 2) Fallback: OG + heuristics
     def get_meta(p):
         el = soup.find("meta", property=p) or soup.find("meta", attrs={"name": p})
         return el["content"].strip() if el and el.get("content") else None
@@ -85,8 +83,6 @@ async def scrape_event(url: str) -> Dict[str, Any]:
     title = get_meta("og:title") or (soup.title.string.strip() if soup.title else None)
     desc = get_meta("og:description") or get_meta("description")
     img = get_meta("og:image")
-
-    # naive date scrape (very heuristic)
     text = soup.get_text(" ", strip=True)
     candidates = re.findall(r"\b(?:\w{3,9}\s+\d{1,2},\s+\d{4}|\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2})\b", text)
     start = _parse_when(candidates[0]) if candidates else None
