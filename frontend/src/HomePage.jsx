@@ -73,9 +73,7 @@ function NotificationsBell() {
     setIsOpen(opening);
 
     if (opening) {
-      // 1) get fresh list from backend
       const list = await fetchNotifications();
-      // 2) mark unread as read
       await markAllUnreadAsRead(list);
     }
   };
@@ -157,6 +155,230 @@ function NotificationsBell() {
   );
 }
 
+function SavedEventsCalendar({ savedEvents }) {
+  const [monthDate, setMonthDate] = useState(new Date());
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const eventsByDate = savedEvents.reduce((acc, ev) => {
+    if (!ev.startTime) return acc;
+    const d = new Date(ev.startTime);
+    const key = d.toISOString().split("T")[0];
+    if (!acc[key]) {
+      acc[key] = [];
+    }
+    acc[key].push(ev);
+    return acc;
+  }, {});
+
+  const year = monthDate.getFullYear();
+  const month = monthDate.getMonth();
+
+  const startOfMonth = new Date(year, month, 1);
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const startWeekday = startOfMonth.getDay();
+
+  const todayKey = new Date().toISOString().split("T")[0];
+
+  const dayCells = [];
+  for (let i = 0; i < startWeekday; i += 1) {
+    dayCells.push(null);
+  }
+  for (let day = 1; day <= daysInMonth; day += 1) {
+    const dateObj = new Date(year, month, day);
+    const key = dateObj.toISOString().split("T")[0];
+    dayCells.push({ day, key });
+  }
+  while (dayCells.length < 42) {
+    dayCells.push(null);
+  }
+
+  const handlePrevMonth = () => {
+    setMonthDate(new Date(year, month - 1, 1));
+  };
+
+  const handleNextMonth = () => {
+    setMonthDate(new Date(year, month + 1, 1));
+  };
+
+  const monthLabel = monthDate.toLocaleString("default", {
+    month: "long",
+    year: "numeric",
+  });
+
+  const formatTime = (isoString) => {
+    const date = new Date(isoString);
+    return date.toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
+
+  return (
+    <>
+      <div className="calendar-wrapper">
+        <div className="calendar-header">
+          <button
+            type="button"
+            className="calendar-nav-btn"
+            onClick={handlePrevMonth}
+          >
+            ‹
+          </button>
+          <div className="calendar-month-label">{monthLabel}</div>
+          <button
+            type="button"
+            className="calendar-nav-btn"
+            onClick={handleNextMonth}
+          >
+            ›
+          </button>
+        </div>
+
+        <div className="calendar-grid">
+          {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
+            <div key={d} className="calendar-day-header">
+              {d}
+            </div>
+          ))}
+
+          {dayCells.map((cell, idx) => {
+            if (!cell) {
+              return <div key={`empty-${idx}`} className="calendar-day empty" />;
+            }
+
+            const dayEvents = eventsByDate[cell.key] || [];
+            const isToday = cell.key === todayKey;
+            const displayEvents = dayEvents.slice(0, 3);
+            const hasMore = dayEvents.length > 3;
+
+            let className = "calendar-day";
+            if (isToday) className += " today";
+
+            return (
+              <div key={cell.key} className={className}>
+                <span className="calendar-day-number">{cell.day}</span>
+                
+                {displayEvents.map((ev) => (
+                  <div
+                    key={ev.id}
+                    className="calendar-event-item-inline"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedEvent(ev);
+                    }}
+                  >
+                    {ev.startTime && (
+                      <span className="calendar-event-time">
+                        {formatTime(ev.startTime)}
+                      </span>
+                    )}
+                    <span className="calendar-event-title-inline">
+                      {ev.title}
+                    </span>
+                  </div>
+                ))}
+                
+                {hasMore && (
+                  <div className="calendar-more-events">
+                    +{dayEvents.length - 3} more
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {selectedEvent && (
+        <div
+          className="event-detail-modal"
+          onClick={() => setSelectedEvent(null)}
+        >
+          <div
+            className="event-detail-content"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="event-detail-header">
+              <h3>{selectedEvent.title}</h3>
+              <button
+                type="button"
+                className="event-detail-close"
+                onClick={() => setSelectedEvent(null)}
+              >
+                ×
+              </button>
+            </div>
+
+            <div className="event-detail-body">
+              {selectedEvent.startTime && (
+                <div className="event-detail-row">
+                  <div className="event-detail-icon">🕐</div>
+                  <div className="event-detail-info">
+                    <div className="event-detail-label">Date & Time</div>
+                    <div className="event-detail-value">
+                      {new Date(selectedEvent.startTime).toLocaleString("en-US", {
+                        weekday: "long",
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                        hour: "numeric",
+                        minute: "2-digit",
+                      })}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {selectedEvent.venue?.name && (
+                <div className="event-detail-row">
+                  <div className="event-detail-icon">📍</div>
+                  <div className="event-detail-info">
+                    <div className="event-detail-label">Location</div>
+                    <div className="event-detail-value">
+                      {selectedEvent.venue.name}
+                      {selectedEvent.venue.city && ` — ${selectedEvent.venue.city}`}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {selectedEvent.url && (
+                <div className="event-detail-row">
+                  <div className="event-detail-icon">🔗</div>
+                  <div className="event-detail-info">
+                    <div className="event-detail-label">Event Link</div>
+                    <div className="event-detail-value">
+                      <a
+                        href={selectedEvent.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="event-detail-link"
+                      >
+                        View original event page →
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {selectedEvent.imageUrl && (
+                <div className="event-detail-row">
+                  <div className="event-detail-info">
+                    <img
+                      src={selectedEvent.imageUrl}
+                      alt={selectedEvent.title}
+                      className="event-detail-image"
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
 
 function HomePage() {
   const navigate = useNavigate();
@@ -169,6 +391,7 @@ function HomePage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [previewEvent, setPreviewEvent] = useState(null);
+  const [viewMode, setViewMode] = useState("list");
 
   const fetchMe = async () => {
     const token = getToken();
@@ -455,63 +678,74 @@ const handleConfirmSave = async () => {
   </div>
 )}
 
-      <section className="saved-events-section">
-        <div className="saved-events-header">
-          <h2>Saved Events</h2>
-          {upcomingCount > 0 && (
-            <span className="saved-events-badge">
-              {upcomingCount} event{upcomingCount > 1 ? "s" : ""} in the next week
-            </span>
-          )}
-        </div>
-
-
-        {savedEvents.length === 0 ? (
-          <p className="empty-state">
-            You don’t have any saved events yet. Click{" "}
-            <strong>“Add event from link”</strong> to get started.
-          </p>
-        ) : (
-          <ul className="saved-events-list">
-            {savedEvents.map((ev) => (
-              <li key={ev.id} className="event-card">
-                {ev.imageUrl && (
-                  <img
-                    src={ev.imageUrl}
-                    alt={ev.title}
-                    className="event-image"
-                  />
-                )}
-                <div className="event-info">
-                  <h3 className="event-title">
-                    <a href={ev.url} target="_blank" rel="noreferrer">
-                      {ev.title}
-                    </a>
-                  </h3>
-                  {ev.startTime && (
-                    <p className="event-meta">
-                      {new Date(ev.startTime).toLocaleString()}
-                    </p>
-                  )}
-                  {ev.venue?.name && (
-                    <p className="event-meta">
-                      {ev.venue.name}
-                      {ev.venue.city ? ` — ${ev.venue.city}` : ""}
-                    </p>
-                  )}
-                  <button
-                    onClick={() => handleRemove(ev.id)}
-                    className="secondary-btn small"
-                  >
-                    Remove
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
+    <section className="saved-events-section">
+      <div className="saved-events-header">
+        <h2>Saved Events</h2>
+        {upcomingCount > 0 && (
+        <span className="saved-events-badge">
+          {upcomingCount} event{upcomingCount > 1 ? "s" : ""} in the next week
+        </span>
         )}
-      </section>
-    </div>
+
+        <button
+          type="button"
+          className="secondary-btn view-toggle-btn"
+          onClick={() =>
+            setViewMode(viewMode === "list" ? "calendar" : "list")
+          }
+        >
+        {viewMode === "list" ? "Calendar view" : "List view"}
+        </button>
+      </div>
+
+      {savedEvents.length === 0 ? (
+        <p className="empty-state">
+          You don’t have any saved events yet. Click{" "}
+          <strong>“Add event from link”</strong> to get started.
+        </p>
+      ) : viewMode === "list" ? (
+        <ul className="saved-events-list">
+          {savedEvents.map((ev) => (
+            <li key={ev.id} className="event-card">
+            {ev.imageUrl && (
+              <img
+                src={ev.imageUrl}
+                alt={ev.title}
+                className="event-image"
+              />
+            )}
+            <div className="event-info">
+              <h3 className="event-title">
+                <a href={ev.url} target="_blank" rel="noreferrer">
+                  {ev.title}
+                </a>
+              </h3>
+              {ev.startTime && (
+                <p className="event-meta">
+                  {new Date(ev.startTime).toLocaleString()}
+                </p>
+              )}
+              {ev.venue?.name && (
+                <p className="event-meta">
+                  {ev.venue.name}
+                  {ev.venue.city ? ` — ${ev.venue.city}` : ""}
+                </p>
+              )}
+              <button
+                onClick={() => handleRemove(ev.id)}
+                className="secondary-btn small"
+              >
+                Remove
+              </button>
+            </div>
+          </li>
+        ))}
+      </ul>
+      ) : (
+      <SavedEventsCalendar savedEvents={savedEvents} />
+      )}
+    </section>
+  </div>
   );
 }
 
