@@ -79,15 +79,6 @@ async def scrape_and_upsert(
         },
         include={"venue": True}
     )
-    if existing is None:
-        await db.notification.create(
-            data={
-                "userId": user.id,
-                "eventId": ev.id,
-                "type": "EVENT_CREATED",
-                "message": f"You added a new event: '{ev.title}'."
-            }
-        )
     saved = await db.savedevent.find_first(
         where={"userId": user.id, "eventId": ev.id}
     )

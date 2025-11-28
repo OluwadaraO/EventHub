@@ -1,9 +1,152 @@
-// HomePage.jsx
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./HomePage.css";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
+const getToken = () => localStorage.getItem("token");
+
+function NotificationsBell() {
+  const [notifications, setNotifications] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const fetchNotifications = async () => {
+    const token = getToken();
+    if (!token) return [];
+
+    try {
+      setIsLoading(true);
+      const res = await fetch(`${API_BASE}/notifications`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) {
+        console.error("Failed to fetch notifications");
+        setIsLoading(false);
+        return [];
+      }
+
+      const data = await res.json();
+      const list = data.notifications || [];
+      setNotifications(list);
+      setIsLoading(false);
+      return list;
+    } catch (err) {
+      console.error("Error fetching notifications:", err);
+      setIsLoading(false);
+      return [];
+    }
+  };
+
+  const markAllUnreadAsRead = async (list) => {
+    const token = getToken();
+    if (!token) return;
+
+    const unread = (list || notifications).filter((n) => !n.readAt);
+    if (unread.length === 0) return;
+
+    try {
+      await Promise.all(
+        unread.map((notif) =>
+          fetch(`${API_BASE}/notifications/${notif.id}/read`, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+        )
+      );
+
+      // update local state so UI shows them as read
+      setNotifications((prev) =>
+        prev.map((n) =>
+          n.readAt ? n : { ...n, readAt: new Date().toISOString() }
+        )
+      );
+    } catch (err) {
+      console.error("Error marking notifications as read:", err);
+    }
+  };
+
+  const toggleDropdown = async () => {
+    const opening = !isOpen;
+    setIsOpen(opening);
+
+    if (opening) {
+      // 1) get fresh list from backend
+      const list = await fetchNotifications();
+      // 2) mark unread as read
+      await markAllUnreadAsRead(list);
+    }
+  };
+
+  const unreadCount = notifications.filter((n) => !n.readAt).length;
+
+  const formatDateTime = (isoString) => {
+    if (!isoString) return "";
+    return new Date(isoString).toLocaleString();
+  };
+
+  return (
+    <div className="notifications-wrapper">
+      <button
+        type="button"
+        onClick={toggleDropdown}
+        className="notifications-bell"
+        aria-label="Notifications"
+      >
+        🔔
+        {unreadCount > 0 && (
+          <span className="notifications-badge">{unreadCount}</span>
+        )}
+      </button>
+
+      {isOpen && (
+        <div className="notifications-dropdown">
+          <div className="notifications-header">Notifications</div>
+
+          {isLoading && (
+            <div className="notifications-empty">Loading...</div>
+          )}
+
+          {!isLoading && notifications.length === 0 && (
+            <div className="notifications-empty">
+              No notifications yet.
+            </div>
+          )}
+
+          {!isLoading &&
+            notifications.map((notif) => (
+              <div
+                key={notif.id}
+                className={
+                  "notifications-item" +
+                  (notif.readAt ? "" : " notifications-item-unread")
+                }
+              >
+                <div className="notifications-message">
+                  {notif.message}
+                </div>
+
+                {notif.event?.title && (
+                  <div className="notifications-event">
+                    Event: <strong>{notif.event.title}</strong>
+                  </div>
+                )}
+
+                <div className="notifications-time">
+                  {formatDateTime(notif.createdAt)}
+                </div>
+              </div>
+            ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 
 function HomePage() {
   const navigate = useNavigate();
@@ -16,8 +159,6 @@ function HomePage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [previewEvent, setPreviewEvent] = useState(null);
-
-  const getToken = () => localStorage.getItem("token");
 
   const fetchMe = async () => {
     const token = getToken();
@@ -79,7 +220,6 @@ function HomePage() {
     fetchSavedEvents();
   }, []);
 
-// Step 1: just scrape and show preview
 const handleFetchDetails = async (e) => {
   e.preventDefault();
   setLoading(true);
@@ -110,7 +250,7 @@ const handleFetchDetails = async (e) => {
     }
 
     const scraped = await scrapeRes.json();
-    setPreviewEvent(scraped);        // 👈 store preview
+    setPreviewEvent(scraped);
   } catch (err) {
     setError(err.message || "Something went wrong");
   } finally {
@@ -118,7 +258,6 @@ const handleFetchDetails = async (e) => {
   }
 };
 
-// Step 2: user confirmed -> save to their dashboard
 const handleConfirmSave = async () => {
   if (!previewEvent) return;
 
@@ -191,17 +330,22 @@ const handleConfirmSave = async () => {
 
   return (
     <div className="home-page">
-      <header className="home-hero">
-        <div>
+      <header className="home-header">
+        <div className="header-center">
           <h1>
             Welcome{user && user.name ? `, ${user.name}` : " to EventHub!"}
           </h1>
           <p>Say bye to forgetting events</p>
         </div>
-        <button onClick={handleLogout} className="secondary-btn">
-          Logout
-        </button>
+
+        <div className="header-right">
+          <NotificationsBell />
+          <button onClick={handleLogout} className="secondary-btn">
+            Logout
+          </button>
+        </div>
       </header>
+
 
       <div className="home-actions">
         <button onClick={() => setShowForm(true)} className="primary-btn">
@@ -225,8 +369,6 @@ const handleConfirmSave = async () => {
       <p className="modal-subtitle">
         Paste a link to an event page you found online.
       </p>
-
-      {/* Step 1: URL input + "Fetch details" */}
       <form onSubmit={handleFetchDetails}>
         <label className="field">
           <span>Event URL</span>
@@ -255,8 +397,6 @@ const handleConfirmSave = async () => {
           </button>
         </div>
       </form>
-
-      {/* Step 2: show preview if we have one */}
       {previewEvent && (
         <div className="preview-card">
           <h3>{previewEvent.title}</h3>
