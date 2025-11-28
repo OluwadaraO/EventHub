@@ -9,7 +9,7 @@ function NotificationsBell() {
   const [notifications, setNotifications] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
+  const navigate = useNavigate();
   const fetchNotifications = async () => {
     const token = getToken();
     if (!token) return [];
@@ -58,8 +58,6 @@ function NotificationsBell() {
           })
         )
       );
-
-      // update local state so UI shows them as read
       setNotifications((prev) =>
         prev.map((n) =>
           n.readAt ? n : { ...n, readAt: new Date().toISOString() }
@@ -141,6 +139,18 @@ function NotificationsBell() {
                 </div>
               </div>
             ))}
+            <div className="notifications-footer">
+              <button
+                type="button"
+                className="notifications-view-all-btn"
+                onClick={() => {
+                  setIsOpen(false);
+                  navigate("/notifications");
+                }}
+              >
+                View all notifications →
+              </button>
+            </div>
         </div>
       )}
     </div>
@@ -327,6 +337,16 @@ const handleConfirmSave = async () => {
     setSuccess("");
     setUrl("");
   };
+  const now = new Date();
+  const oneWeekFromNow = new Date();
+  oneWeekFromNow.setDate(now.getDate() + 7);
+
+  const upcomingCount = savedEvents.filter((ev) => {
+    if (!ev.startTime) return false;
+    const start = new Date(ev.startTime);
+    return start >= now && start <= oneWeekFromNow;
+  }).length;
+
 
   return (
     <div className="home-page">
@@ -436,7 +456,15 @@ const handleConfirmSave = async () => {
 )}
 
       <section className="saved-events-section">
-        <h2>Saved Events</h2>
+        <div className="saved-events-header">
+          <h2>Saved Events</h2>
+          {upcomingCount > 0 && (
+            <span className="saved-events-badge">
+              {upcomingCount} event{upcomingCount > 1 ? "s" : ""} in the next week
+            </span>
+          )}
+        </div>
+
 
         {savedEvents.length === 0 ? (
           <p className="empty-state">

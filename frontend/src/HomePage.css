@@ -469,3 +469,24 @@
 .notifications-dropdown::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.3);
 }
+
+.saved-events-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.saved-events-header h2 {
+  margin: 0;
+}
+
+.saved-events-badge {
+  font-size: 0.85rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(102, 126, 234, 0.2);
+  color: #c7d2fe;
+  border: 1px solid rgba(129, 140, 248, 0.8);
+}
