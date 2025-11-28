@@ -60,7 +60,7 @@ async def scrape_event(url: str) -> Dict[str, Any]:
             "imageUrl": _first(e, "image"),
             "startTime": _parse_when(_first(e, "startDate", "startTime")),
             "endTime": _parse_when(_first(e, "endDate", "endTime")),
-            "timezone": None,  # JSON-LD often encodes TZ in ISO string
+            "timezone": None,
             "price": _first(offers, "price", "priceCurrency", "url"),
             "isFree": str(offers.get("price", "")).strip() in ("0", "", "0.0"),
             "venue": {

@@ -83,7 +83,6 @@ async def generate_upcoming_notifications(db: Prisma) -> None:
             if exists:
                 continue
 
-            # Format message
             if days_ahead == 14:
                 msg = "in 2 weeks"
             elif days_ahead == 7:

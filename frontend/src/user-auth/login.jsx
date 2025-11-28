@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link  } from "react-router-dom";
 import './login.css';
 
 function Login() {
@@ -69,6 +69,12 @@ function Login() {
             />
           </div>
           {error && <div className="login-error">{error}</div>}
+          <p className="sign-up-switch">
+            Don't have an account?{" "}
+            <Link to="/" className="sign-up-link">
+              Sign Up
+            </Link>
+          </p>
           <button type="submit" className="login-button">Login</button>
         </form>
       </div>

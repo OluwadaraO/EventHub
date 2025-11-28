@@ -511,7 +511,7 @@ const handleConfirmSave = async () => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ eventId: previewEvent.id }), // 👈 use preview id
+      body: JSON.stringify({ eventId: previewEvent.id }),
     });
 
     if (!saveRes.ok) {
